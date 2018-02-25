@@ -1,14 +1,13 @@
 package fantasia
 
 import (
-	"fmt"
 	"github.com/nsf/termbox-go"
 	"github.com/pkg/errors"
 	"time"
 )
 
 const (
-	bgColor = termbox.ColorBlack
+	bgColor = termbox.ColorYellow
 	fgColor = termbox.ColorBlack
 )
 
@@ -70,17 +69,17 @@ func Init() {
 	if err := termbox.Init(); err != nil {
 		panic(errors.Wrap(err, "failed to init termbox"))
 	}
+	termbox.SetOutputMode(termbox.Output256)
+	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
 	termbox.Clear(termbox.ColorDefault, termbox.ColorBlack)
 
-	stage := NewStage(1, 80)
-
-	user := NewUser()
-	stage.AddEntity(user)
 	events := make(chan termbox.Event)
 	go eventLoop(events)
 
-	finalState := gameLoop(events, stage)
-	fmt.Println("%v", finalState.Level)
-	time.Sleep(600 * time.Millisecond)
+	stage := NewStage(1, 100)
+	stage.Init()
+	stage.resize(termbox.Size())
+
+	_ = gameLoop(events, stage)
 	exit(events)
 }

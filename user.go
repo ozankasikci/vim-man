@@ -13,18 +13,16 @@ const (
 
 type User struct {
 	*Entity
-	Name     string
-	Class    int
-	Position point
+	Name  string
+	Class int
 }
 
 func NewUser() (u *User) {
-	e := NewEntity(10, 10, 10, 10, '-', termbox.ColorYellow, termbox.ColorBlue)
+	e := NewEntity(10, 10, 1, 1, '≡', termbox.ColorBlue, termbox.ColorWhite)
 	u = &User{
-		Entity:   e,
-		Name:     "Test",
-		Class:    Orc,
-		Position: point{20, 20},
+		Entity: e,
+		Name:   "Test",
+		Class:  Orc,
 	}
 	return
 }
