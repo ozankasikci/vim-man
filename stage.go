@@ -17,7 +17,17 @@ type Stage struct {
 }
 
 func NewStage(level int, fps float64) *Stage {
-	return &Stage{level, fps, nil, nil, 0, 0, false, 0, 0}
+	return &Stage{
+		level,
+		fps,
+		nil,
+		nil,
+		0,
+		0,
+		false,
+		0,
+		0,
+	}
 }
 
 func (s *Stage) AddEntity(e Renderer) {

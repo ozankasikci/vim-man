@@ -38,7 +38,8 @@ func NewGame(opts GameOptions) *Game {
 	stage.Init()
 	stage.resize(termbox.Size())
 	logger := NewLogger()
-	return &Game{stage, logger}
+	game := &Game{stage, logger}
+	return game
 }
 
 type Renderer interface {
@@ -98,6 +99,10 @@ func Init() {
 	})
 
 	_ = gameLoop(events, game)
-	game.Logger.DumpLogs()
+
+	if  len(game.Logger.logs) > 0 {
+		game.Logger.DumpLogs()
+		time.Sleep(2 * time.Second)
+	}
 	exit(events)
 }
