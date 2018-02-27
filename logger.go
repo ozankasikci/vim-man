@@ -6,13 +6,13 @@ type Logger struct {
 	logs []string
 }
 
-func NewLogger() *Logger{
+func NewLogger() *Logger {
 	return &Logger{
 		logs: make([]string, 0),
 	}
 }
 
-func (l *Logger ) Log(strings ...string)  {
+func (l *Logger) Log(strings ...string) {
 	l.logs = append(l.logs, strings...)
 }
 

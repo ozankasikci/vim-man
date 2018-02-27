@@ -24,12 +24,12 @@ type word struct {
 }
 
 type Game struct {
-	Stage *Stage
+	Stage  *Stage
 	Logger *Logger
 }
 
 type GameOptions struct {
-	fps float64
+	fps          float64
 	initialLevel int
 }
 
@@ -38,7 +38,7 @@ func NewGame(opts GameOptions) *Game {
 	stage.Init()
 	stage.resize(termbox.Size())
 	logger := NewLogger()
-	return &Game{ stage, logger }
+	return &Game{stage, logger}
 }
 
 type Renderer interface {
@@ -93,7 +93,7 @@ func Init() {
 	go eventLoop(events)
 
 	game := NewGame(GameOptions{
-		fps: 80,
+		fps:          80,
 		initialLevel: 1,
 	})
 

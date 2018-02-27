@@ -12,8 +12,8 @@ type Stage struct {
 	width     int
 	height    int
 	pixelMode bool
-	offsetx    int
-	offsety     int
+	offsetx   int
+	offsety   int
 }
 
 func NewStage(level int, fps float64) *Stage {
@@ -106,4 +106,3 @@ func (s *Stage) RenderBackground() {
 		}
 	}
 }
-
