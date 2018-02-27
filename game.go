@@ -1,14 +1,15 @@
 package fantasia
 
 import (
+	"time"
+
 	"github.com/nsf/termbox-go"
 	"github.com/pkg/errors"
-	"time"
 )
 
 const (
-	bgColor = termbox.ColorYellow
-	fgColor = termbox.ColorBlack
+	bgColor = termbox.ColorBlack
+	fgColor = termbox.ColorYellow
 )
 
 type point struct {
@@ -24,6 +25,20 @@ type word struct {
 
 type Game struct {
 	Stage *Stage
+	Logger *Logger
+}
+
+type GameOptions struct {
+	fps float64
+	initialLevel int
+}
+
+func NewGame(opts GameOptions) *Game {
+	stage := NewStage(opts.initialLevel, opts.fps)
+	stage.Init()
+	stage.resize(termbox.Size())
+	logger := NewLogger()
+	return &Game{ stage, logger }
 }
 
 type Renderer interface {
@@ -31,8 +46,9 @@ type Renderer interface {
 	Render(*Stage)
 }
 
-func gameLoop(events chan termbox.Event, stage *Stage) *Stage {
+func gameLoop(events chan termbox.Event, game *Game) *Game {
 	termbox.Clear(fgColor, bgColor)
+	stage := game.Stage
 	stage.render()
 
 	for {
@@ -42,8 +58,8 @@ func gameLoop(events chan termbox.Event, stage *Stage) *Stage {
 		select {
 		case key := <-events:
 			switch {
-			case key.Key == termbox.KeyEsc:
-				return stage
+			case key.Key == termbox.KeyCtrlC:
+				return game
 			default:
 				stage.update(key)
 			}
@@ -71,15 +87,17 @@ func Init() {
 	}
 	termbox.SetOutputMode(termbox.Output256)
 	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
-	termbox.Clear(termbox.ColorDefault, termbox.ColorBlack)
+	termbox.Clear(termbox.ColorDefault, bgColor)
 
 	events := make(chan termbox.Event)
 	go eventLoop(events)
 
-	stage := NewStage(1, 100)
-	stage.Init()
-	stage.resize(termbox.Size())
+	game := NewGame(GameOptions{
+		fps: 80,
+		initialLevel: 1,
+	})
 
-	_ = gameLoop(events, stage)
+	_ = gameLoop(events, game)
+	game.Logger.DumpLogs()
 	exit(events)
 }

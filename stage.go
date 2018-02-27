@@ -101,7 +101,7 @@ func (s *Stage) RenderBackground() {
 			s.Canvas[i][j] = termbox.Cell{
 				Ch: '~',
 				Fg: termbox.ColorGreen,
-				Bg: termbox.ColorYellow,
+				Bg: termbox.ColorBlack,
 			}
 		}
 	}
