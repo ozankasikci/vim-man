@@ -9,8 +9,8 @@ type Stage struct {
 	Fps       float64
 	Entities  []Renderer
 	Canvas    Canvas
-	width     int
-	height    int
+	Width     int
+	Height    int
 	pixelMode bool
 	offsetx   int
 	offsety   int
@@ -18,15 +18,15 @@ type Stage struct {
 
 func NewStage(level int, fps float64) *Stage {
 	return &Stage{
-		level,
-		fps,
-		nil,
-		nil,
-		0,
-		0,
-		false,
-		0,
-		0,
+		Level:     level,
+		Fps:       fps,
+		Entities:  nil,
+		Canvas:    nil,
+		Width:     0,
+		Height:    0,
+		pixelMode: false,
+		offsetx:   0,
+		offsety:   0,
 	}
 }
 
@@ -88,17 +88,17 @@ func (s *Stage) Init() {
 }
 
 func (s *Stage) resize(w, h int) {
-	s.width = w
-	s.height = h
+	s.Width = w
+	s.Height = h
 
 	if s.pixelMode {
-		s.height *= 2
+		s.Height *= 2
 	}
-	c := NewCanvas(s.width, s.height)
+	c := NewCanvas(s.Width, s.Height)
 
 	// Copy old data that fits
-	for i := 0; i < min(s.width, len(s.Canvas)); i++ {
-		for j := 0; j < min(s.height, len(s.Canvas[0])); j++ {
+	for i := 0; i < min(s.Width, len(s.Canvas)); i++ {
+		for j := 0; j < min(s.Height, len(s.Canvas[0])); j++ {
 			c[i][j] = s.Canvas[i][j]
 		}
 	}

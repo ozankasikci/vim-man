@@ -100,7 +100,7 @@ func Init() {
 
 	_ = gameLoop(events, game)
 
-	if  len(game.Logger.logs) > 0 {
+	if len(game.Logger.logs) > 0 {
 		game.Logger.DumpLogs()
 		time.Sleep(2 * time.Second)
 	}
