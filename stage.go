@@ -8,6 +8,7 @@ type Stage struct {
 	Level     int
 	Fps       float64
 	Entities  []Renderer
+	BgCell    *termbox.Cell
 	Canvas    Canvas
 	Width     int
 	Height    int
@@ -16,11 +17,12 @@ type Stage struct {
 	offsety   int
 }
 
-func NewStage(level int, fps float64) *Stage {
+func NewStage(level int, fps float64, bgCell *termbox.Cell) *Stage {
 	return &Stage{
 		Level:     level,
 		Fps:       fps,
 		Entities:  nil,
+		BgCell:    bgCell,
 		Canvas:    nil,
 		Width:     0,
 		Height:    0,
@@ -35,10 +37,12 @@ func (s *Stage) AddEntity(e Renderer) {
 }
 
 func (s *Stage) render() {
-	s.RenderBackground()
+	s.setBackgroundCells()
 	for _, e := range s.Entities {
-		e.Render(s)
+		e.SetCells(s)
 	}
+
+	termboxSetCells(&s.Canvas)
 	termbox.Flush()
 }
 
@@ -48,34 +52,8 @@ func (s *Stage) update(ev termbox.Event) {
 	}
 }
 
-func renderSquare(x, y, w, h int, cell termbox.Cell) {
-	for iy := 0; iy < h; iy++ {
-		for ix := 0; ix < w; ix++ {
-			termbox.SetCell(x+ix, y+iy, cell.Ch, cell.Fg, cell.Bg)
-		}
-	}
-}
-
-func renderWord(w word, active bool) {
-	runes := []rune(w.text)
-	for i, r := range runes {
-		fgColor := termbox.ColorDefault
-		if i == w.cursor && active {
-			fgColor = termbox.ColorRed
-		}
-		termbox.SetCell(w.location.x+i, w.location.y, r, fgColor, termbox.ColorDefault)
-	}
-}
-
 func min(a, b int) int {
 	if a < b {
-		return a
-	}
-	return b
-}
-
-func max(a, b int) int {
-	if a > b {
 		return a
 	}
 	return b
@@ -105,14 +83,28 @@ func (s *Stage) resize(w, h int) {
 	s.Canvas = c
 }
 
-func (s *Stage) RenderBackground() {
+func (s *Stage) setBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
-			s.Canvas[i][j] = termbox.Cell{
-				Ch: '~',
-				Fg: termbox.ColorGreen,
-				Bg: termbox.ColorBlack,
-			}
+			s.Canvas[i][j] = *s.BgCell
 		}
 	}
+}
+
+func (s *Stage) SetCell(x, y int, c termbox.Cell) {
+	if x >= 0 && x < len(s.Canvas) &&
+		y >= 0 && y < len(s.Canvas[0]) {
+		s.Canvas[x][y] = c
+	}
+}
+
+func termboxSetCells(canvas *Canvas) {
+	for i, col := range *canvas {
+		for j, cell := range col {
+			termbox.SetCell(i, j, cell.Ch,
+				termbox.Attribute(cell.Fg),
+				termbox.Attribute(cell.Bg))
+		}
+	}
+
 }

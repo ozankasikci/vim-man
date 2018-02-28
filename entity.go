@@ -16,8 +16,8 @@ func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribut
 	return &Entity{p, w, h, r, cell}
 }
 
-func (e *Entity) Render(s *Stage) {
-	renderSquare(e.Position.x, e.Position.y, e.Width, e.Height, e.Cell)
+func (e *Entity) SetCells(s *Stage) {
+	s.SetCell(e.Position.x, e.Position.y, e.Cell)
 }
 
 func (e *Entity) Update(s *Stage, event termbox.Event) {

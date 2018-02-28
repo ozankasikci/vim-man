@@ -31,10 +31,12 @@ type Game struct {
 type GameOptions struct {
 	fps          float64
 	initialLevel int
+	bgCell       *termbox.Cell
 }
 
 func NewGame(opts GameOptions) *Game {
-	stage := NewStage(opts.initialLevel, opts.fps)
+	bgCell := &termbox.Cell{'~', termbox.ColorGreen, termbox.ColorBlack}
+	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
 	stage.Init()
 	stage.resize(termbox.Size())
 	logger := NewLogger()
@@ -44,7 +46,7 @@ func NewGame(opts GameOptions) *Game {
 
 type Renderer interface {
 	Update(*Stage, termbox.Event)
-	Render(*Stage)
+	SetCells(*Stage)
 }
 
 func gameLoop(events chan termbox.Event, game *Game) *Game {
