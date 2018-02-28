@@ -9,7 +9,7 @@ import (
 
 const (
 	bgColor = termbox.ColorBlack
-	fgColor = termbox.ColorYellow
+	fgColor = termbox.ColorWhite
 )
 
 type point struct {
@@ -35,7 +35,7 @@ type GameOptions struct {
 }
 
 func NewGame(opts GameOptions) *Game {
-	bgCell := &termbox.Cell{'~', termbox.ColorGreen, termbox.ColorBlack}
+	bgCell := &termbox.Cell{'~', fgColor, bgColor}
 	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
 	stage.Init()
 	stage.resize(termbox.Size())
@@ -68,6 +68,7 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 			}
 		}
 
+		stage.update(termbox.Event{})
 		stage.render()
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)
 	}
