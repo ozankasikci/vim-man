@@ -61,10 +61,8 @@ func min(a, b int) int {
 
 func (s *Stage) Init() {
 	user := NewUser()
-	current := NewCurrent(30, 40)
 	s.Canvas = NewCanvas(10, 10)
 	s.AddEntity(user)
-	s.AddEntity(current)
 }
 
 func (s *Stage) resize(w, h int) {

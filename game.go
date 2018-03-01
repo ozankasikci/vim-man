@@ -35,7 +35,7 @@ type GameOptions struct {
 }
 
 func NewGame(opts GameOptions) *Game {
-	bgCell := &termbox.Cell{'~', fgColor, bgColor}
+	bgCell := &termbox.Cell{'░', fgColor, bgColor}
 	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
 	stage.Init()
 	stage.resize(termbox.Size())
@@ -66,9 +66,10 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 			default:
 				stage.update(key)
 			}
+		default:
+			stage.update(termbox.Event{})
 		}
 
-		stage.update(termbox.Event{})
 		stage.render()
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)
 	}
@@ -97,7 +98,7 @@ func Init() {
 	go eventLoop(events)
 
 	game := NewGame(GameOptions{
-		fps:          80,
+		fps:          50,
 		initialLevel: 1,
 	})
 

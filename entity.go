@@ -7,17 +7,28 @@ type Entity struct {
 	Width    int
 	Height   int
 	Rune     rune
-	Cell     termbox.Cell
+	Cell     *termbox.Cell
+	Cells    []termbox.Cell
 }
 
-func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute) *Entity {
+func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []termbox.Cell) *Entity {
 	p := point{x, y}
-	cell := termbox.Cell{r, fg, bg}
-	return &Entity{p, w, h, r, cell}
+	cell := &termbox.Cell{r, fg, bg}
+	return &Entity{p, w, h, r, cell, cells}
 }
 
 func (e *Entity) SetCells(s *Stage) {
-	s.SetCell(e.Position.x, e.Position.y, e.Cell)
+	newPositionX := e.Position.x
+
+	for i := 0; i < e.Width; i++ {
+		newPositionY := e.Position.y
+		newPositionX -= 1
+
+		for j := 0; j < e.Height; j++ {
+			newPositionY -= 1
+			s.SetCell(newPositionX, newPositionY, *e.Cell)
+		}
+	}
 }
 
 func (e *Entity) Update(s *Stage, event termbox.Event) {
