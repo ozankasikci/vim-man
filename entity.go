@@ -26,7 +26,12 @@ func (e *Entity) SetCells(s *Stage) {
 
 		for j := 0; j < e.Height; j++ {
 			newPositionY -= 1
-			s.SetCell(newPositionX, newPositionY, *e.Cell)
+
+			if e.Cells != nil {
+				s.SetCell(newPositionX, newPositionY, e.Cells[j])
+			} else {
+				s.SetCell(newPositionX, newPositionY, *e.Cell)
+			}
 		}
 	}
 }
