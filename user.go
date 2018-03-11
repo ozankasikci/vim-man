@@ -20,10 +20,9 @@ type User struct {
 func NewUser() (u *User) {
 	cells := []termbox.Cell{
 		termbox.Cell{'▓', termbox.ColorGreen, bgColor},
-		termbox.Cell{'┬', termbox.ColorGreen, bgColor},
 	}
 
-	e := NewEntity(10, 10, 1, 2, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
+	e := NewEntity(10, 10, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
 	u = &User{
 		Entity: e,
 		Name:   "Test",

@@ -41,6 +41,7 @@ func NewGame(opts GameOptions) *Game {
 	stage.resize(termbox.Size())
 	logger := NewLogger()
 	game := &Game{stage, logger}
+	stage.Game = game
 	return game
 }
 

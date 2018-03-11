@@ -5,6 +5,7 @@ import (
 )
 
 type Stage struct {
+	Game      *Game
 	Level     int
 	Fps       float64
 	Entities  []Renderer
@@ -19,6 +20,7 @@ type Stage struct {
 
 func NewStage(level int, fps float64, bgCell *termbox.Cell) *Stage {
 	return &Stage{
+		Game:      nil,
 		Level:     level,
 		Fps:       fps,
 		Entities:  nil,
@@ -34,6 +36,10 @@ func NewStage(level int, fps float64, bgCell *termbox.Cell) *Stage {
 
 func (s *Stage) AddEntity(e Renderer) {
 	s.Entities = append(s.Entities, e)
+}
+
+func (s *Stage ) SetGame(game *Game)  {
+	s.Game = game
 }
 
 func (s *Stage) render() {
@@ -61,8 +67,11 @@ func min(a, b int) int {
 
 func (s *Stage) Init() {
 	user := NewUser()
+	word := NewWord(20, 30, "Test")
+	word.SetStage(s)
 	s.Canvas = NewCanvas(10, 10)
 	s.AddEntity(user)
+	s.AddEntity(word)
 }
 
 func (s *Stage) resize(w, h int) {
