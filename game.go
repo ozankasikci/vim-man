@@ -46,7 +46,7 @@ func NewGame(opts GameOptions) *Game {
 }
 
 type Renderer interface {
-	Update(*Stage, termbox.Event)
+	Update(*Stage, termbox.Event, time.Duration)
 	SetCells(*Stage)
 }
 
@@ -54,6 +54,7 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 	termbox.Clear(fgColor, bgColor)
 	stage := game.Stage
 	stage.render()
+	lastUpdateTime := time.Now()
 
 	for {
 		termbox.Clear(fgColor, bgColor)
@@ -65,11 +66,12 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 			case key.Key == termbox.KeyCtrlC:
 				return game
 			default:
-				stage.update(key)
+				stage.update(key, update.Sub(lastUpdateTime))
 			}
 		default:
-			stage.update(termbox.Event{})
+			stage.update(termbox.Event{}, update.Sub(lastUpdateTime))
 		}
+		lastUpdateTime = time.Now()
 
 		stage.render()
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)

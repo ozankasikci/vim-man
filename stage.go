@@ -2,6 +2,7 @@ package fantasia
 
 import (
 	"github.com/nsf/termbox-go"
+	"time"
 )
 
 type Stage struct {
@@ -38,7 +39,7 @@ func (s *Stage) AddEntity(e Renderer) {
 	s.Entities = append(s.Entities, e)
 }
 
-func (s *Stage ) SetGame(game *Game)  {
+func (s *Stage) SetGame(game *Game) {
 	s.Game = game
 }
 
@@ -52,9 +53,9 @@ func (s *Stage) render() {
 	termbox.Flush()
 }
 
-func (s *Stage) update(ev termbox.Event) {
+func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	for _, e := range s.Entities {
-		e.Update(s, ev)
+		e.Update(s, ev, delta)
 	}
 }
 

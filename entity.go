@@ -1,6 +1,9 @@
 package fantasia
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"time"
+)
 
 type Entity struct {
 	Position point
@@ -18,7 +21,7 @@ func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribut
 	return &Entity{p, w, h, r, cell, cells, nil}
 }
 
-func (e *Entity) SetStage(s *Stage)  {
+func (e *Entity) SetStage(s *Stage) {
 	e.Stage = s
 }
 
@@ -47,5 +50,5 @@ func (e *Entity) SetCells(s *Stage) {
 	}
 }
 
-func (e *Entity) Update(s *Stage, event termbox.Event) {
+func (e *Entity) Update(s *Stage, event termbox.Event, time time.Time) {
 }

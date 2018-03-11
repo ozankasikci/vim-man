@@ -1,6 +1,9 @@
 package fantasia
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"time"
+)
 
 type Class int
 
@@ -31,7 +34,7 @@ func NewUser() (u *User) {
 	return
 }
 
-func (u *User) Update(s *Stage, event termbox.Event) {
+func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 	switch event.Key {
 	case termbox.KeyArrowUp:
 		u.Entity.Position.y = u.Entity.Position.y - 1
