@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// holds the current level meta data, canvas and entities
 type Stage struct {
 	Game      *Game
 	Level     int

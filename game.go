@@ -50,6 +50,8 @@ type Renderer interface {
 	SetCells(*Stage)
 }
 
+// main game loop
+// handles events, updates and renders stage and entities
 func gameLoop(events chan termbox.Event, game *Game) *Game {
 	termbox.Clear(fgColor, bgColor)
 	stage := game.Stage
@@ -64,6 +66,7 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 		case key := <-events:
 			switch {
 			case key.Key == termbox.KeyCtrlC:
+				// exit on ctrc + c
 				return game
 			default:
 				stage.update(key, update.Sub(lastUpdateTime))
