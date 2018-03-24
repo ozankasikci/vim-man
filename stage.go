@@ -9,6 +9,7 @@ import (
 type Stage struct {
 	Game      *Game
 	Level     int
+	LevelInstance     *Level
 	Fps       float64
 	Entities  []Renderer
 	BgCell    *termbox.Cell
@@ -44,13 +45,13 @@ func (s *Stage) SetGame(game *Game) {
 	s.Game = game
 }
 
-func (s *Stage) render() {
-	s.setBackgroundCells()
+func (s *Stage) Render() {
+	s.SetBackgroundCells()
 	for _, e := range s.Entities {
 		e.SetCells(s)
 	}
 
-	termboxSetCells(&s.Canvas)
+	s.TermboxSetCells()
 	termbox.Flush()
 }
 
@@ -68,12 +69,10 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-	user := NewUser()
-	word := NewWord(20, 30, "Test")
-	word.SetStage(s)
 	s.Canvas = NewCanvas(10, 10)
-	s.AddEntity(user)
-	s.AddEntity(word)
+	level1 := NewLevel1()
+	s.LevelInstance = level1
+	s.AddEntity(level1.Entities[0])
 }
 
 func (s *Stage) resize(w, h int) {
@@ -83,18 +82,24 @@ func (s *Stage) resize(w, h int) {
 	if s.pixelMode {
 		s.Height *= 2
 	}
+
+	if s.LevelInstance.Height != 0 && s.LevelInstance.Width != 0 {
+		s.Width = s.LevelInstance.Width
+		s.Height = s.LevelInstance.Height
+	}
+
 	c := NewCanvas(s.Width, s.Height)
 
 	// Copy old data that fits
 	for i := 0; i < min(s.Width, len(s.Canvas)); i++ {
-		for j := 0; j < min(s.Height, len(s.Canvas[0])); j++ {
+		for j := 0; j < min(s.Height, len(s.Canvas)); j++ {
 			c[i][j] = s.Canvas[i][j]
 		}
 	}
 	s.Canvas = c
 }
 
-func (s *Stage) setBackgroundCells() {
+func (s *Stage) SetBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			s.Canvas[i][j] = *s.BgCell
@@ -109,8 +114,8 @@ func (s *Stage) SetCell(x, y int, c termbox.Cell) {
 	}
 }
 
-func termboxSetCells(canvas *Canvas) {
-	for i, col := range *canvas {
+func (s *Stage) TermboxSetCells() {
+	for i, col := range s.Canvas {
 		for j, cell := range col {
 			termbox.SetCell(i, j, cell.Ch,
 				termbox.Attribute(cell.Fg),

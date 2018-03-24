@@ -10,17 +10,17 @@ import (
 const (
 	bgColor = termbox.ColorBlack
 	fgColor = termbox.ColorWhite
+	KeyB    = 98
+	KeyE    = 101
+	KeyH    = 104
+	KeyJ    = 106
+	KeyK    = 107
+	KeyL    = 108
 )
 
 type point struct {
 	x int
 	y int
-}
-
-type word struct {
-	text     string
-	location point
-	cursor   int
 }
 
 type Game struct {
@@ -55,7 +55,7 @@ type Renderer interface {
 func gameLoop(events chan termbox.Event, game *Game) *Game {
 	termbox.Clear(fgColor, bgColor)
 	stage := game.Stage
-	stage.render()
+	stage.Render()
 	lastUpdateTime := time.Now()
 
 	for {
@@ -76,7 +76,7 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 		}
 		lastUpdateTime = time.Now()
 
-		stage.render()
+		stage.Render()
 		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)
 	}
 }

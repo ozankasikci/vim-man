@@ -1,7 +1,6 @@
 package fantasia
 
 import (
-	"fmt"
 	"github.com/nsf/termbox-go"
 	"time"
 )

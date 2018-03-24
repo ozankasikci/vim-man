@@ -7,17 +7,9 @@ import (
 
 type Class int
 
-const (
-	Orc   = 0
-	Elf   = 1
-	Dwarf = 2
-	Bear  = 3
-)
-
 type User struct {
 	*Entity
 	Name  string
-	Class int
 }
 
 func NewUser() (u *User) {
@@ -25,24 +17,23 @@ func NewUser() (u *User) {
 		termbox.Cell{'▓', termbox.ColorGreen, bgColor},
 	}
 
-	e := NewEntity(10, 10, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
+	e := NewEntity(0, 0, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
 	u = &User{
 		Entity: e,
 		Name:   "Test",
-		Class:  Orc,
 	}
 	return
 }
 
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
-	switch event.Key {
-	case termbox.KeyArrowUp:
+	switch event.Ch {
+	case 'k':
 		u.Entity.Position.y = u.Entity.Position.y - 1
-	case termbox.KeyArrowDown:
+	case 'j':
 		u.Entity.Position.y = u.Entity.Position.y + 1
-	case termbox.KeyArrowRight:
+	case 'l':
 		u.Entity.Position.x = u.Entity.Position.x + 1
-	case termbox.KeyArrowLeft:
+	case 'h':
 		u.Entity.Position.x = u.Entity.Position.x - 1
 	}
 }
