@@ -25,7 +25,6 @@ type point struct {
 
 type Game struct {
 	Stage  *Stage
-	Logger *Logger
 }
 
 type GameOptions struct {
@@ -34,13 +33,13 @@ type GameOptions struct {
 	bgCell       *termbox.Cell
 }
 
+var lg = GetLogger()
+
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
 	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
 	stage.Init()
-	stage.resize(termbox.Size())
-	logger := NewLogger()
-	game := &Game{stage, logger}
+	game := &Game{stage}
 	stage.Game = game
 	return game
 }
@@ -96,6 +95,7 @@ func Init() {
 	if err := termbox.Init(); err != nil {
 		panic(errors.Wrap(err, "failed to init termbox"))
 	}
+
 	termbox.SetOutputMode(termbox.Output256)
 	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
 	termbox.Clear(termbox.ColorDefault, bgColor)
@@ -110,9 +110,11 @@ func Init() {
 
 	_ = gameLoop(events, game)
 
-	if len(game.Logger.logs) > 0 {
-		game.Logger.DumpLogs()
+	logger := GetLogger()
+	if len(logger.logs) > 0 {
+		logger.DumpLogs()
 		time.Sleep(2 * time.Second)
 	}
+
 	exit(events)
 }

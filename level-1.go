@@ -1,27 +1,21 @@
 package fantasia
 
 const tileMapString = `
-1211111
-1212221
-1212121
-1222121
-1111121
+1 + 1 1 1 1 1
+1 0 1 0 0 0 1
+1 0 1 0 1 0 1
+1 0 1 0 1 0 1
+1 0 1 0 1 0 1
+1 0 0 0 1 0 1
+1 1 1 1 1 - 1
 `
-
-type Level1 struct {
-	*Level
-	Stage *Stage
-}
-
-func NewLevel1() *Level{
+func NewLevel1(s *Stage) *Level {
 	user := NewUser()
 	var entities []Renderer
 	entities = append(entities, user)
 
 	return &Level{
 		Entities: entities,
-		Width: 10,
-		Height: 5,
+		TileMapString: tileMapString,
 	}
 }
-

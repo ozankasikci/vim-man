@@ -7,18 +7,18 @@ import (
 
 // holds the current level meta data, canvas and entities
 type Stage struct {
-	Game      *Game
-	Level     int
-	LevelInstance     *Level
-	Fps       float64
-	Entities  []Renderer
-	BgCell    *termbox.Cell
-	Canvas    Canvas
-	Width     int
-	Height    int
-	pixelMode bool
-	offsetx   int
-	offsety   int
+	Game          *Game
+	Level         int
+	LevelInstance *Level
+	Fps           float64
+	Entities      []Renderer
+	BgCell        *termbox.Cell
+	Canvas        Canvas
+	Width         int
+	Height        int
+	pixelMode     bool
+	offsetx       int
+	offsety       int
 }
 
 func NewStage(level int, fps float64, bgCell *termbox.Cell) *Stage {
@@ -70,8 +70,10 @@ func min(a, b int) int {
 
 func (s *Stage) Init() {
 	s.Canvas = NewCanvas(10, 10)
-	level1 := NewLevel1()
+	level1 := NewLevel1(s)
 	s.LevelInstance = level1
+	s.LevelInstance.LoadTileMap()
+	s.resize(s.LevelInstance.GetTileMapDimensions())
 	s.AddEntity(level1.Entities[0])
 }
 

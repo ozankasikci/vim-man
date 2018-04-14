@@ -7,7 +7,7 @@ type Level2 struct {
 	Stage *Stage
 }
 
-func NewLevel2() *Level{
+func NewLevel2() *Level {
 	user := NewUser()
 	cells := []termbox.Cell{
 		termbox.Cell{'▓', termbox.ColorGreen, bgColor},
@@ -25,4 +25,3 @@ func NewLevel2() *Level{
 		Entities: entities,
 	}
 }
-

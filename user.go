@@ -9,7 +9,7 @@ type Class int
 
 type User struct {
 	*Entity
-	Name  string
+	Name string
 }
 
 func NewUser() (u *User) {
