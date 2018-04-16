@@ -12,17 +12,17 @@ func NewCanvas(width, height int) Canvas {
 	return canvas
 }
 
-func (c Canvas) getCellAt(x, y int) *TileMapCell{
+func (c Canvas) getCellAt(x, y int) *TileMapCell {
 	return c[y][x]
 }
 
 func (c Canvas) checkCollision(x, y int) bool {
-	if x < 0 || y < 0 {
+	if x < 0 || y < 0 || y > len(c) || x > len(c[0]) {
 		return true
 	}
 
-	if y > len(c) || x > len(c[0]) || c[y][x] == nil {
-		return false
+	if c[y][x] == nil {
+		return true
 	}
 
 	return c[y][x].collides

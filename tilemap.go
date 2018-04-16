@@ -15,9 +15,9 @@ func (t *TileMapCell) GetCellData() TileMapCellData {
 }
 
 type TileMapCellData struct {
-	ch      rune
-	bgColor termbox.Attribute
-	fgColor termbox.Attribute
+	ch       rune
+	bgColor  termbox.Attribute
+	fgColor  termbox.Attribute
 	collides bool
 }
 
@@ -25,28 +25,22 @@ type TileMapCellDataMap map[rune]TileMapCellData
 
 var CommonTileMapCellData = TileMapCellDataMap{
 	'1': {
-		bgColor: termbox.ColorRed,
-		fgColor: termbox.ColorRed,
-		ch:      '░',
+		bgColor:  termbox.ColorRed,
+		fgColor:  termbox.ColorRed,
+		ch:       '░',
 		collides: true,
 	},
 	'0': {
-		bgColor: termbox.ColorBlack,
-		fgColor: termbox.ColorWhite,
-		ch:      ' ',
-		collides: false,
-	},
-	'⇩': {
-		bgColor: termbox.ColorBlack,
-		fgColor: termbox.ColorWhite,
-		ch:      '⇩',
+		bgColor:  termbox.ColorBlack,
+		fgColor:  termbox.ColorWhite,
+		ch:       ' ',
 		collides: false,
 	},
 	'↓': {
-		bgColor: termbox.ColorBlack,
-		fgColor: termbox.ColorWhite,
-		ch:      '↓',
-		collides: true,
+		bgColor:  termbox.ColorBlack,
+		fgColor:  termbox.ColorWhite,
+		ch:       '↓',
+		collides: false,
 	},
 }
 
@@ -76,4 +70,3 @@ func parseTileMapString(tileMap string) [][]rune {
 
 	return parsed
 }
-

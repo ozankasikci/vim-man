@@ -3,7 +3,7 @@ package fantasia
 //import "github.com/nsf/termbox-go"
 
 const Level1TileMapString = `
-1 ↓ 1 1 1 1 1
+1 0 1 1 1 1 1
 1 0 1 0 0 0 1
 1 0 1 0 1 0 1
 1 0 1 0 1 0 1
@@ -15,7 +15,6 @@ const Level1TileMapString = `
 var Level1TileData = TileMapCellDataMap{
 	'1': CommonTileMapCellData['1'],
 	'0': CommonTileMapCellData['0'],
-	'⇩': CommonTileMapCellData['⇩'],
 	'↓': CommonTileMapCellData['↓'],
 }
 
