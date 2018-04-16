@@ -10,6 +10,7 @@ type Level struct {
 	Game     *Game
 	TileMapString  string
 	TileMap  [][]TileMapCell
+	TileData TileMapCellData
 	Entities []Renderer
 	BgCell   *termbox.Cell
 	Width    int
@@ -51,13 +52,34 @@ func (l *Level) SetCells(s *Stage) {
 
 }
 
-func loadTileMapCells(parsedRunes [][]rune)  {
-	lg.LogValue(parsedRunes)
+func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]TileMapCell {
+	var cells [][]TileMapCell
+
+	for _, line := range parsedRunes {
+		rowCells := make([]TileMapCell, len(line))
+
+		for j, char := range line {
+			if data, ok := l.TileData[char]; !ok {
+				panic("Couldn't retrieve tile data")
+			} else {
+				//lg.LogValue(data.ch)
+				cell := TileMapCell{ &termbox.Cell{ data.ch, data.fgColor, data.bgColor } }
+				rowCells[j] = cell
+			}
+		}
+		for k := 0; k < len(rowCells); k++ {
+			//lg.LogValue(rowCells[k].Ch, rowCells[k].Bg)
+		}
+		cells = append(cells, rowCells)
+	}
+
+	l.TileMap = cells
+	return l.TileMap
 }
 
 func (l *Level) LoadTileMap() {
 	parsed := parseTileMapString(l.TileMapString)
-	loadTileMapCells(parsed)
+	l.LoadTileMapCells(parsed)
 }
 
 // row, length

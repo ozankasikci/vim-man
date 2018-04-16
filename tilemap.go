@@ -4,11 +4,11 @@ import "github.com/nsf/termbox-go"
 
 type TileMapCell struct {
 	*termbox.Cell
-	def TileMapDef
 }
 
-type TileMapDef map[string]struct{
-	ch string
+type TileMapCellData map[rune]struct{
+	ch rune
 	bgColor termbox.Attribute
+	fgColor termbox.Attribute
 }
 

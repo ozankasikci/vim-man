@@ -70,7 +70,7 @@ func min(a, b int) int {
 
 func (s *Stage) Init() {
 	s.Canvas = NewCanvas(10, 10)
-	level1 := NewLevel1(s)
+	level1 := NewLevel1()
 	s.LevelInstance = level1
 	s.LevelInstance.LoadTileMap()
 	s.resize(s.LevelInstance.GetTileMapDimensions())
@@ -93,8 +93,8 @@ func (s *Stage) resize(w, h int) {
 	c := NewCanvas(s.Width, s.Height)
 
 	// Copy old data that fits
-	for i := 0; i < min(s.Width, len(s.Canvas)); i++ {
-		for j := 0; j < min(s.Height, len(s.Canvas)); j++ {
+	for i := 0; i < min(s.Height, len(s.Canvas)); i++ {
+		for j := 0; j < min(s.Width, len(s.Canvas)); j++ {
 			c[i][j] = s.Canvas[i][j]
 		}
 	}
@@ -104,25 +104,28 @@ func (s *Stage) resize(w, h int) {
 func (s *Stage) SetBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
-			s.Canvas[i][j] = *s.BgCell
+			if s.LevelInstance.TileMap[i][j].Cell != nil {
+				s.Canvas[i][j] = *s.LevelInstance.TileMap[i][j].Cell
+			} else {
+				s.Canvas[i][j] = *s.BgCell
+			}
 		}
 	}
 }
 
 func (s *Stage) SetCell(x, y int, c termbox.Cell) {
-	if x >= 0 && x < len(s.Canvas) &&
-		y >= 0 && y < len(s.Canvas[0]) {
-		s.Canvas[x][y] = c
+	if x >= 0 && x < len(s.Canvas) && y >= 0 && y < len(s.Canvas[0]) {
+		s.Canvas[y][x] = c
 	}
 }
 
 func (s *Stage) TermboxSetCells() {
-	for i, col := range s.Canvas {
-		for j, cell := range col {
-			termbox.SetCell(i, j, cell.Ch,
+	for i, row := range s.Canvas {
+		for j, _ := range row {
+			cell := row[j]
+			termbox.SetCell(j, i, cell.Ch,
 				termbox.Attribute(cell.Fg),
 				termbox.Attribute(cell.Bg))
 		}
 	}
-
 }

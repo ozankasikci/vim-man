@@ -26,14 +26,14 @@ func (e *Entity) SetStage(s *Stage) {
 }
 
 func (e *Entity) SetCells(s *Stage) {
-	newPositionX := e.Position.x
+	newPositionY := e.Position.y
 
-	for i := 0; i < e.Width; i++ {
-		newPositionY := e.Position.y
-		newPositionX += 1
+	for i := 0; i < e.Height; i++ {
+		newPositionX := e.Position.x
+		newPositionY += 1
 
-		for j := 0; j < e.Height; j++ {
-			newPositionY += 1
+		for j := 0; j < e.Width; j++ {
+			newPositionX += 1
 
 			if e.Cells != nil {
 				index := j
