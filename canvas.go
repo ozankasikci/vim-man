@@ -1,13 +1,29 @@
 package fantasia
 
-import tb "github.com/nsf/termbox-go"
+//import tb "github.com/nsf/termbox-go"
 
-type Canvas [][]*tb.Cell
+type Canvas [][]*TileMapCell
 
 func NewCanvas(width, height int) Canvas {
 	canvas := make(Canvas, height)
 	for i := range canvas {
-		canvas[i] = make([]*tb.Cell, width)
+		canvas[i] = make([]*TileMapCell, width)
 	}
 	return canvas
+}
+
+func (c Canvas) getCellAt(x, y int) *TileMapCell{
+	return c[y][x]
+}
+
+func (c Canvas) checkCollision(x, y int) bool {
+	if x < 0 || y < 0 {
+		return true
+	}
+
+	if y > len(c) || x > len(c[0]) || c[y][x] == nil {
+		return false
+	}
+
+	return c[y][x].collides
 }

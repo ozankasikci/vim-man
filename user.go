@@ -13,11 +13,11 @@ type User struct {
 }
 
 func NewUser() (u *User) {
-	cells := []*termbox.Cell{
-		&termbox.Cell{'▓', termbox.ColorGreen, bgColor},
+	cells := []*TileMapCell{
+		{&termbox.Cell{'▓', termbox.ColorGreen, bgColor}, false},
 	}
 
-	e := NewEntity(0, 0, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
+	e := NewEntity(1, 0, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
 	u = &User{
 		Entity: e,
 		Name:   "Test",
@@ -28,12 +28,24 @@ func NewUser() (u *User) {
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 	switch event.Ch {
 	case 'k':
-		u.setPositionY(u.Entity.Position.y - 1)
+		nextY := u.getPositionY() - 1
+		if !s.CheckCollision(u.getPositionX(), nextY) {
+			u.setPositionY(nextY)
+		}
 	case 'j':
-		u.setPositionY(u.Entity.Position.y + 1)
+		nextY := u.getPositionY() + 1
+		if !s.CheckCollision(u.getPositionX(), nextY) {
+			u.setPositionY(nextY)
+		}
 	case 'l':
-		u.setPositionX(u.Entity.Position.x + 1)
+		nextX := u.getPositionX() + 1
+		if !s.CheckCollision(nextX, u.getPositionY()) {
+			u.setPositionX(nextX)
+		}
 	case 'h':
-		u.setPositionX(u.Entity.Position.x - 1)
+		nextX := u.getPositionX() - 1
+		if !s.CheckCollision(nextX, u.getPositionY()) {
+			u.setPositionX(nextX)
+		}
 	}
 }

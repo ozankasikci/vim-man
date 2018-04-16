@@ -9,8 +9,8 @@ type Level2 struct {
 
 func NewLevel2() *Level {
 	user := NewUser()
-	cells := []*termbox.Cell{
-		&termbox.Cell{'▓', termbox.ColorGreen, bgColor},
+	cells := []*TileMapCell{
+		{&termbox.Cell{'▓', termbox.ColorGreen, bgColor}, false},
 	}
 
 	e := NewEntity(20, 20, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)

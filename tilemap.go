@@ -1,36 +1,79 @@
 package fantasia
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"strings"
+)
 
 type TileMapCell struct {
 	*termbox.Cell
+	collides bool
 }
 
-type TileMapCellData map[rune]struct {
+func (t *TileMapCell) GetCellData() TileMapCellData {
+	return CommonTileMapCellData[t.Ch]
+}
+
+type TileMapCellData struct {
 	ch      rune
 	bgColor termbox.Attribute
 	fgColor termbox.Attribute
+	collides bool
 }
 
-var CommonTileMapCellData = TileMapCellData{
+type TileMapCellDataMap map[rune]TileMapCellData
+
+var CommonTileMapCellData = TileMapCellDataMap{
 	'1': {
 		bgColor: termbox.ColorRed,
 		fgColor: termbox.ColorRed,
 		ch:      '░',
+		collides: true,
 	},
 	'0': {
 		bgColor: termbox.ColorBlack,
 		fgColor: termbox.ColorWhite,
 		ch:      ' ',
+		collides: false,
 	},
-	'+': {
-		bgColor: termbox.ColorYellow,
-		fgColor: termbox.ColorYellow,
-		ch:      ' ',
+	'⇩': {
+		bgColor: termbox.ColorBlack,
+		fgColor: termbox.ColorWhite,
+		ch:      '⇩',
+		collides: false,
 	},
-	'-': {
-		bgColor: termbox.ColorBlue,
-		fgColor: termbox.ColorBlue,
-		ch:      ' ',
+	'↓': {
+		bgColor: termbox.ColorBlack,
+		fgColor: termbox.ColorWhite,
+		ch:      '↓',
+		collides: true,
 	},
 }
+
+func parseLine(l string) []rune {
+	var lineChars []rune
+
+	chars := strings.Split(l, " ")
+	line := strings.Join(chars, "")
+
+	for _, char := range line {
+		lineChars = append(lineChars, char)
+	}
+
+	return lineChars
+}
+
+func parseTileMapString(tileMap string) [][]rune {
+	var parsed [][]rune
+
+	lines := strings.Split(tileMap, "\n")
+	lines = lines[1 : len(lines)-1]
+
+	for _, line := range lines {
+		l := parseLine(line)
+		parsed = append(parsed, l)
+	}
+
+	return parsed
+}
+

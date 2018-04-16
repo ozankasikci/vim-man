@@ -10,14 +10,14 @@ type Entity struct {
 	Width    int
 	Height   int
 	Rune     rune
-	Cell     *termbox.Cell
-	Cells    []*termbox.Cell
+	Cell     *TileMapCell
+	Cells    []*TileMapCell
 	Stage    *Stage
 }
 
-func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*termbox.Cell) *Entity {
+func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell) *Entity {
 	p := point{x, y}
-	cell := &termbox.Cell{r, fg, bg}
+	cell := &TileMapCell{&termbox.Cell{r, fg, bg}, false}
 	return &Entity{p, w, h, r, cell, cells, nil}
 }
 
@@ -30,10 +30,14 @@ func (e *Entity) SetCells(s *Stage) {
 
 	for i := 0; i < e.Height; i++ {
 		newPositionX := e.Position.x
-		newPositionY += 1
+		if i != 0 {
+			newPositionY += 1
+		}
 
 		for j := 0; j < e.Width; j++ {
-			newPositionX += 1
+			if j != 0 {
+				newPositionX += 1
+			}
 
 			if e.Cells != nil {
 				index := j
@@ -42,9 +46,11 @@ func (e *Entity) SetCells(s *Stage) {
 					index = i
 				}
 
-				s.SetCell(newPositionX, newPositionY, e.Cells[index])
+				tileMapCell := e.Cells[index]
+				s.SetCell(newPositionX, newPositionY, tileMapCell)
 			} else {
-				s.SetCell(newPositionX, newPositionY, e.Cell)
+				tileMapCell := e.Cell
+				s.SetCell(newPositionX, newPositionY, tileMapCell)
 			}
 		}
 	}
@@ -70,3 +76,10 @@ func (e *Entity) checkCollision(x, y int) {
 	e.Position.y = y
 }
 
+func (e *Entity) getPositionX() int {
+	return e.Position.x
+}
+
+func (e *Entity) getPositionY() int {
+	return e.Position.y
+}

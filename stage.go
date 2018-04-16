@@ -107,16 +107,19 @@ func (s *Stage) SetBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			if s.LevelInstance.TileMap[i][j].Cell != nil {
-				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j].Cell
+				// insert tile map cell
+				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j]
 			} else {
-				s.Canvas[i][j] = s.BgCell
+				// insert default bg cell
+				s.Canvas[i][j] = &TileMapCell{s.BgCell, false}
 			}
 		}
 	}
 }
 
-func (s *Stage) SetCell(x, y int, c *termbox.Cell) {
+func (s *Stage) SetCell(x, y int, c *TileMapCell) {
 	if x >= 0 && x < len(s.Canvas) && y >= 0 && y < len(s.Canvas[0]) {
+		// intentionally use x,y in reverse order
 		s.Canvas[y][x] = c
 	}
 }
@@ -125,9 +128,14 @@ func (s *Stage) TermboxSetCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			cell := row[j]
+			// intentioally use j,i in reverse order
 			termbox.SetCell(j, i, cell.Ch,
 				termbox.Attribute(cell.Fg),
 				termbox.Attribute(cell.Bg))
 		}
 	}
+}
+
+func (s *Stage) CheckCollision(x, y int) bool {
+	return s.Canvas.checkCollision(x, y)
 }

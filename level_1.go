@@ -3,20 +3,20 @@ package fantasia
 //import "github.com/nsf/termbox-go"
 
 const Level1TileMapString = `
-1 + 1 1 1 1 1
+1 ↓ 1 1 1 1 1
 1 0 1 0 0 0 1
 1 0 1 0 1 0 1
 1 0 1 0 1 0 1
 1 0 1 0 1 0 1
 1 0 0 0 1 0 1
-1 1 1 1 1 - 1
+1 1 1 1 1 ↓ 1
 `
 
-var Level1TileData = TileMapCellData{
+var Level1TileData = TileMapCellDataMap{
 	'1': CommonTileMapCellData['1'],
 	'0': CommonTileMapCellData['0'],
-	'+': CommonTileMapCellData['+'],
-	'-': CommonTileMapCellData['-'],
+	'⇩': CommonTileMapCellData['⇩'],
+	'↓': CommonTileMapCellData['↓'],
 }
 
 func NewLevel1() *Level {
