@@ -33,8 +33,6 @@ type GameOptions struct {
 	bgCell       *termbox.Cell
 }
 
-var lg = GetLogger()
-
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
 	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
@@ -110,9 +108,8 @@ func Init() {
 
 	_ = gameLoop(events, game)
 
-	logger := GetLogger()
-	if len(logger.logs) > 0 {
-		logger.DumpLogs()
+	if len(lg.logs) > 0 {
+		lg.DumpLogs()
 		time.Sleep(2 * time.Second)
 	}
 

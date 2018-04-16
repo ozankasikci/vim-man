@@ -12,6 +12,8 @@ type Logger struct {
 var instance *Logger
 var once sync.Once
 
+var lg = GetLogger()
+
 func GetLogger() *Logger {
 	once.Do(func() {
 		instance = &Logger{

@@ -62,7 +62,6 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]TileMapCell {
 			if data, ok := l.TileData[char]; !ok {
 				panic("Couldn't retrieve tile data")
 			} else {
-				//lg.LogValue(data.ch)
 				cell := TileMapCell{ &termbox.Cell{ data.ch, data.fgColor, data.bgColor } }
 				rowCells[j] = cell
 			}
