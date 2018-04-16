@@ -11,11 +11,11 @@ type Entity struct {
 	Height   int
 	Rune     rune
 	Cell     *termbox.Cell
-	Cells    []termbox.Cell
+	Cells    []*termbox.Cell
 	Stage    *Stage
 }
 
-func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []termbox.Cell) *Entity {
+func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*termbox.Cell) *Entity {
 	p := point{x, y}
 	cell := &termbox.Cell{r, fg, bg}
 	return &Entity{p, w, h, r, cell, cells, nil}
@@ -44,7 +44,7 @@ func (e *Entity) SetCells(s *Stage) {
 
 				s.SetCell(newPositionX, newPositionY, e.Cells[index])
 			} else {
-				s.SetCell(newPositionX, newPositionY, *e.Cell)
+				s.SetCell(newPositionX, newPositionY, e.Cell)
 			}
 		}
 	}
@@ -52,7 +52,6 @@ func (e *Entity) SetCells(s *Stage) {
 
 func (e *Entity) Update(s *Stage, event termbox.Event, time time.Time) {
 }
-
 
 func (e *Entity) setPosition(x, y int) {
 	e.setPositionX(x)
@@ -66,3 +65,8 @@ func (e *Entity) setPositionX(x int) {
 func (e *Entity) setPositionY(y int) {
 	e.Position.y = y
 }
+
+func (e *Entity) checkCollision(x, y int) {
+	e.Position.y = y
+}
+

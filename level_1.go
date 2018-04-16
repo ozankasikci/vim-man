@@ -1,6 +1,6 @@
 package fantasia
 
-import "github.com/nsf/termbox-go"
+//import "github.com/nsf/termbox-go"
 
 const Level1TileMapString = `
 1 + 1 1 1 1 1
@@ -13,26 +13,10 @@ const Level1TileMapString = `
 `
 
 var Level1TileData = TileMapCellData{
-	'1': {
-		bgColor: termbox.ColorRed,
-		fgColor: termbox.ColorRed,
-		ch: '░',
-	},
-	'0': {
-		bgColor: termbox.ColorBlack,
-		fgColor: termbox.ColorWhite,
-		ch: ' ',
-	},
-	'+': {
-		bgColor: termbox.ColorYellow,
-		fgColor: termbox.ColorYellow,
-		ch: ' ',
-	},
-	'-': {
-		bgColor: termbox.ColorBlue,
-		fgColor: termbox.ColorBlue,
-		ch: ' ',
-	},
+	'1': CommonTileMapCellData['1'],
+	'0': CommonTileMapCellData['0'],
+	'+': CommonTileMapCellData['+'],
+	'-': CommonTileMapCellData['-'],
 }
 
 func NewLevel1() *Level {
@@ -41,8 +25,8 @@ func NewLevel1() *Level {
 	entities = append(entities, user)
 
 	return &Level{
-		Entities: entities,
+		Entities:      entities,
 		TileMapString: Level1TileMapString,
-		TileData: Level1TileData,
+		TileData:      Level1TileData,
 	}
 }

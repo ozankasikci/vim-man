@@ -18,11 +18,11 @@ type Word struct {
 	TimeSinceLastUpdate float64
 }
 
-func ConvertStringToCells(s string) []termbox.Cell {
-	var arr []termbox.Cell
+func ConvertStringToCells(s string) []*termbox.Cell {
+	var arr []*termbox.Cell
 
 	for i := 0; i < len([]rune(s)); i++ {
-		cell := termbox.Cell{[]rune(s)[i], termbox.ColorGreen, termbox.ColorBlack}
+		cell := &termbox.Cell{[]rune(s)[i], termbox.ColorGreen, termbox.ColorBlack}
 		arr = append(arr, cell)
 	}
 

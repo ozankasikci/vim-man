@@ -13,8 +13,8 @@ type User struct {
 }
 
 func NewUser() (u *User) {
-	cells := []termbox.Cell{
-		termbox.Cell{'▓', termbox.ColorGreen, bgColor},
+	cells := []*termbox.Cell{
+		&termbox.Cell{'▓', termbox.ColorGreen, bgColor},
 	}
 
 	e := NewEntity(0, 0, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)

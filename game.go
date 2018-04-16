@@ -24,7 +24,7 @@ type point struct {
 }
 
 type Game struct {
-	Stage  *Stage
+	Stage *Stage
 }
 
 type GameOptions struct {

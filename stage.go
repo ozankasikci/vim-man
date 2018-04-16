@@ -107,15 +107,15 @@ func (s *Stage) SetBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			if s.LevelInstance.TileMap[i][j].Cell != nil {
-				s.Canvas[i][j] = *s.LevelInstance.TileMap[i][j].Cell
+				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j].Cell
 			} else {
-				s.Canvas[i][j] = *s.BgCell
+				s.Canvas[i][j] = s.BgCell
 			}
 		}
 	}
 }
 
-func (s *Stage) SetCell(x, y int, c termbox.Cell) {
+func (s *Stage) SetCell(x, y int, c *termbox.Cell) {
 	if x >= 0 && x < len(s.Canvas) && y >= 0 && y < len(s.Canvas[0]) {
 		s.Canvas[y][x] = c
 	}

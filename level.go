@@ -7,14 +7,14 @@ import (
 )
 
 type Level struct {
-	Game     *Game
-	TileMapString  string
-	TileMap  [][]TileMapCell
-	TileData TileMapCellData
-	Entities []Renderer
-	BgCell   *termbox.Cell
-	Width    int
-	Height   int
+	Game          *Game
+	TileMapString string
+	TileMap       [][]TileMapCell
+	TileData      TileMapCellData
+	Entities      []Renderer
+	BgCell        *termbox.Cell
+	Width         int
+	Height        int
 }
 
 func parseLine(l string) []rune {
@@ -31,10 +31,10 @@ func parseLine(l string) []rune {
 }
 
 func parseTileMapString(tileMap string) [][]rune {
-	var parsed[][]rune
+	var parsed [][]rune
 
 	lines := strings.Split(tileMap, "\n")
-	lines = lines[1:len(lines) - 1]
+	lines = lines[1 : len(lines)-1]
 
 	for _, line := range lines {
 		l := parseLine(line)
@@ -62,7 +62,7 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]TileMapCell {
 			if data, ok := l.TileData[char]; !ok {
 				panic("Couldn't retrieve tile data")
 			} else {
-				cell := TileMapCell{ &termbox.Cell{ data.ch, data.fgColor, data.bgColor } }
+				cell := TileMapCell{&termbox.Cell{data.ch, data.fgColor, data.bgColor}}
 				rowCells[j] = cell
 			}
 		}
@@ -88,4 +88,3 @@ func (l *Level) GetTileMapDimensions() (int, int) {
 	columnLength := len(parsed)
 	return rowLength, columnLength
 }
-
