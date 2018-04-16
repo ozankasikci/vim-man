@@ -45,6 +45,8 @@ func (s *Stage) SetGame(game *Game) {
 	s.Game = game
 }
 
+// this function handles all the rendering
+// sets and renders of the entity and tilemap cells
 func (s *Stage) Render() {
 	s.SetBackgroundCells()
 	for _, e := range s.Entities {

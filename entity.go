@@ -52,3 +52,17 @@ func (e *Entity) SetCells(s *Stage) {
 
 func (e *Entity) Update(s *Stage, event termbox.Event, time time.Time) {
 }
+
+
+func (e *Entity) setPosition(x, y int) {
+	e.setPositionX(x)
+	e.setPositionY(y)
+}
+
+func (e *Entity) setPositionX(x int) {
+	e.Position.x = x
+}
+
+func (e *Entity) setPositionY(y int) {
+	e.Position.y = y
+}

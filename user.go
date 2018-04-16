@@ -28,12 +28,12 @@ func NewUser() (u *User) {
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 	switch event.Ch {
 	case 'k':
-		u.Entity.Position.y = u.Entity.Position.y - 1
+		u.setPositionY(u.Entity.Position.y - 1)
 	case 'j':
-		u.Entity.Position.y = u.Entity.Position.y + 1
+		u.setPositionY(u.Entity.Position.y + 1)
 	case 'l':
-		u.Entity.Position.x = u.Entity.Position.x + 1
+		u.setPositionX(u.Entity.Position.x + 1)
 	case 'h':
-		u.Entity.Position.x = u.Entity.Position.x - 1
+		u.setPositionX(u.Entity.Position.x - 1)
 	}
 }
