@@ -25,6 +25,8 @@ type point struct {
 
 type Game struct {
 	Stage *Stage
+	screenSizeX int
+	screenSizeY int
 }
 
 type GameOptions struct {
@@ -37,7 +39,7 @@ func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
 	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
 	stage.Init()
-	game := &Game{stage}
+	game := &Game{ stage, 0, 0 }
 	stage.Game = game
 	return game
 }
@@ -52,6 +54,7 @@ type Renderer interface {
 func gameLoop(events chan termbox.Event, game *Game) {
 	termbox.Clear(fgColor, bgColor)
 	stage := game.Stage
+	game.setScreenSize(termbox.Size())
 	stage.Render()
 	lastUpdateTime := time.Now()
 
@@ -60,13 +63,15 @@ func gameLoop(events chan termbox.Event, game *Game) {
 		update := time.Now()
 
 		select {
-		case key := <-events:
+		case event := <-events:
 			switch {
-			case key.Key == termbox.KeyCtrlC:
+			case event.Key == termbox.KeyCtrlC:
 				// exit on ctrc + c
 				return
+			case event.Type == termbox.EventResize:
+				game.setScreenSize(termbox.Size())
 			default:
-				stage.update(key, update.Sub(lastUpdateTime))
+				stage.update(event, update.Sub(lastUpdateTime))
 			}
 		default:
 			stage.update(termbox.Event{}, update.Sub(lastUpdateTime))
@@ -114,4 +119,19 @@ func Init() {
 	}
 
 	exit(events)
+}
+
+func (g *Game) setScreenSize(x, y int) {
+	lg.LogValue(x, y)
+	if x > 0 {
+		g.screenSizeX = x
+	}
+
+	if y > 0 {
+		g.screenSizeY = y
+	}
+}
+
+func (g *Game) getScreenSize() (int, int) {
+	return g.screenSizeX, g.screenSizeY
 }
