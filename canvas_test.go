@@ -7,7 +7,8 @@ import (
 )
 
 func TestCanvasCheckCollision(t *testing.T) {
-	c := NewCanvas(10, 10)
+	x, y := 10, 10
+	c := NewCanvas(x, y)
 	c[1][1] = &TileMapCell{&termbox.Cell{}, false}
 	c[0][0] = &TileMapCell{&termbox.Cell{}, true}
 
@@ -20,8 +21,8 @@ func TestCanvasCheckCollision(t *testing.T) {
 		{ 0, -1, true },
 		{ 1, 1, false },
 		{ 0, 0, true },
-		{ 11, 0, true },
-		{ 0, 11, true },
+		{ x, 0, true },
+		{ 0, y, true },
 	}
 
 	for _, value := range tt {

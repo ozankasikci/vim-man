@@ -17,7 +17,7 @@ func (c Canvas) getCellAt(x, y int) *TileMapCell {
 }
 
 func (c Canvas) checkCollision(x, y int) bool {
-	if x < 0 || y < 0 || y > len(c) || x > len(c[0]) {
+	if x < 0 || y < 0 || y >= len(c) || x >= len(c[0]) {
 		return true
 	}
 

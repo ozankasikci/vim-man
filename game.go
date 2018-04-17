@@ -49,7 +49,7 @@ type Renderer interface {
 
 // main game loop
 // handles events, updates and renders stage and entities
-func gameLoop(events chan termbox.Event, game *Game) *Game {
+func gameLoop(events chan termbox.Event, game *Game) {
 	termbox.Clear(fgColor, bgColor)
 	stage := game.Stage
 	stage.Render()
@@ -64,7 +64,7 @@ func gameLoop(events chan termbox.Event, game *Game) *Game {
 			switch {
 			case key.Key == termbox.KeyCtrlC:
 				// exit on ctrc + c
-				return game
+				return
 			default:
 				stage.update(key, update.Sub(lastUpdateTime))
 			}
@@ -106,7 +106,7 @@ func Init() {
 		initialLevel: 1,
 	})
 
-	_ = gameLoop(events, game)
+	gameLoop(events, game)
 
 	if len(lg.logs) > 0 {
 		lg.DumpLogs()
