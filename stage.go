@@ -125,11 +125,24 @@ func (s *Stage) SetCell(x, y int, c *TileMapCell) {
 }
 
 func (s *Stage) TermboxSetCells() {
+	offsetX, offsetY := 0, 0
+	screenWidth, screenHeight := s.Game.getScreenSize()
+	levelWidth, levelHeight := s.LevelInstance.GetSize()
+	lg.LogValue(screenWidth, screenHeight, levelWidth, levelHeight)
+
+	if screenWidth > levelWidth {
+		offsetX = (screenWidth - levelWidth) / 2
+	}
+
+	if screenHeight > levelHeight {
+		offsetY = (screenHeight - levelHeight) / 2
+	}
+
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			cell := row[j]
 			// intentioally use j,i in reverse order
-			termbox.SetCell(j, i, cell.Ch,
+			termbox.SetCell(j + offsetX, i + offsetY, cell.Ch,
 				termbox.Attribute(cell.Fg),
 				termbox.Attribute(cell.Bg))
 		}
