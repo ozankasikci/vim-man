@@ -24,6 +24,10 @@ func (l *Level) SetCells(s *Stage) {
 
 }
 
+func (l *Level) GetSize() (int, int) {
+	return len(l.TileMap[0]), len(l.TileMap)
+}
+
 func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TileMapCell {
 	var cells [][]*TileMapCell
 
