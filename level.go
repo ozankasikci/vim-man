@@ -28,6 +28,22 @@ func (l *Level) GetSize() (int, int) {
 	return len(l.TileMap[0]), len(l.TileMap)
 }
 
+func (l *Level) GetScreenOffset() (int, int) {
+	offsetX, offsetY := 0, 0
+	screenWidth, screenHeight := l.Game.getScreenSize()
+	levelWidth, levelHeight := l.GetSize()
+
+	if screenWidth > levelWidth {
+		offsetX = (screenWidth - levelWidth) / 2
+	}
+
+	if screenHeight > levelHeight {
+		offsetY = (screenHeight - levelHeight) / 2
+	}
+
+	return offsetX, offsetY
+}
+
 func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TileMapCell {
 	var cells [][]*TileMapCell
 
