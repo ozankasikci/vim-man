@@ -37,24 +37,29 @@ type GameOptions struct {
 
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
-	stage := NewStage(opts.initialLevel, opts.fps, bgCell)
-	stage.Init()
-	game := &Game{ stage, 0, 0 }
-	stage.Game = game
+	game := &Game{ nil, 0, 0 }
+	stage := NewStage(game, opts.initialLevel, opts.fps, bgCell)
+	game.Stage = stage
 	return game
 }
 
 type Renderer interface {
 	Update(*Stage, termbox.Event, time.Duration)
 	SetCells(*Stage)
+	GetCells() []*TileMapCell
+	GetPosition() (int, int)
+	GetPositionX() (int)
+	GetPositionY() (int)
+	GetScreenOffset() (int, int)
 }
 
 // main game loop
 // handles events, updates and renders stage and entities
 func gameLoop(events chan termbox.Event, game *Game) {
 	termbox.Clear(fgColor, bgColor)
-	stage := game.Stage
 	game.setScreenSize(termbox.Size())
+	stage := game.Stage
+	stage.Init()
 	stage.Render()
 	lastUpdateTime := time.Now()
 
@@ -122,7 +127,6 @@ func Init() {
 }
 
 func (g *Game) setScreenSize(x, y int) {
-	lg.LogValue(x, y)
 	if x > 0 {
 		g.screenSizeX = x
 	}
@@ -133,5 +137,13 @@ func (g *Game) setScreenSize(x, y int) {
 }
 
 func (g *Game) getScreenSize() (int, int) {
-	return g.screenSizeX, g.screenSizeY
+	return g.getScreenSizeX(), g.getScreenSizeY()
+}
+
+func (g *Game) getScreenSizeX() int {
+	return g.screenSizeX
+}
+
+func (g *Game) getScreenSizeY() int {
+	return g.screenSizeY
 }
