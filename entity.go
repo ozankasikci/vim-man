@@ -6,23 +6,27 @@ import (
 )
 
 type Entity struct {
+	Stage    *Stage
 	Position point
 	Width    int
 	Height   int
 	Rune     rune
 	Cell     *TileMapCell
 	Cells    []*TileMapCell
-	Stage    *Stage
 }
 
-func NewEntity(x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell) *Entity {
+func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell) *Entity {
 	p := point{x, y}
 	cell := &TileMapCell{&termbox.Cell{r, fg, bg}, false}
-	return &Entity{p, w, h, r, cell, cells, nil}
+	return &Entity{s, p, w, h, r, cell, cells}
 }
 
 func (e *Entity) SetStage(s *Stage) {
 	e.Stage = s
+}
+
+func (e *Entity) GetStage() *Stage {
+	return e.Stage
 }
 
 func (e *Entity) SetCells(s *Stage) {
@@ -42,18 +46,20 @@ func (e *Entity) SetCells(s *Stage) {
 			if e.Cells != nil {
 				index := j
 
-				if e.Width > 0 {
-					index = i
-				}
-
 				tileMapCell := e.Cells[index]
-				s.SetCell(newPositionX, newPositionY, tileMapCell)
+				if len(e.Cells) > index {
+					s.SetCanvasCell(newPositionX, newPositionY, tileMapCell)
+				}
 			} else {
 				tileMapCell := e.Cell
-				s.SetCell(newPositionX, newPositionY, tileMapCell)
+				s.SetCanvasCell(newPositionX, newPositionY, tileMapCell)
 			}
 		}
 	}
+}
+
+func (e *Entity) GetCells() []*TileMapCell {
+	return e.Cells
 }
 
 func (e *Entity) Update(s *Stage, event termbox.Event, time time.Time) {
@@ -76,10 +82,19 @@ func (e *Entity) checkCollision(x, y int) {
 	e.Position.y = y
 }
 
-func (e *Entity) getPositionX() int {
+func (e *Entity) GetPositionX() int {
 	return e.Position.x
 }
 
-func (e *Entity) getPositionY() int {
+func (e *Entity) GetPositionY() int {
 	return e.Position.y
+}
+
+func (e *Entity) GetPosition() (int, int) {
+	return e.Position.x, e.Position.y
+}
+
+func (e *Entity) GetScreenOffset() (int, int) {
+	screenWidth, screenHeight := e.Stage.Game.getScreenSize()
+	return (screenWidth - e.Width) / 2, (screenHeight - e.Height) / 2
 }
