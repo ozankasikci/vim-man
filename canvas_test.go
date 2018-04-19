@@ -1,9 +1,9 @@
 package fantasia
 
 import (
+	"github.com/nsf/termbox-go"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"github.com/nsf/termbox-go"
 )
 
 func TestCanvasCheckCollision(t *testing.T) {
@@ -12,17 +12,17 @@ func TestCanvasCheckCollision(t *testing.T) {
 	c[1][1] = &TileMapCell{&termbox.Cell{}, false}
 	c[0][0] = &TileMapCell{&termbox.Cell{}, true}
 
-	tt := []struct{
-		x int
-		y int
+	tt := []struct {
+		x      int
+		y      int
 		expect bool
 	}{
-		{ -1, 0, true },
-		{ 0, -1, true },
-		{ 1, 1, false },
-		{ 0, 0, true },
-		{ x, 0, true },
-		{ 0, y, true },
+		{-1, 0, true},
+		{0, -1, true},
+		{1, 1, false},
+		{0, 0, true},
+		{x, 0, true},
+		{0, y, true},
 	}
 
 	for _, value := range tt {
@@ -31,5 +31,5 @@ func TestCanvasCheckCollision(t *testing.T) {
 	}
 
 	c[2][2] = nil
-	assert.True(t, c.checkCollision(2,2))
+	assert.True(t, c.checkCollision(2, 2))
 }

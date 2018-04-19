@@ -24,7 +24,7 @@ type point struct {
 }
 
 type Game struct {
-	Stage *Stage
+	Stage       *Stage
 	screenSizeX int
 	screenSizeY int
 }
@@ -37,7 +37,7 @@ type GameOptions struct {
 
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
-	game := &Game{ nil, 0, 0 }
+	game := &Game{nil, 0, 0}
 	stage := NewStage(game, opts.initialLevel, opts.fps, bgCell)
 	game.Stage = stage
 	return game
@@ -48,8 +48,8 @@ type Renderer interface {
 	SetCells(*Stage)
 	GetCells() []*TileMapCell
 	GetPosition() (int, int)
-	GetPositionX() (int)
-	GetPositionY() (int)
+	GetPositionX() int
+	GetPositionY() int
 	GetScreenOffset() (int, int)
 }
 

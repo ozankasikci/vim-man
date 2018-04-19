@@ -26,8 +26,8 @@ type TileMapCellDataMap map[rune]TileMapCellData
 var CommonTileMapCellData = TileMapCellDataMap{
 	'1': {
 		bgColor:  termbox.ColorWhite,
-		fgColor:  termbox.ColorRed,
-		ch:       '░',
+		fgColor:  termbox.ColorWhite,
+		ch:       ' ',
 		collides: true,
 	},
 	'0': {

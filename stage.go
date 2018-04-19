@@ -7,35 +7,35 @@ import (
 
 // holds the current level meta data, canvas and entities
 type Stage struct {
-	Game          *Game
-	Level         int
-	LevelInstance *Level
-	Fps           float64
+	Game           *Game
+	Level          int
+	LevelInstance  *Level
+	Fps            float64
 	CanvasEntities []Renderer
 	ScreenEntities []Renderer
-	BgCell        *termbox.Cell
-	Canvas        Canvas
-	Width         int
-	Height        int
-	pixelMode     bool
-	offsetx       int
-	offsety       int
+	BgCell         *termbox.Cell
+	Canvas         Canvas
+	Width          int
+	Height         int
+	pixelMode      bool
+	offsetx        int
+	offsety        int
 }
 
 func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
 	return &Stage{
-		Game:      g,
-		Level:     level,
-		Fps:       fps,
-		CanvasEntities:  nil,
-		ScreenEntities:  nil,
-		BgCell:    bgCell,
-		Canvas:    nil,
-		Width:     0,
-		Height:    0,
-		pixelMode: false,
-		offsetx:   0,
-		offsety:   0,
+		Game:           g,
+		Level:          level,
+		Fps:            fps,
+		CanvasEntities: nil,
+		ScreenEntities: nil,
+		BgCell:         bgCell,
+		Canvas:         nil,
+		Width:          0,
+		Height:         0,
+		pixelMode:      false,
+		offsetx:        0,
+		offsety:        0,
 	}
 }
 
@@ -120,7 +120,7 @@ func (s *Stage) SetCanvasBackgroundCells() {
 				// insert tile map cell
 				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j]
 			} else {
-				 //insert default bg cell
+				//insert default bg cell
 				s.Canvas[i][j] = &TileMapCell{s.BgCell, false}
 			}
 		}
@@ -142,19 +142,19 @@ func (s *Stage) TermboxSetCell(x, y int, cell *TileMapCell) {
 		termbox.Attribute(cell.Bg))
 }
 
-func (s *Stage) TermboxSetCanvasCells () {
+func (s *Stage) TermboxSetCanvasCells() {
 	offsetX, offsetY := s.LevelInstance.GetScreenOffset()
 
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			cell := row[j]
 			// intentionally use j,i in reverse order
-			s.TermboxSetCell(j + offsetX, i + offsetY, cell)
+			s.TermboxSetCell(j+offsetX, i+offsetY, cell)
 		}
 	}
 }
 
-func (s *Stage) TermboxSetScreenCells () {
+func (s *Stage) TermboxSetScreenCells() {
 	for _, e := range s.ScreenEntities {
 		for j, _ := range e.GetCells() {
 			cell := e.GetCells()[j]

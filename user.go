@@ -9,18 +9,16 @@ type Class int
 
 type User struct {
 	*Entity
-	Name string
 }
 
-func NewUser() (u *User) {
+func NewUser(s *Stage, x, y int) (u *User) {
 	cells := []*TileMapCell{
 		{&termbox.Cell{'▓', termbox.ColorGreen, bgColor}, false},
 	}
 
-	e := NewEntity(1, 0, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
+	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
 	u = &User{
 		Entity: e,
-		Name:   "Test",
 	}
 	return
 }
@@ -28,23 +26,23 @@ func NewUser() (u *User) {
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 	switch event.Ch {
 	case 'k':
-		nextY := u.getPositionY() - 1
-		if !s.CheckCollision(u.getPositionX(), nextY) {
+		nextY := u.GetPositionY() - 1
+		if !s.CheckCollision(u.GetPositionX(), nextY) {
 			u.setPositionY(nextY)
 		}
 	case 'j':
-		nextY := u.getPositionY() + 1
-		if !s.CheckCollision(u.getPositionX(), nextY) {
+		nextY := u.GetPositionY() + 1
+		if !s.CheckCollision(u.GetPositionX(), nextY) {
 			u.setPositionY(nextY)
 		}
 	case 'l':
-		nextX := u.getPositionX() + 1
-		if !s.CheckCollision(nextX, u.getPositionY()) {
+		nextX := u.GetPositionX() + 1
+		if !s.CheckCollision(nextX, u.GetPositionY()) {
 			u.setPositionX(nextX)
 		}
 	case 'h':
-		nextX := u.getPositionX() - 1
-		if !s.CheckCollision(nextX, u.getPositionY()) {
+		nextX := u.GetPositionX() - 1
+		if !s.CheckCollision(nextX, u.GetPositionY()) {
 			u.setPositionX(nextX)
 		}
 	}
