@@ -51,6 +51,10 @@ func NewLevel1(g *Game) *Level {
 	title := NewWord(g.Stage, 0, 5, "Level 1")
 	g.Stage.AddScreenEntity(title)
 
+	//create turrets
+	turret := NewTurret(g.Stage, 3, 0, horizontal)
+	entities = append(entities, turret)
+
 	return &Level{
 		Game:          g,
 		Entities:      entities,
