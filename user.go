@@ -16,7 +16,7 @@ func NewUser(s *Stage, x, y int) (u *User) {
 		{&termbox.Cell{'▓', termbox.ColorGreen, bgColor}, false},
 	}
 
-	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
+	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells, false)
 	u = &User{
 		Entity: e,
 	}

@@ -131,8 +131,6 @@ func (s *Stage) SetCanvasCell(x, y int, c *TileMapCell) {
 	if x >= 0 && x < len(s.Canvas[0]) && y >= 0 && y < len(s.Canvas) {
 		// intentionally use x,y in reverse order
 		s.Canvas[y][x] = c
-	} else {
-		lg.LogValue(x >= 0, x < len(s.Canvas))
 	}
 }
 

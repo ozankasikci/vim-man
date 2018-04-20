@@ -5,16 +5,11 @@ import (
 	"time"
 )
 
-const (
-	horizontal = iota
-	vertical
-)
-
 type Word struct {
 	*Entity
 	Content   string
 	Speed     float64
-	Direction int
+	Direction Direction
 }
 
 func ConvertStringToCells(s string) []*TileMapCell {
@@ -30,7 +25,7 @@ func ConvertStringToCells(s string) []*TileMapCell {
 
 func NewWord(s *Stage, x, y int, content string) *Word {
 	cells := ConvertStringToCells(content)
-	e := NewEntity(s, x, y, len(content), 1, ' ', termbox.ColorMagenta, termbox.ColorBlack, cells)
+	e := NewEntity(s, x, y, len(content), 1, ' ', termbox.ColorMagenta, termbox.ColorBlack, cells, false)
 	return &Word{
 		Entity:    e,
 		Content:   content,
