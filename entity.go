@@ -5,6 +5,13 @@ import (
 	"time"
 )
 
+type Direction int
+
+const (
+	horizontal Direction = iota
+	vertical
+)
+
 type Entity struct {
 	Stage    *Stage
 	Position point
@@ -15,9 +22,9 @@ type Entity struct {
 	Cells    []*TileMapCell
 }
 
-func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell) *Entity {
+func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell, collides bool) *Entity {
 	p := point{x, y}
-	cell := &TileMapCell{&termbox.Cell{r, fg, bg}, false}
+	cell := &TileMapCell{&termbox.Cell{r, fg, bg}, collides}
 	return &Entity{s, p, w, h, r, cell, cells}
 }
 
@@ -62,7 +69,7 @@ func (e *Entity) GetCells() []*TileMapCell {
 	return e.Cells
 }
 
-func (e *Entity) Update(s *Stage, event termbox.Event, time time.Time) {
+func (e *Entity) Update(s *Stage, event termbox.Event, time time.Duration) {
 }
 
 func (e *Entity) setPosition(x, y int) {
