@@ -49,17 +49,28 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TileMapCell {
 
 	for _, line := range parsedRunes {
 		rowCells := make([]*TileMapCell, len(line))
+		var data TileMapCellData
 
 		for j, char := range line {
-			if data, ok := l.TileData[char]; !ok {
-				panic("Couldn't retrieve tile data")
-			} else {
-				cell := &TileMapCell{
-					&termbox.Cell{data.ch, data.fgColor, data.bgColor},
-					data.collides,
+			if _, ok := l.TileData[char]; !ok {
+				if _, ok := CommonTileMapCellData[char]; !ok {
+					data = NewTileMapCell(char)
+				} else {
+					data = CommonTileMapCellData[char]
 				}
-				rowCells[j] = cell
+			} else {
+				data = l.TileData[char]
 			}
+
+			if data == (TileMapCellData{}) {
+				data = CommonTileMapCellData[char]
+			}
+
+			cell := &TileMapCell{
+				&termbox.Cell{data.ch, data.fgColor, data.bgColor},
+				data.collides,
+			}
+			rowCells[j] = cell
 		}
 
 		cells = append(cells, rowCells)

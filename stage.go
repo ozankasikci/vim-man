@@ -43,8 +43,8 @@ func (s *Stage) AddCanvasEntity(e Renderer) {
 	s.CanvasEntities = append(s.CanvasEntities, e)
 }
 
-func (s *Stage) AddScreenEntity(e Renderer) {
-	s.ScreenEntities = append(s.ScreenEntities, e)
+func (s *Stage) AddScreenEntity(e... Renderer) {
+	s.ScreenEntities = append(s.ScreenEntities, e...)
 }
 
 func (s *Stage) SetGame(game *Game) {
