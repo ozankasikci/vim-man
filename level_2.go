@@ -1,27 +1,62 @@
 package fantasia
 
+import "github.com/nsf/termbox-go"
+
 //import "github.com/nsf/termbox-go"
 
-//type Level2 struct {
-//	*Level
-//	Stage *Stage
-//}
+const Level2TileMapString = `
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+Level 2                 |        |        |     |     |     |
++  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
+|           |     |     |     |  |  |  |     |  |  |  |     |
++--+--+  +--+  +  +--+  +--+  +  +--+  +  +--+  +  +  +  +  +
+|        |     |     |     |  |     |  |     |     |     |  |
++  +--+--+  +  +--+--+--+  +--+--+  +  +--+--+--+--+--+--+  +
+|  |     |  |  |           |        |           |     |     |
++  +  +  +  +--+  +--+--+--+  +--+--+--+--+--+  +  +  +  +--+
+|     |  |  |     |     |     |     |        |     |  |     |
++--+--+  +  +  +--+  +  +  +  +--+  +  +--+  +--+--+  +--+  +
+|     |  |     |     |     |        |  |  |  |     |  |     |
++  +  +  +--+  +  +--+  +--+  +--+--+  +  +  +  +--+  +  +--+
+|  |  |     |  |  |     |  |  |        |  |        |  |     |
++  +  +--+  +  +  +--+--+  +  +  +--+--+  +--+--+  +  +--+--+
+|  |        |  |     |     |           |  |     |  |        |
++  +--+--+--+--+--+  +  +  +--+--+--+  +  +  +  +  +--+--+  +
+|  |                 |  |  |     |     |     |  |           |
++  +--+  +--+  +--+--+  +  +  +  +  +--+--+  +  +--+--+--+--+
+|        |     |        |     |              |              ↓ 
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+`
 
-//func NewLevel2() *Level {
-//	user := NewUser()
-//	cells := []*TileMapCell{
-//		{&termbox.Cell{'▓', termbox.ColorGreen, bgColor}, false},
-//	}
-//
-//	e := NewEntity(20, 20, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells)
-//	u := &User{
-//		Entity: e,
-//		Name:   "Test",
-//	}
-//	var entities []Renderer
-//	entities = append(entities, user, u)
-//
-//	return &Level{
-//		Entities: entities,
-//	}
-//}
+func NewLevel2(g *Game) *Level {
+	// create user
+	user := NewUser(g.Stage, 1, 1)
+	var entities []Renderer
+	entities = append(entities, user)
+
+	tileData := TileMapCellDataMap{
+		'↓': TileMapCellData{
+			ch:                 '↓',
+			fgColor:            termbox.ColorGreen,
+			bgColor:            termbox.ColorBlack,
+			collidesPhysically: false,
+			collisionCallback: func() {
+				levelInstance := NewLevel3(g)
+				g.Stage.SetLevel(levelInstance)
+			},
+		},
+	}
+
+	return &Level{
+		Game:          g,
+		Entities:      entities,
+		TileMapString: Level1TileMapString,
+		TileData:      tileData,
+		Init: func() {
+			// load info
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Vim Modes")
+			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, v: Visual Mode")
+			g.Stage.AddScreenEntity(title, explanation)
+		},
+	}
+}

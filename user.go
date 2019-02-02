@@ -12,8 +12,8 @@ type User struct {
 }
 
 func NewUser(s *Stage, x, y int) (u *User) {
-	cells := []*TileMapCell{
-		{&termbox.Cell{'▒', termbox.ColorGreen, bgColor}, false},
+	cells := []*TermBoxCell{
+		{&termbox.Cell{'▒', termbox.ColorGreen, bgColor}, false, TileMapCellData{}},
 	}
 
 	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells, false)

@@ -12,11 +12,19 @@ type Word struct {
 	Direction Direction
 }
 
-func ConvertStringToCells(s string) []*TileMapCell {
-	var arr []*TileMapCell
+func ConvertStringToCells(s string) []*TermBoxCell {
+	var arr []*TermBoxCell
 
 	for i := 0; i < len([]rune(s)); i++ {
-		cell := &TileMapCell{&termbox.Cell{[]rune(s)[i], termbox.ColorGreen, termbox.ColorBlack}, false}
+		cell := &TermBoxCell{
+			Cell: &termbox.Cell{
+				[]rune(s)[i],
+				termbox.ColorGreen,
+				termbox.ColorBlack,
+			},
+			collidesPhysically: false,
+			cellData: TileMapCellData{}}
+
 		arr = append(arr, cell)
 	}
 

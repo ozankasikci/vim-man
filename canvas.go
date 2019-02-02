@@ -1,22 +1,25 @@
 package fantasia
 
+import "os"
+
 //import tb "github.com/nsf/termbox-go"
 
-type Canvas [][]*TileMapCell
+type Canvas [][]*TermBoxCell
 
 func NewCanvas(width, height int) Canvas {
 	canvas := make(Canvas, height)
 	for i := range canvas {
-		canvas[i] = make([]*TileMapCell, width)
+		canvas[i] = make([]*TermBoxCell, width)
 	}
 	return canvas
 }
 
-func (c Canvas) getCellAt(x, y int) *TileMapCell {
+func (c Canvas) getCellAt(x, y int) *TermBoxCell {
 	return c[y][x]
 }
 
 func (c Canvas) checkCollision(x, y int) bool {
+	// check if out of boundaries
 	if x < 0 || y < 0 || y >= len(c) || x >= len(c[0]) {
 		return true
 	}
@@ -25,5 +28,11 @@ func (c Canvas) checkCollision(x, y int) bool {
 		return true
 	}
 
-	return c[y][x].collides
+	c[y][x].cellData.collisionCallback()
+
+	if os.Getenv("DEBUG") == "1" {
+		return false
+	}
+
+	return c[y][x].collidesPhysically
 }

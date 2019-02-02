@@ -18,7 +18,7 @@ const (
 	KeyL    = 108
 )
 
-type point struct {
+type Point struct {
 	x int
 	y int
 }
@@ -45,8 +45,9 @@ func NewGame(opts GameOptions) *Game {
 
 type Renderer interface {
 	Update(*Stage, termbox.Event, time.Duration)
+	Destroy()
 	SetCells(*Stage)
-	GetCells() []*TileMapCell
+	GetCells() []*TermBoxCell
 	GetPosition() (int, int)
 	GetPositionX() int
 	GetPositionY() int
@@ -84,7 +85,7 @@ func gameLoop(events chan termbox.Event, game *Game) {
 		lastUpdateTime = time.Now()
 
 		stage.Render()
-		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)
+		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds() * 1000.0) + 1000.0 / stage.Fps) * time.Millisecond)
 	}
 }
 
@@ -116,8 +117,10 @@ func Init() {
 		initialLevel: 1,
 	})
 
+	// main game loop, this is blocking
 	gameLoop(events, game)
 
+	// dump logs after the gameLoop stops
 	if len(lg.logs) > 0 {
 		lg.DumpLogs()
 		time.Sleep(2 * time.Second)

@@ -5,75 +5,81 @@ import (
 	"strings"
 )
 
-type TileMapCell struct {
+type TermBoxCell struct {
 	*termbox.Cell
-	collides bool
+	collidesPhysically bool
+	cellData           TileMapCellData
 }
 
-func (t *TileMapCell) GetCellData() TileMapCellData {
-	return CommonTileMapCellData[t.Ch]
-}
-
-func NewTileMapCell(ch rune) TileMapCellData{
+func NewTileMapCell(ch rune, fn func()) TileMapCellData {
 	return TileMapCellData{
-		bgColor: termbox.ColorBlack,
-		fgColor: termbox.ColorWhite,
-		ch: ch,
-		collides: false,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 ch,
+		collidesPhysically: false,
+		collisionCallback:  fn,
 	}
 }
 
 type TileMapCellData struct {
-	ch       rune
-	bgColor  termbox.Attribute
-	fgColor  termbox.Attribute
-	collides bool
+	ch                 rune
+	bgColor            termbox.Attribute
+	fgColor            termbox.Attribute
+	collidesPhysically bool
+	collisionCallback  func()
 }
 
 type TileMapCellDataMap map[rune]TileMapCellData
 
 var CommonTileMapCellData = TileMapCellDataMap{
 	'1': {
-		bgColor:  termbox.ColorWhite,
-		fgColor:  termbox.ColorWhite,
-		ch:       ' ',
-		collides: true,
+		bgColor:            termbox.ColorWhite,
+		fgColor:            termbox.ColorWhite,
+		ch:                 ' ',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
 	},
 	'0': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       ' ',
-		collides: false,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 ' ',
+		collidesPhysically: false,
+		collisionCallback:  func() {},
 	},
 	'↓': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       '↓',
-		collides: false,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '↓',
+		collidesPhysically: false,
+		collisionCallback:  func() {},
 	},
 	'+': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       '+',
-		collides: true,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '+',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
 	},
 	'-': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       '-',
-		collides: true,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '-',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
 	},
 	'|': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       '|',
-		collides: true,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '|',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
 	},
 	' ': {
-		bgColor:  termbox.ColorBlack,
-		fgColor:  termbox.ColorWhite,
-		ch:       ' ',
-		collides: false,
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 ' ',
+		collidesPhysically: false,
+		collisionCallback:  func() {},
 	},
 }
 

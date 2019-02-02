@@ -11,8 +11,8 @@ type Stage struct {
 	Level          int
 	LevelInstance  *Level
 	Fps            float64
-	CanvasEntities []Renderer
-	ScreenEntities []Renderer
+	CanvasEntities []Renderer // entities to be rendered in canvas
+	ScreenEntities []Renderer // entities to be rendered outside of the canvas
 	BgCell         *termbox.Cell
 	Canvas         Canvas
 	Width          int
@@ -39,12 +39,18 @@ func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
 	}
 }
 
+
 func (s *Stage) AddCanvasEntity(e Renderer) {
 	s.CanvasEntities = append(s.CanvasEntities, e)
 }
 
-func (s *Stage) AddScreenEntity(e... Renderer) {
+func (s *Stage) AddScreenEntity(e ...Renderer) {
 	s.ScreenEntities = append(s.ScreenEntities, e...)
+}
+
+func (s *Stage) ClearCanvasEntities() {
+	s.CanvasEntities = nil
+	s.ScreenEntities = nil
 }
 
 func (s *Stage) SetGame(game *Game) {
@@ -55,6 +61,7 @@ func (s *Stage) SetGame(game *Game) {
 // sets and renders of the entity and tilemap cells
 func (s *Stage) Render() {
 	s.SetCanvasBackgroundCells()
+
 	for i, _ := range s.CanvasEntities {
 		e := s.CanvasEntities[i]
 		e.SetCells(s)
@@ -79,14 +86,24 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-	s.Canvas = NewCanvas(10, 10)
-	s.LevelInstance = NewLevel1(s.Game)
+    s.SetLevel(NewLevel1(s.Game))
+}
+
+func (s *Stage) SetLevel(levelInstance *Level) {
+	s.Reset()
+	s.LevelInstance = levelInstance
+	s.LevelInstance.Init()
 	s.LevelInstance.LoadTileMap()
 	s.resize(s.LevelInstance.GetTileMapDimensions())
 
 	for _, e := range s.LevelInstance.Entities {
 		s.AddCanvasEntity(e)
 	}
+}
+
+func (s *Stage) Reset() {
+	s.ClearCanvasEntities()
+	s.Canvas = NewCanvas(10, 10)
 }
 
 func (s *Stage) resize(w, h int) {
@@ -121,20 +138,20 @@ func (s *Stage) SetCanvasBackgroundCells() {
 				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j]
 			} else {
 				//insert default bg cell
-				s.Canvas[i][j] = &TileMapCell{s.BgCell, false}
+				s.Canvas[i][j] = &TermBoxCell{s.BgCell, false, TileMapCellData{}}
 			}
 		}
 	}
 }
 
-func (s *Stage) SetCanvasCell(x, y int, c *TileMapCell) {
+func (s *Stage) SetCanvasCell(x, y int, c *TermBoxCell) {
 	if x >= 0 && x < len(s.Canvas[0]) && y >= 0 && y < len(s.Canvas) {
 		// intentionally use x,y in reverse order
 		s.Canvas[y][x] = c
 	}
 }
 
-func (s *Stage) TermboxSetCell(x, y int, cell *TileMapCell) {
+func (s *Stage) TermboxSetCell(x, y int, cell *TermBoxCell) {
 	termbox.SetCell(x, y, cell.Ch,
 		termbox.Attribute(cell.Fg),
 		termbox.Attribute(cell.Bg))

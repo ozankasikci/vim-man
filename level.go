@@ -2,18 +2,27 @@ package fantasia
 
 import (
 	"github.com/nsf/termbox-go"
+	"reflect"
 	"time"
+)
+
+const (
+	levelTitleCoordX       int = 0
+	levelTitleCoordY       int = 3
+	levelExplanationCoordX int = 0
+	levelExplanationCoordY int = 5
 )
 
 type Level struct {
 	Game          *Game
 	TileMapString string
-	TileMap       [][]*TileMapCell
+	TileMap       [][]*TermBoxCell
 	TileData      TileMapCellDataMap
 	Entities      []Renderer
 	BgCell        *termbox.Cell
 	Width         int
 	Height        int
+	Init          func()
 }
 
 func (l *Level) Update(s *Stage, t time.Duration) {
@@ -44,17 +53,17 @@ func (l *Level) GetScreenOffset() (int, int) {
 	return offsetX, offsetY
 }
 
-func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TileMapCell {
-	var cells [][]*TileMapCell
+func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TermBoxCell {
+	var cells [][]*TermBoxCell
 
 	for _, line := range parsedRunes {
-		rowCells := make([]*TileMapCell, len(line))
+		rowCells := make([]*TermBoxCell, len(line))
 		var data TileMapCellData
 
 		for j, char := range line {
 			if _, ok := l.TileData[char]; !ok {
 				if _, ok := CommonTileMapCellData[char]; !ok {
-					data = NewTileMapCell(char)
+					data = NewTileMapCell(char, func() {})
 				} else {
 					data = CommonTileMapCellData[char]
 				}
@@ -62,13 +71,14 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TileMapCell {
 				data = l.TileData[char]
 			}
 
-			if data == (TileMapCellData{}) {
+			if reflect.DeepEqual(data, TileMapCellData{}) {
 				data = CommonTileMapCellData[char]
 			}
 
-			cell := &TileMapCell{
+			cell := &TermBoxCell{
 				&termbox.Cell{data.ch, data.fgColor, data.bgColor},
-				data.collides,
+				data.collidesPhysically,
+				data,
 			}
 			rowCells[j] = cell
 		}

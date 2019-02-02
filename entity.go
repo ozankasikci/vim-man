@@ -14,17 +14,17 @@ const (
 
 type Entity struct {
 	Stage    *Stage
-	Position point
+	Position Point
 	Width    int
 	Height   int
 	Rune     rune
-	Cell     *TileMapCell
-	Cells    []*TileMapCell
+	Cell     *TermBoxCell
+	Cells    []*TermBoxCell
 }
 
-func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TileMapCell, collides bool) *Entity {
-	p := point{x, y}
-	cell := &TileMapCell{&termbox.Cell{r, fg, bg}, collides}
+func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TermBoxCell, collidesPhysically bool) *Entity {
+	p := Point{x, y}
+	cell := &TermBoxCell{&termbox.Cell{r, fg, bg}, collidesPhysically, TileMapCellData{}}
 	return &Entity{s, p, w, h, r, cell, cells}
 }
 
@@ -65,7 +65,7 @@ func (e *Entity) SetCells(s *Stage) {
 	}
 }
 
-func (e *Entity) GetCells() []*TileMapCell {
+func (e *Entity) GetCells() []*TermBoxCell {
 	return e.Cells
 }
 
@@ -104,4 +104,7 @@ func (e *Entity) GetPosition() (int, int) {
 func (e *Entity) GetScreenOffset() (int, int) {
 	screenWidth, screenHeight := e.Stage.Game.getScreenSize()
 	return (screenWidth - e.Width) / 2, (screenHeight - e.Height) / 2
+}
+
+func (e *Entity) Destroy() {
 }

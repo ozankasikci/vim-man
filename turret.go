@@ -7,22 +7,22 @@ import (
 
 type Turret struct {
 	*Entity
-	Direction Direction
-	TurretBallSpeed float64
+	Direction           Direction
+	TurretBallSpeed     float64
 	TimeSinceLastUpdate float64
 }
 
 type TurretBall struct {
 	*Entity
-	Speed     float64
+	Speed               float64
 	TimeSinceLastUpdate float64
 }
 
 func NewTurret(s *Stage, x, y int, direction Direction, turretBallSpeed float64) *Turret {
 	e := NewEntity(s, x, y, 1, 1, 'O', termbox.ColorMagenta, termbox.ColorBlack, nil, true)
 	return &Turret{
-		Entity:    e,
-		Direction: direction,
+		Entity:          e,
+		Direction:       direction,
 		TurretBallSpeed: turretBallSpeed,
 	}
 }
@@ -31,7 +31,7 @@ func NewTurretBall(s *Stage, t *Turret, x, y int, direction Direction, speed flo
 	e := NewEntity(s, x, y, 1, 1, '~', termbox.ColorMagenta, termbox.ColorBlack, nil, true)
 
 	if speed == 0 {
-        GetLogger().Log("noo")
+		GetLogger().Log("noo")
 		speed = 0.10
 	}
 	GetLogger().LogValue(speed)
@@ -60,12 +60,11 @@ func (t *TurretBall) Update(s *Stage, event termbox.Event, delta time.Duration) 
 		return
 	}
 
-
 	t.setPositionY(t.GetPositionY() + int(t.Speed))
 	t.TimeSinceLastUpdate = 0
 }
 
 func (t *Turret) OpenFire(s *Stage, speed float64) {
-	ball := NewTurretBall(s, t, t.GetPositionX(), t.GetPositionY() + 1, vertical, speed)
+	ball := NewTurretBall(s, t, t.GetPositionX(), t.GetPositionY()+1, vertical, speed)
 	s.AddCanvasEntity(ball)
 }
