@@ -85,7 +85,7 @@ func gameLoop(events chan termbox.Event, game *Game) {
 		lastUpdateTime = time.Now()
 
 		stage.Render()
-		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds() * 1000.0) + 1000.0 / stage.Fps) * time.Millisecond)
+		time.Sleep(time.Duration((update.Sub(time.Now()).Seconds()*1000.0)+1000.0/stage.Fps) * time.Millisecond)
 	}
 }
 

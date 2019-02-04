@@ -23,7 +23,7 @@ func ConvertStringToCells(s string) []*TermBoxCell {
 				termbox.ColorBlack,
 			},
 			collidesPhysically: false,
-			cellData: TileMapCellData{}}
+			cellData:           TileMapCellData{}}
 
 		arr = append(arr, cell)
 	}

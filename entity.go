@@ -36,7 +36,7 @@ func (e *Entity) GetStage() *Stage {
 	return e.Stage
 }
 
-func (e *Entity) OverWriteCanvasCell(x, y int, termboxCell *TermBoxCell)  {
+func (e *Entity) OverWriteCanvasCell(x, y int, termboxCell *TermBoxCell) {
 	stage := e.GetStage()
 	if x >= 0 && x < len(stage.Canvas[0]) && y >= 0 && y < len(stage.Canvas) {
 		// intentionally use x,y in reverse order

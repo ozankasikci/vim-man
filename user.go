@@ -52,7 +52,7 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 	}
 }
 
-func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event)  {
+func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 	GetLogger().WriteFile("entered handleInsertModeEvents")
 	switch event.Key {
 	case termbox.KeyEsc:

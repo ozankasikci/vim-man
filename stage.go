@@ -11,7 +11,7 @@ type Stage struct {
 	Level          int
 	LevelInstance  *Level
 	Fps            float64
-	CanvasEntities []Renderer // entities to be rendered in canvas, these entities has an update method
+	CanvasEntities []Renderer // entities to be rendered in canvas
 	ScreenEntities []Renderer // entities to be rendered outside of the canvas
 	BgCell         *termbox.Cell
 	Canvas         Canvas
@@ -38,7 +38,6 @@ func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
 		offsety:        0,
 	}
 }
-
 
 func (s *Stage) AddCanvasEntity(e Renderer) {
 	s.CanvasEntities = append(s.CanvasEntities, e)
@@ -90,7 +89,7 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-    s.SetLevel(NewLevel1(s.Game))
+	s.SetLevel(NewLevel1(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {

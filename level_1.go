@@ -42,7 +42,7 @@ func NewLevel1(g *Game) *Level {
 			collidesPhysically: false,
 			collisionCallback: func() {
 				levelInstance := NewLevel2(g)
-                g.Stage.SetLevel(levelInstance)
+				g.Stage.SetLevel(levelInstance)
 			},
 		},
 	}
