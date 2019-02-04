@@ -106,7 +106,6 @@ func Init() {
 	}
 
 	termbox.SetOutputMode(termbox.Output256)
-	termbox.SetInputMode(termbox.InputAlt | termbox.InputMouse)
 	termbox.Clear(termbox.ColorDefault, bgColor)
 
 	events := make(chan termbox.Event)

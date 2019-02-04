@@ -4,28 +4,11 @@ import "github.com/nsf/termbox-go"
 
 //import "github.com/nsf/termbox-go"
 
-const Level2TileMapString = `
-+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-Level 2                 |        |        |     |     |     |
-+  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
-|           |     |     |     |  |  |  |     |  |  |  |     |
-+--+--+  +--+  +  +--+  +--+  +  +--+  +  +--+  +  +  +  +  +
-|        |     |     |     |  |     |  |     |     |     |  |
-+  +--+--+  +  +--+--+--+  +--+--+  +  +--+--+--+--+--+--+  +
-|  |     |  |  |           |        |           |     |     |
-+  +  +  +  +--+  +--+--+--+  +--+--+--+--+--+  +  +  +  +--+
-|     |  |  |     |     |     |     |        |     |  |     |
-+--+--+  +  +  +--+  +  +  +  +--+  +  +--+  +--+--+  +--+  +
-|     |  |     |     |     |        |  |  |  |     |  |     |
-+  +  +  +--+  +  +--+  +--+  +--+--+  +  +  +  +--+  +  +--+
-|  |  |     |  |  |     |  |  |        |  |        |  |     |
-+  +  +--+  +  +  +--+--+  +  +  +--+--+  +--+--+  +  +--+--+
-|  |        |  |     |     |           |  |     |  |        |
-+  +--+--+--+--+--+  +  +  +--+--+--+  +  +  +  +  +--+--+  +
-|  |                 |  |  |     |     |     |  |           |
-+  +--+  +--+  +--+--+  +  +  +  +  +--+--+  +  +--+--+--+--+
-|        |     |        |     |              |              ↓ 
-+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+const level2TileMapString = `
+Delete all the lines.  
+Enter insert mode.     
+Type "Vim is awesome!" 
+Go back to normal mode.
 `
 
 func NewLevel2(g *Game) *Level {
@@ -50,7 +33,7 @@ func NewLevel2(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: Level1TileMapString,
+		TileMapString: level2TileMapString,
 		TileData:      tileData,
 		Init: func() {
 			// load info

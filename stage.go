@@ -11,7 +11,7 @@ type Stage struct {
 	Level          int
 	LevelInstance  *Level
 	Fps            float64
-	CanvasEntities []Renderer // entities to be rendered in canvas
+	CanvasEntities []Renderer // entities to be rendered in canvas, these entities has an update method
 	ScreenEntities []Renderer // entities to be rendered outside of the canvas
 	BgCell         *termbox.Cell
 	Canvas         Canvas
@@ -58,12 +58,16 @@ func (s *Stage) SetGame(game *Game) {
 }
 
 // this function handles all the rendering
-// sets and renders of the entity and tilemap cells
+// sets and renders in order:
+// tilemap cells: the background cells
+// canvas entities: canvas entities, they have update methods that gets called on stage.update method
+// screen cells: cells outside of the canvas such as level label and instructions
 func (s *Stage) Render() {
 	s.SetCanvasBackgroundCells()
 
 	for i, _ := range s.CanvasEntities {
 		e := s.CanvasEntities[i]
+		// sets the cells for the entity, so that it overwrites the background cell(s)
 		e.SetCells(s)
 	}
 
@@ -130,6 +134,8 @@ func (s *Stage) resize(w, h int) {
 	s.Canvas = c
 }
 
+// sets the background cells to be rendered, this gets rendered first in the render method
+// so that other cells can be overwritten into the same location
 func (s *Stage) SetCanvasBackgroundCells() {
 	for i, row := range s.Canvas {
 		for j, _ := range row {
@@ -144,31 +150,32 @@ func (s *Stage) SetCanvasBackgroundCells() {
 	}
 }
 
-func (s *Stage) SetCanvasCell(x, y int, c *TermBoxCell) {
-	if x >= 0 && x < len(s.Canvas[0]) && y >= 0 && y < len(s.Canvas) {
-		// intentionally use x,y in reverse order
-		s.Canvas[y][x] = c
+// calls termbox.setCell, sets the coordinates and the cell attributes
+// this does the actual rendering of the characters, thanks to termbox-go <3
+func (s *Stage) TermboxSetCell(x, y int, cell *TermBoxCell, offset bool) {
+	if offset {
+		offsetX, offsetY := s.LevelInstance.GetScreenOffset()
+		x += offsetX
+		y += offsetY
 	}
-}
 
-func (s *Stage) TermboxSetCell(x, y int, cell *TermBoxCell) {
 	termbox.SetCell(x, y, cell.Ch,
 		termbox.Attribute(cell.Fg),
 		termbox.Attribute(cell.Bg))
 }
 
+// sets the cells inside the canvas, offset is being applied in order to keep the canvas in center
 func (s *Stage) TermboxSetCanvasCells() {
-	offsetX, offsetY := s.LevelInstance.GetScreenOffset()
-
 	for i, row := range s.Canvas {
 		for j, _ := range row {
 			cell := row[j]
 			// intentionally use j,i in reverse order
-			s.TermboxSetCell(j+offsetX, i+offsetY, cell)
+			s.TermboxSetCell(j, i, cell, true)
 		}
 	}
 }
 
+// sets the cells outside of the canvas, no offset is being applied
 func (s *Stage) TermboxSetScreenCells() {
 	for _, e := range s.ScreenEntities {
 		for j, _ := range e.GetCells() {
@@ -176,7 +183,7 @@ func (s *Stage) TermboxSetScreenCells() {
 			// intentionally use j,i in reverse order
 			offsetX, _ := e.GetScreenOffset()
 			x := e.GetPositionX() + j + offsetX
-			s.TermboxSetCell(x, e.GetPositionY(), cell)
+			s.TermboxSetCell(x, e.GetPositionY(), cell, false)
 		}
 	}
 }

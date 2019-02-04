@@ -2,6 +2,8 @@ package fantasia
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"sync"
 )
 
@@ -39,5 +41,18 @@ func (l *Logger) LogValue(values ...interface{}) {
 func (l *Logger) DumpLogs() {
 	for _, log := range l.logs {
 		fmt.Println(log)
+	}
+}
+
+func (l *Logger) WriteFile(text string) {
+	if os.Getenv("DEBUG") == "1" {
+		f, err := os.OpenFile("logfile.txt", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+		if err != nil {
+			log.Fatalf("error opening file: %v", err)
+		}
+		defer f.Close()
+
+		log.SetOutput(f)
+		log.Println(text)
 	}
 }

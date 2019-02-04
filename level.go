@@ -6,15 +6,23 @@ import (
 	"time"
 )
 
+type VimMode int
+
+const (
+	normalMode VimMode = iota
+	insertMode
+)
+
 const (
 	levelTitleCoordX       int = 0
-	levelTitleCoordY       int = 3
+	levelTitleCoordY       int = 1
 	levelExplanationCoordX int = 0
-	levelExplanationCoordY int = 5
+	levelExplanationCoordY int = 2
 )
 
 type Level struct {
 	Game          *Game
+	VimMode       VimMode
 	TileMapString string
 	TileMap       [][]*TermBoxCell
 	TileData      TileMapCellDataMap
@@ -34,7 +42,15 @@ func (l *Level) SetCells(s *Stage) {
 }
 
 func (l *Level) GetSize() (int, int) {
-	return len(l.TileMap[0]), len(l.TileMap)
+	index, length := 0, 0
+
+	for i, line := range l.TileMap {
+		if len(line) > length {
+			index, length = i, len(line)
+		}
+	}
+
+	return len(l.TileMap[index]), len(l.TileMap)
 }
 
 func (l *Level) GetScreenOffset() (int, int) {

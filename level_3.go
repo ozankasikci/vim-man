@@ -4,9 +4,9 @@ import "github.com/nsf/termbox-go"
 
 //import "github.com/nsf/termbox-go"
 
-const level1TileMapString = `
+const level3TileMapString = `
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-  Try to find the exit  |        |        |     |     |     |
+Level 2                 |        |        |     |     |     |
 +  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
 |           |     |     |     |  |  |  |     |  |  |  |     |
 +--+--+  +--+  +  +--+  +--+  +  +--+  +  +--+  +  +  +  +  +
@@ -24,15 +24,20 @@ const level1TileMapString = `
 +  +--+--+--+--+--+  +  +  +--+--+--+  +  +  +  +  +--+--+  +
 |  |                 |  |  |     |     |     |  |           |
 +  +--+  +--+  +--+--+  +  +  +  +  +--+--+  +  +--+--+--+--+
-|        |     |        |     |              |         exit ↓ 
+|        |     |        |     |              |              ↓ 
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 `
 
-func NewLevel1(g *Game) *Level {
+func NewLevel3(g *Game) *Level {
 	// create user
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
 	entities = append(entities, user)
+
+	// create title
+	title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 3 - Vim Modes")
+	explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, v: Visual Mode")
+	g.Stage.AddScreenEntity(title, explanation)
 
 	tileData := TileMapCellDataMap{
 		'↓': TileMapCellData{
@@ -41,8 +46,7 @@ func NewLevel1(g *Game) *Level {
 			bgColor:            termbox.ColorBlack,
 			collidesPhysically: false,
 			collisionCallback: func() {
-				levelInstance := NewLevel2(g)
-                g.Stage.SetLevel(levelInstance)
+
 			},
 		},
 	}
@@ -50,13 +54,7 @@ func NewLevel1(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: level1TileMapString,
+		TileMapString: level3TileMapString,
 		TileData:      tileData,
-		Init: func() {
-			// load info
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 1 - Basic Movement")
-			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "J: down, H: left, K: up, L: right")
-			g.Stage.AddScreenEntity(title, explanation)
-		},
 	}
 }
