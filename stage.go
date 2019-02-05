@@ -13,6 +13,7 @@ type Stage struct {
 	Fps            float64
 	CanvasEntities []Renderer // entities to be rendered in canvas
 	ScreenEntities []Renderer // entities to be rendered outside of the canvas
+	TypedEntities  []Renderer
 	BgCell         *termbox.Cell
 	Canvas         Canvas
 	Width          int
@@ -29,6 +30,7 @@ func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
 		Fps:            fps,
 		CanvasEntities: nil,
 		ScreenEntities: nil,
+		TypedEntities:  nil,
 		BgCell:         bgCell,
 		Canvas:         nil,
 		Width:          0,
@@ -45,6 +47,10 @@ func (s *Stage) AddCanvasEntity(e Renderer) {
 
 func (s *Stage) AddScreenEntity(e ...Renderer) {
 	s.ScreenEntities = append(s.ScreenEntities, e...)
+}
+
+func (s *Stage) AddTypedEntity(e ...Renderer) {
+	s.TypedEntities = append(s.TypedEntities, e...)
 }
 
 func (s *Stage) ClearCanvasEntities() {
@@ -72,6 +78,7 @@ func (s *Stage) Render() {
 
 	s.TermboxSetScreenCells()
 	s.TermboxSetCanvasCells()
+	s.TermboxSetTypedCells()
 	termbox.Flush()
 }
 
@@ -89,7 +96,7 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevel1(s.Game))
+	s.SetLevel(NewLevel2(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
@@ -133,6 +140,10 @@ func (s *Stage) resize(w, h int) {
 	s.Canvas = c
 }
 
+func (s *Stage) GetDefaultBgCell()  *TermBoxCell{
+	return &TermBoxCell{s.BgCell, false, TileMapCellData{}}
+}
+
 // sets the background cells to be rendered, this gets rendered first in the render method
 // so that other cells can be overwritten into the same location
 func (s *Stage) SetCanvasBackgroundCells() {
@@ -143,7 +154,7 @@ func (s *Stage) SetCanvasBackgroundCells() {
 				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j]
 			} else {
 				//insert default bg cell
-				s.Canvas[i][j] = &TermBoxCell{s.BgCell, false, TileMapCellData{}}
+				s.Canvas[i][j] = s.GetDefaultBgCell()
 			}
 		}
 	}
@@ -183,6 +194,16 @@ func (s *Stage) TermboxSetScreenCells() {
 			offsetX, _ := e.GetScreenOffset()
 			x := e.GetPositionX() + j + offsetX
 			s.TermboxSetCell(x, e.GetPositionY(), cell, false)
+		}
+	}
+}
+
+func (s *Stage) TermboxSetTypedCells() {
+	for _, e := range s.TypedEntities {
+		for j, _ := range e.GetCells() {
+			cell := e.GetCells()[j]
+			// intentionally use j,i in reverse order
+			s.TermboxSetCell(e.GetPositionX(), e.GetPositionY(), cell, true)
 		}
 	}
 }

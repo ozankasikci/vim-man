@@ -2,6 +2,7 @@ package fantasia
 
 import (
 	"github.com/nsf/termbox-go"
+	"reflect"
 	"time"
 )
 
@@ -53,31 +54,31 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 }
 
 func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
-	GetLogger().WriteFile("entered handleInsertModeEvents")
-	switch event.Key {
-	case termbox.KeyEsc:
-		GetLogger().WriteFile("esc pressed")
-		s.LevelInstance.VimMode = normalMode
+	// return on empty event
+	if reflect.DeepEqual(event, termbox.Event{}) {
 		return
 	}
 
-	if event.Ch == 'o' {
-		//cell := &TermBoxCell{
-		//	Cell: &termbox.Cell{'a', termbox.ColorGreen, termbox.ColorGreen},
-		//	collidesPhysically: false,
-		//	cellData: TileMapCellData{},
-		//}
-		//s.SetCanvasCell(0, 0, cell)
-		GetLogger().WriteFile("setting canvas cell in insert mode")
-		GetLogger().WriteFile("o pressed")
+	switch event.Key {
+	// switch to normal mode on esc key event
+	case termbox.KeyEsc:
+		s.LevelInstance.VimMode = normalMode
+		return
+	case termbox.KeyBackspace, termbox.KeyBackspace2:
+		character := NewWord(s, u.GetPositionX() - 1, u.GetPositionY(), string(" "))
+		s.AddTypedEntity(character)
+		u.setPositionX(u.GetPositionX() - 1)
+	default:
+		// type a character and add as typed entity
+		character := NewWord(s, u.GetPositionX(), u.GetPositionY(), string(event.Ch))
+		s.AddTypedEntity(character)
+		u.setPositionX(u.GetPositionX() + 1)
 	}
+
 
 }
 
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
-	if event.Ch == 'E' {
-		GetLogger().LogValue(event.Key)
-	}
 	if s.LevelInstance.VimMode == normalMode {
 		GetLogger().WriteFile("if s.LevelInstance.VimMode == normalMode is true")
 		u.handleNormalModeEvents(s, event)
