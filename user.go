@@ -98,10 +98,8 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 	if s.LevelInstance.VimMode == normalMode {
-		GetLogger().WriteFile("if s.LevelInstance.VimMode == normalMode is true")
 		u.handleNormalModeEvents(s, event)
 	} else if s.LevelInstance.VimMode == insertMode {
-		GetLogger().WriteFile("if s.LevelInstance.VimMode == insertMod is true")
 		u.handleInsertModeEvents(s, event)
 	}
 }

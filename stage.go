@@ -97,7 +97,7 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevel2(s.Game))
+	s.SetLevel(NewLevel1(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
