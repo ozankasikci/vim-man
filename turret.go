@@ -19,7 +19,8 @@ type TurretBall struct {
 }
 
 func NewTurret(s *Stage, x, y int, direction Direction, turretBallSpeed float64) *Turret {
-	e := NewEntity(s, x, y, 1, 1, 'O', termbox.ColorMagenta, termbox.ColorBlack, nil, true)
+	entityOptions := EntityOptions{1000, nil, nil}
+	e := NewEntity(s, x, y, 1, 1, 'O', termbox.ColorMagenta, termbox.ColorBlack, nil, true, entityOptions)
 	return &Turret{
 		Entity:          e,
 		Direction:       direction,
@@ -28,7 +29,8 @@ func NewTurret(s *Stage, x, y int, direction Direction, turretBallSpeed float64)
 }
 
 func NewTurretBall(s *Stage, t *Turret, x, y int, direction Direction, speed float64) *TurretBall {
-	e := NewEntity(s, x, y, 1, 1, '~', termbox.ColorMagenta, termbox.ColorBlack, nil, true)
+	entityOptions := EntityOptions{1000, nil, nil}
+	e := NewEntity(s, x, y, 1, 1, '~', termbox.ColorMagenta, termbox.ColorBlack, nil, true, entityOptions)
 
 	if speed == 0 {
 		GetLogger().Log("noo")

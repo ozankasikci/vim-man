@@ -27,6 +27,7 @@ type TileMapCellData struct {
 	fgColor            termbox.Attribute
 	collidesPhysically bool
 	collisionCallback  func()
+	initCallback       func(*Entity)
 }
 
 type TileMapCellDataMap map[rune]TileMapCellData
@@ -71,6 +72,34 @@ var CommonTileMapCellData = TileMapCellDataMap{
 		bgColor:            termbox.ColorBlack,
 		fgColor:            termbox.ColorWhite,
 		ch:                 '|',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
+	'█': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '█',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
+	'◼': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '◼',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
+	'▅': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '▅',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
+	'▀': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '▀',
 		collidesPhysically: true,
 		collisionCallback:  func() {},
 	},

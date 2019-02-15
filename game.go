@@ -10,12 +10,6 @@ import (
 const (
 	bgColor = termbox.ColorBlack
 	fgColor = termbox.ColorWhite
-	KeyB    = 98
-	KeyE    = 101
-	KeyH    = 104
-	KeyJ    = 106
-	KeyK    = 107
-	KeyL    = 108
 )
 
 type Point struct {
@@ -52,6 +46,8 @@ type Renderer interface {
 	GetPositionX() int
 	GetPositionY() int
 	GetScreenOffset() (int, int)
+	GetDrawPriority() int
+	GetTags() []Tag
 }
 
 // main game loop

@@ -2,13 +2,18 @@ package fantasia
 
 import "github.com/nsf/termbox-go"
 
-//import "github.com/nsf/termbox-go"
-
 const level2TileMapString = `
-Delete all the lines.  
-Enter insert mode.     
-Type "Vim is awesome!" 
-Go back to normal mode.
+▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅
+█                   █
+█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█                   █
+█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█                   █
+█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█                   █
+█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█                   █
+▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `
 
 func NewLevel2(g *Game) *Level {
@@ -16,16 +21,17 @@ func NewLevel2(g *Game) *Level {
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
 	entities = append(entities, user)
-
 	tileData := TileMapCellDataMap{
-		'↓': TileMapCellData{
-			ch:                 '↓',
+		'b': TileMapCellData{
+			ch:                 '💣',
 			fgColor:            termbox.ColorGreen,
 			bgColor:            termbox.ColorBlack,
-			collidesPhysically: false,
-			collisionCallback: func() {
-				levelInstance := NewLevel3(g)
-				g.Stage.SetLevel(levelInstance)
+			collidesPhysically: true,
+			collisionCallback: nil,
+			initCallback: func(selfEntity *Entity) {
+				bombOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: true}
+				bomb := NewWord(g.Stage, selfEntity.GetPositionX(), selfEntity.GetPositionY(), string('💣'), bombOptions)
+                g.Stage.AddTypedEntity(bomb)
 			},
 		},
 	}
@@ -37,8 +43,12 @@ func NewLevel2(g *Game) *Level {
 		TileData:      tileData,
 		Init: func() {
 			// load info
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Vim Modes")
-			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, v: Visual Mode")
+			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Vim Modes", titleOptions)
+
+			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, esc: Back to Normal Mode", explanationOptions)
+
 			g.Stage.AddScreenEntity(title, explanation)
 		},
 	}

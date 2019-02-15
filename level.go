@@ -16,8 +16,12 @@ const (
 const (
 	levelTitleCoordX       int = 0
 	levelTitleCoordY       int = 1
+	levelTitleFg           termbox.Attribute = termbox.ColorGreen
+	levelTitleBg           termbox.Attribute = termbox.ColorBlack
 	levelExplanationCoordX int = 0
 	levelExplanationCoordY int = 2
+	typedCharacterFg       termbox.Attribute = termbox.ColorWhite
+	typedCharacterBg       termbox.Attribute = termbox.ColorBlack
 )
 
 type Level struct {

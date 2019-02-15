@@ -17,7 +17,9 @@ func NewUser(s *Stage, x, y int) (u *User) {
 		{&termbox.Cell{'▒', termbox.ColorGreen, bgColor}, false, TileMapCellData{}},
 	}
 
-	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells, false)
+	tags := []Tag{ {"Cursor"} }
+	entityOptions := EntityOptions{9999, tags, nil}
+	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells, false, entityOptions)
 	u = &User{
 		Entity: e,
 	}
@@ -65,17 +67,33 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.LevelInstance.VimMode = normalMode
 		return
 	case termbox.KeyBackspace, termbox.KeyBackspace2:
-		character := NewWord(s, u.GetPositionX() - 1, u.GetPositionY(), string(" "))
+		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
+		character := NewWord(s, u.GetPositionX() - 1, u.GetPositionY(), string(" "), characterOptions)
+		if !character.IsInsideOfCanvasBoundaries() {
+			return
+		}
+
 		s.AddTypedEntity(character)
 		u.setPositionX(u.GetPositionX() - 1)
 	default:
+		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
+		character := NewWord(s, u.GetPositionX(), u.GetPositionY(), string(event.Ch), characterOptions)
+		if !character.IsInsideOfCanvasBoundaries() {
+			return
+		}
+
 		// type a character and add as typed entity
-		character := NewWord(s, u.GetPositionX(), u.GetPositionY(), string(event.Ch))
 		s.AddTypedEntity(character)
 		u.setPositionX(u.GetPositionX() + 1)
+
+		if character.InitCallback != nil {
+			character.InitCallback()
+		}
+
+		if s.LevelInstance.TileData[event.Ch].initCallback != nil {
+			s.LevelInstance.TileData[event.Ch].initCallback(character.Entity)
+		}
 	}
-
-
 }
 
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
@@ -86,5 +104,4 @@ func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
 		GetLogger().WriteFile("if s.LevelInstance.VimMode == insertMod is true")
 		u.handleInsertModeEvents(s, event)
 	}
-
 }

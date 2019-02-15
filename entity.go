@@ -20,12 +20,26 @@ type Entity struct {
 	Rune     rune
 	Cell     *TermBoxCell
 	Cells    []*TermBoxCell
+	DrawPriority int
+	Tags []Tag
+	InitCallback func()
 }
 
-func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TermBoxCell, collidesPhysically bool) *Entity {
+type EntityOptions struct {
+	DrawPriority int
+	Tags []Tag
+	InitCallback func()
+}
+
+type Tag struct {
+	Name string
+}
+
+func NewEntity(s *Stage, x, y, w, h int, r rune, fg termbox.Attribute, bg termbox.Attribute, cells []*TermBoxCell, collidesPhysically bool, options EntityOptions) *Entity {
+	drawPriority, tags, initCallback := options.DrawPriority, options.Tags, options.InitCallback
 	p := Point{x, y}
 	cell := &TermBoxCell{&termbox.Cell{r, fg, bg}, collidesPhysically, TileMapCellData{}}
-	return &Entity{s, p, w, h, r, cell, cells}
+	return &Entity{s, p, w, h, r, cell, cells, drawPriority, tags, initCallback}
 }
 
 func (e *Entity) SetStage(s *Stage) {
@@ -115,4 +129,17 @@ func (e *Entity) GetScreenOffset() (int, int) {
 }
 
 func (e *Entity) Destroy() {
+}
+
+func (e *Entity) GetDrawPriority() int {
+	return e.DrawPriority
+}
+
+func (e *Entity) GetTags() []Tag{
+	return e.Tags
+}
+
+func (e *Entity) IsInsideOfCanvasBoundaries() bool {
+	stage := e.GetStage()
+	return e.GetPositionX() >= 0 && e.GetPositionX() < len(stage.Canvas[0]) && e.GetPositionY() >= 0 && e.GetPositionY() < len(stage.Canvas)
 }

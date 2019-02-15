@@ -35,8 +35,11 @@ func NewLevel3(g *Game) *Level {
 	entities = append(entities, user)
 
 	// create title
-	title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 3 - Vim Modes")
-	explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, v: Visual Mode")
+	titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+	title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 3 - Vim Modes", titleOptions)
+
+	explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+	explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, v: Visual Mode", explanationOptions)
 	g.Stage.AddScreenEntity(title, explanation)
 
 	tileData := TileMapCellDataMap{

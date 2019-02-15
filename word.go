@@ -12,15 +12,22 @@ type Word struct {
 	Direction Direction
 }
 
-func ConvertStringToCells(s string) []*TermBoxCell {
+type WordOptions struct {
+	InitCallback func()
+	Fg termbox.Attribute
+	Bg termbox.Attribute
+	CollidesPhysically bool
+}
+
+func ConvertStringToCells(s string, fg termbox.Attribute, bg termbox.Attribute) []*TermBoxCell {
 	var arr []*TermBoxCell
 
 	for i := 0; i < len([]rune(s)); i++ {
 		cell := &TermBoxCell{
 			Cell: &termbox.Cell{
 				[]rune(s)[i],
-				termbox.ColorGreen,
-				termbox.ColorBlack,
+				fg,
+				bg,
 			},
 			collidesPhysically: false,
 			cellData:           TileMapCellData{}}
@@ -31,9 +38,16 @@ func ConvertStringToCells(s string) []*TermBoxCell {
 	return arr
 }
 
-func NewWord(s *Stage, x, y int, content string) *Word {
-	cells := ConvertStringToCells(content)
-	e := NewEntity(s, x, y, len(content), 1, ' ', termbox.ColorMagenta, termbox.ColorBlack, cells, false)
+func NewWord(s *Stage, x, y int, content string, options WordOptions) *Word {
+	fg, bg, collidesPhysically := options.Fg, options.Bg, options.CollidesPhysically
+
+	if !collidesPhysically {
+		collidesPhysically = false
+	}
+
+	cells := ConvertStringToCells(content, fg, bg)
+	entityOptions := EntityOptions{2000, nil, nil}
+	e := NewEntity(s, x, y, len(content), 1, ' ', fg, bg, cells, collidesPhysically, entityOptions)
 	return &Word{
 		Entity:    e,
 		Content:   content,

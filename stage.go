@@ -41,8 +41,8 @@ func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
 	}
 }
 
-func (s *Stage) AddCanvasEntity(e Renderer) {
-	s.CanvasEntities = append(s.CanvasEntities, e)
+func (s *Stage) AddCanvasEntity(e ...Renderer) {
+	s.CanvasEntities = append(s.CanvasEntities, e...)
 }
 
 func (s *Stage) AddScreenEntity(e ...Renderer) {
@@ -79,6 +79,7 @@ func (s *Stage) Render() {
 	s.TermboxSetScreenCells()
 	s.TermboxSetCanvasCells()
 	s.TermboxSetTypedCells()
+	s.TermboxSetCursorCell()
 	termbox.Flush()
 }
 
@@ -144,6 +145,18 @@ func (s *Stage) GetDefaultBgCell()  *TermBoxCell{
 	return &TermBoxCell{s.BgCell, false, TileMapCellData{}}
 }
 
+func (s *Stage) GetCanvasEntityByTag(wantedTag Tag) Renderer {
+	for _, ce := range s.CanvasEntities {
+		for _, tag := range ce.GetTags() {
+			if tag.Name == wantedTag.Name {
+				return ce
+			}
+		}
+	}
+
+	return nil
+}
+
 // sets the background cells to be rendered, this gets rendered first in the render method
 // so that other cells can be overwritten into the same location
 func (s *Stage) SetCanvasBackgroundCells() {
@@ -190,7 +203,6 @@ func (s *Stage) TermboxSetScreenCells() {
 	for _, e := range s.ScreenEntities {
 		for j, _ := range e.GetCells() {
 			cell := e.GetCells()[j]
-			// intentionally use j,i in reverse order
 			offsetX, _ := e.GetScreenOffset()
 			x := e.GetPositionX() + j + offsetX
 			s.TermboxSetCell(x, e.GetPositionY(), cell, false)
@@ -202,9 +214,16 @@ func (s *Stage) TermboxSetTypedCells() {
 	for _, e := range s.TypedEntities {
 		for j, _ := range e.GetCells() {
 			cell := e.GetCells()[j]
-			// intentionally use j,i in reverse order
 			s.TermboxSetCell(e.GetPositionX(), e.GetPositionY(), cell, true)
 		}
+	}
+}
+
+func (s *Stage) TermboxSetCursorCell() {
+	cursorEntity := s.GetCanvasEntityByTag(Tag{"Cursor"})
+	for j, _ := range cursorEntity.GetCells() {
+		cell := cursorEntity.GetCells()[j]
+		s.TermboxSetCell(cursorEntity.GetPositionX(), cursorEntity.GetPositionY(), cell, true)
 	}
 }
 

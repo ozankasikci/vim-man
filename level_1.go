@@ -54,8 +54,12 @@ func NewLevel1(g *Game) *Level {
 		TileData:      tileData,
 		Init: func() {
 			// load info
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 1 - Basic Movement")
-			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "J: down, H: left, K: up, L: right")
+			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 1 - Basic Movement", titleOptions)
+
+			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "J: down, H: left, K: up, L: right", explanationOptions)
+
 			g.Stage.AddScreenEntity(title, explanation)
 		},
 	}
