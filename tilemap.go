@@ -5,12 +5,6 @@ import (
 	"strings"
 )
 
-type TermBoxCell struct {
-	*termbox.Cell
-	collidesPhysically bool
-	cellData           TileMapCellData
-}
-
 func NewTileMapCell(ch rune, fn func()) TileMapCellData {
 	return TileMapCellData{
 		bgColor:            termbox.ColorBlack,
