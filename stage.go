@@ -97,7 +97,7 @@ func min(a, b int) int {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevel1(s.Game))
+	s.SetLevel(NewLevel2(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
@@ -164,10 +164,10 @@ func (s *Stage) SetCanvasBackgroundCells() {
 		for j, _ := range row {
 			if s.LevelInstance.TileMap[i][j].Cell != nil {
 				// insert tile map cell
-				s.Canvas[i][j] = s.LevelInstance.TileMap[i][j]
+				s.Canvas.SetCellAt(i, j, s.LevelInstance.TileMap[i][j])
 			} else {
 				//insert default bg cell
-				s.Canvas[i][j] = s.GetDefaultBgCell()
+				s.Canvas.SetCellAt(i, j, s.GetDefaultBgCell())
 			}
 		}
 	}
@@ -229,4 +229,14 @@ func (s *Stage) TermboxSetCursorCell() {
 
 func (s *Stage) CheckCollision(x, y int) bool {
 	return s.Canvas.checkCollision(x, y)
+}
+
+// clear Canvas cell and TileMap cell at the given positions
+func (s *Stage) ClearTileMapCellsAt(positions [][2]int) {
+	for _, pos := range positions {
+		options := DefaultWordOptions()
+		emptyChar := NewEmptyCharacter(s, pos[0], pos[1], options)
+		s.AddTypedEntity(emptyChar)
+		s.LevelInstance.TileMap[pos[1]][pos[0]].collidesPhysically = false
+	}
 }

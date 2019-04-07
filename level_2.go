@@ -11,7 +11,7 @@ const level2TileMapString = `
 █☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
 █   ☲☵☲☵            █
 █ ◼◼☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█    ☲☵             █
+█    ☲☵      ☵☲☵    █
 █ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
 █☲☵      ☲☵         █
 █ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
@@ -21,7 +21,6 @@ const level2TileMapString = `
 
 func NewLevel2(g *Game) *Level {
 
-	// create user
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
 	entities = append(entities, user)
@@ -39,11 +38,31 @@ func NewLevel2(g *Game) *Level {
 
 				go func() {
 					<-time.After(1 * time.Second)
-					GetLogger().LogValue(selfEntity.Position)
-					characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false}
-					emptyChar1 := NewEmptyCharacter(g.Stage, selfEntity.Position.x, selfEntity.Position.y, characterOptions)
-					emptyChar2 := NewEmptyCharacter(g.Stage, selfEntity.Position.x + 1, selfEntity.Position.y, characterOptions)
-					g.Stage.AddTypedEntity(emptyChar1, emptyChar2, )
+					posX := selfEntity.Position.x
+					posY := selfEntity.Position.y
+					positions := [][2]int{
+						{posX, posY},
+						{posX + 1, posY},
+						{posX, posY + 1},
+						{posX - 1, posY},
+						{posX, posY - 1},
+					}
+
+					var positionsToBeCleared [][2]int
+
+					for _, pos := range positions {
+						if !g.Stage.Canvas.IsInsideOfBoundaries(pos[0], pos[1]) {
+							return
+						}
+
+						// deliberately using reverse order in two dimensional array :/
+						if !ContainsRune([]rune{'◼', '▅', '█'}, g.Stage.LevelInstance.TileMap[pos[1]][pos[0]].Ch) {
+							positionsToBeCleared = append(positionsToBeCleared, [2]int{pos[0], pos[1]})
+						}
+					}
+
+					// clear character and collision
+					g.Stage.ClearTileMapCellsAt(positionsToBeCleared)
 				}()
 			},
 		},
@@ -53,7 +72,7 @@ func NewLevel2(g *Game) *Level {
 			bgColor:            termbox.ColorBlack,
 			collidesPhysically: false,
 			collisionCallback: func() {
-				levelInstance := NewLevel2(g)
+				levelInstance := NewLevel3(g)
 				g.Stage.SetLevel(levelInstance)
 			},
 		},
@@ -64,6 +83,8 @@ func NewLevel2(g *Game) *Level {
 		Entities:      entities,
 		TileMapString: level2TileMapString,
 		TileData:      tileData,
+		InputRunes: []rune{'b'},
+		BackspaceBlocked: true,
 		Init: func() {
 			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}

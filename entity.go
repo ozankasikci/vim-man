@@ -132,6 +132,5 @@ func (e *Entity) GetTags() []Tag{
 }
 
 func (e *Entity) IsInsideOfCanvasBoundaries() bool {
-	stage := e.GetStage()
-	return e.GetPositionX() >= 0 && e.GetPositionX() < len(stage.Canvas[0]) && e.GetPositionY() >= 0 && e.GetPositionY() < len(stage.Canvas)
+	return e.GetStage().Canvas.IsInsideOfBoundaries(e.GetPositionX(), e.GetPositionY())
 }

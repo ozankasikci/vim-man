@@ -31,6 +31,8 @@ type Level struct {
 	TileMap       [][]*TermBoxCell
 	TileData      TileMapCellDataMap
 	Entities      []Renderer
+	InputRunes    []rune
+	BackspaceBlocked bool
 	BgCell        *termbox.Cell
 	Width         int
 	Height        int

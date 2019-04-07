@@ -44,3 +44,10 @@ func (c *Canvas) OverWriteCanvasCell(x, y int, termboxCell *TermBoxCell) {
 	}
 }
 
+func (c *Canvas) SetCellAt(row, column int, cell *TermBoxCell) {
+	(*c)[row][column] = cell
+}
+
+func (c *Canvas) IsInsideOfBoundaries(x, y int) bool {
+	return x >= 0 && x < len((*c)[0]) && y >= 0 && y < len(*c)
+}

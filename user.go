@@ -67,6 +67,10 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.LevelInstance.VimMode = normalMode
 		return
 	case termbox.KeyBackspace, termbox.KeyBackspace2:
+		if s.LevelInstance.BackspaceBlocked {
+			return
+		}
+
 		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
 		character := NewEmptyCharacter(s, u.GetPositionX() - 1, u.GetPositionY(), characterOptions)
 		if !character.IsInsideOfCanvasBoundaries() {
@@ -76,6 +80,12 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.AddTypedEntity(character)
 		u.setPositionX(u.GetPositionX() - 1)
 	default:
+		if len(s.LevelInstance.InputRunes) > 0 {
+			if !ContainsRune(s.LevelInstance.InputRunes, event.Ch) {
+				return
+			}
+		}
+		
 		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
 		character := NewWord(s, u.GetPositionX(), u.GetPositionY(), string(event.Ch), characterOptions)
 		if !character.IsInsideOfCanvasBoundaries() {
