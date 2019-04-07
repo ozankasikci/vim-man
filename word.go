@@ -55,6 +55,10 @@ func NewWord(s *Stage, x, y int, content string, options WordOptions) *Word {
 	}
 }
 
+func DefaultWordOptions() WordOptions {
+	return WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false}
+}
+
 func NewEmptyCharacter(s *Stage, x, y int, options WordOptions)  *Word{
 	return NewWord(s, x, y, string(" "), options)
 }
