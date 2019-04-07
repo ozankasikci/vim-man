@@ -7,4 +7,3 @@ type TermBoxCell struct {
 	collidesPhysically bool
 	cellData           TileMapCellData
 }
-

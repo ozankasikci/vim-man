@@ -30,11 +30,11 @@ func NewLevel2(g *Game) *Level {
 			fgColor:            termbox.ColorGreen,
 			bgColor:            termbox.ColorBlack,
 			collidesPhysically: true,
-			collisionCallback: nil,
+			collisionCallback:  nil,
 			initCallback: func(selfEntity *Entity) {
 				bombOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: true}
 				bomb := NewWord(g.Stage, selfEntity.GetPositionX(), selfEntity.GetPositionY(), string('💣'), bombOptions)
-                g.Stage.AddTypedEntity(bomb)
+				g.Stage.AddTypedEntity(bomb)
 
 				go func() {
 					<-time.After(1 * time.Second)
@@ -83,8 +83,8 @@ func NewLevel2(g *Game) *Level {
 		Entities:      entities,
 		TileMapString: level2TileMapString,
 		TileData:      tileData,
-		InputRunes: []rune{'b'},
-		BlockedKeys: []termbox.Key{termbox.KeyBackspace},
+		InputRunes:    []rune{'b'},
+		BlockedKeys:   []termbox.Key{termbox.KeyBackspace},
 		Init: func() {
 			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}

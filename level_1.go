@@ -52,7 +52,7 @@ func NewLevel1(g *Game) *Level {
 		Entities:      entities,
 		TileMapString: level1TileMapString,
 		TileData:      tileData,
-		InputBlocked: true,
+		InputBlocked:  true,
 		Init: func() {
 			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}

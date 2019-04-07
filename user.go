@@ -17,7 +17,7 @@ func NewUser(s *Stage, x, y int) (u *User) {
 		{&termbox.Cell{'▒', termbox.ColorGreen, bgColor}, false, TileMapCellData{}},
 	}
 
-	tags := []Tag{ {"Cursor"} }
+	tags := []Tag{{"Cursor"}}
 	entityOptions := EntityOptions{9999, tags, nil}
 	e := NewEntity(s, x, y, 1, 1, ' ', termbox.ColorBlue, termbox.ColorWhite, cells, false, entityOptions)
 	u = &User{
@@ -73,7 +73,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		}
 
 		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
-		character := NewEmptyCharacter(s, u.GetPositionX() - 1, u.GetPositionY(), characterOptions)
+		character := NewEmptyCharacter(s, u.GetPositionX()-1, u.GetPositionY(), characterOptions)
 		if !character.IsInsideOfCanvasBoundaries() {
 			return
 		}
@@ -88,7 +88,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 				return
 			}
 		}
-		
+
 		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
 		character := NewWord(s, u.GetPositionX(), u.GetPositionY(), string(event.Ch), characterOptions)
 		if !character.IsInsideOfCanvasBoundaries() {

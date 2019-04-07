@@ -13,9 +13,9 @@ type Word struct {
 }
 
 type WordOptions struct {
-	InitCallback func()
-	Fg termbox.Attribute
-	Bg termbox.Attribute
+	InitCallback       func()
+	Fg                 termbox.Attribute
+	Bg                 termbox.Attribute
 	CollidesPhysically bool
 }
 
@@ -59,7 +59,7 @@ func DefaultWordOptions() WordOptions {
 	return WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false}
 }
 
-func NewEmptyCharacter(s *Stage, x, y int, options WordOptions)  *Word{
+func NewEmptyCharacter(s *Stage, x, y int, options WordOptions) *Word {
 	return NewWord(s, x, y, string(" "), options)
 }
 

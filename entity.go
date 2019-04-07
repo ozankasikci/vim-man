@@ -13,21 +13,21 @@ const (
 )
 
 type Entity struct {
-	Stage    *Stage
-	Position Point
-	Width    int
-	Height   int
-	Rune     rune
-	Cell     *TermBoxCell
-	Cells    []*TermBoxCell
+	Stage        *Stage
+	Position     Point
+	Width        int
+	Height       int
+	Rune         rune
+	Cell         *TermBoxCell
+	Cells        []*TermBoxCell
 	DrawPriority int
-	Tags []Tag
+	Tags         []Tag
 	InitCallback func()
 }
 
 type EntityOptions struct {
 	DrawPriority int
-	Tags []Tag
+	Tags         []Tag
 	InitCallback func()
 }
 
@@ -127,7 +127,7 @@ func (e *Entity) GetDrawPriority() int {
 	return e.DrawPriority
 }
 
-func (e *Entity) GetTags() []Tag{
+func (e *Entity) GetTags() []Tag {
 	return e.Tags
 }
 

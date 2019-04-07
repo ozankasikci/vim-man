@@ -14,14 +14,14 @@ const (
 )
 
 const (
-	levelTitleCoordX       int = 0
-	levelTitleCoordY       int = 1
+	levelTitleCoordX       int               = 0
+	levelTitleCoordY       int               = 1
 	levelTitleFg           termbox.Attribute = termbox.ColorGreen
 	levelTitleBg           termbox.Attribute = termbox.ColorBlack
-	levelExplanationCoordX int = 0
-	levelExplanationCoordY int = 2
-	levelHintCoordX int = 0
-	levelHintCoordY int = 3
+	levelExplanationCoordX int               = 0
+	levelExplanationCoordY int               = 2
+	levelHintCoordX        int               = 0
+	levelHintCoordY        int               = 3
 	typedCharacterFg       termbox.Attribute = termbox.ColorWhite
 	typedCharacterBg       termbox.Attribute = termbox.ColorBlack
 )
@@ -34,8 +34,8 @@ type Level struct {
 	TileData      TileMapCellDataMap
 	Entities      []Renderer
 	InputRunes    []rune
-	BlockedKeys []termbox.Key
-	InputBlocked bool
+	BlockedKeys   []termbox.Key
+	InputBlocked  bool
 	BgCell        *termbox.Cell
 	Width         int
 	Height        int

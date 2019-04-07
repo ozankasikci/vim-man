@@ -90,7 +90,6 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	}
 }
 
-
 func (s *Stage) Init() {
 	s.SetLevel(NewLevel1(s.Game))
 }
@@ -136,7 +135,7 @@ func (s *Stage) Resize(w, h int) {
 	s.Canvas = c
 }
 
-func (s *Stage) GetDefaultBgCell()  *TermBoxCell{
+func (s *Stage) GetDefaultBgCell() *TermBoxCell {
 	return &TermBoxCell{s.BgCell, false, TileMapCellData{}}
 }
 
