@@ -20,6 +20,8 @@ const (
 	levelTitleBg           termbox.Attribute = termbox.ColorBlack
 	levelExplanationCoordX int = 0
 	levelExplanationCoordY int = 2
+	levelHintCoordX int = 0
+	levelHintCoordY int = 3
 	typedCharacterFg       termbox.Attribute = termbox.ColorWhite
 	typedCharacterBg       termbox.Attribute = termbox.ColorBlack
 )
@@ -113,13 +115,13 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TermBoxCell {
 }
 
 func (l *Level) LoadTileMap() {
-	parsed := parseTileMapString(l.TileMapString)
+	parsed := ParseTileMapString(l.TileMapString)
 	l.LoadTileMapCells(parsed)
 }
 
 // row, length
 func (l *Level) GetTileMapDimensions() (int, int) {
-	parsed := parseTileMapString(l.TileMapString)
+	parsed := ParseTileMapString(l.TileMapString)
 	rowLength := len(parsed[0])
 	columnLength := len(parsed)
 	return rowLength, columnLength

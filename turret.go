@@ -62,7 +62,7 @@ func (t *TurretBall) Update(s *Stage, event termbox.Event, delta time.Duration) 
 		return
 	}
 
-	t.setPositionY(t.GetPositionY() + int(t.Speed))
+	t.SetPositionY(t.GetPositionY() + int(t.Speed))
 	t.TimeSinceLastUpdate = 0
 }
 

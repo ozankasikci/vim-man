@@ -26,10 +26,10 @@ func TestCanvasCheckCollision(t *testing.T) {
 	}
 
 	for _, value := range tt {
-		res := c.checkCollision(value.x, value.y)
+		res := c.CheckCollision(value.x, value.y)
 		assert.Equal(t, value.expect, res)
 	}
 
 	c[2][2] = nil
-	assert.True(t, c.checkCollision(2, 2))
+	assert.True(t, c.CheckCollision(2, 2))
 }

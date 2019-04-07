@@ -12,10 +12,10 @@ const level2TileMapString = `
 █   ☲☵☲☵            █
 █ ◼◼☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
 █    ☲☵      ☵☲☵    █
-█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█☲☵      ☲☵         █
-█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█              exit ↓
+█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼☲█
+█☲☵      ☲☵   ☲☵  ☲☵█
+█ ◼◼☵◼◼ ◼◼ ◼◼ ◼◼ ◼◼☵█
+█           ☲☵ exit ↓
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `
 
@@ -88,12 +88,15 @@ func NewLevel2(g *Game) *Level {
 		Init: func() {
 			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Vim Modes", titleOptions)
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Bomberman - Vim Modes", titleOptions)
 
 			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
 			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, esc: Back to Normal Mode", explanationOptions)
 
-			g.Stage.AddScreenEntity(title, explanation)
+			hintOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			hint := NewWord(g.Stage, levelHintCoordX, levelHintCoordY, "Type b in Insert Mode to drop a bomb!", hintOptions)
+
+			g.Stage.AddScreenEntity(title, explanation, hint)
 		},
 	}
 }

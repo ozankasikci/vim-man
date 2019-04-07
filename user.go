@@ -31,22 +31,22 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 	case 'k':
 		nextY := u.GetPositionY() - 1
 		if !s.CheckCollision(u.GetPositionX(), nextY) {
-			u.setPositionY(nextY)
+			u.SetPositionY(nextY)
 		}
 	case 'j':
 		nextY := u.GetPositionY() + 1
 		if !s.CheckCollision(u.GetPositionX(), nextY) {
-			u.setPositionY(nextY)
+			u.SetPositionY(nextY)
 		}
 	case 'l':
 		nextX := u.GetPositionX() + 1
 		if !s.CheckCollision(nextX, u.GetPositionY()) {
-			u.setPositionX(nextX)
+			u.SetPositionX(nextX)
 		}
 	case 'h':
 		nextX := u.GetPositionX() - 1
 		if !s.CheckCollision(nextX, u.GetPositionY()) {
-			u.setPositionX(nextX)
+			u.SetPositionX(nextX)
 		}
 	case 'i':
 		if s.LevelInstance.VimMode != insertMode {
@@ -78,7 +78,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		}
 
 		s.AddTypedEntity(character)
-		u.setPositionX(u.GetPositionX() - 1)
+		u.SetPositionX(u.GetPositionX() - 1)
 	default:
 		if len(s.LevelInstance.InputRunes) > 0 {
 			if !ContainsRune(s.LevelInstance.InputRunes, event.Ch) {
@@ -94,7 +94,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 
 		// type a character and add as typed entity
 		s.AddTypedEntity(character)
-		u.setPositionX(u.GetPositionX() + 1)
+		u.SetPositionX(u.GetPositionX() + 1)
 
 		if character.InitCallback != nil {
 			character.InitCallback()

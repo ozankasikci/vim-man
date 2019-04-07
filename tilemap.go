@@ -120,7 +120,7 @@ var CommonTileMapCellData = TileMapCellDataMap{
 	},
 }
 
-func parseLine(l string) []rune {
+func ParseLine(l string) []rune {
 	var lineChars []rune
 
 	//chars := strings.Split(l, " ")
@@ -133,14 +133,14 @@ func parseLine(l string) []rune {
 	return lineChars
 }
 
-func parseTileMapString(tileMap string) [][]rune {
+func ParseTileMapString(tileMap string) [][]rune {
 	var parsed [][]rune
 
 	lines := strings.Split(tileMap, "\n")
 	lines = lines[1 : len(lines)-1]
 
 	for _, line := range lines {
-		l := parseLine(line)
+		l := ParseLine(line)
 		parsed = append(parsed, l)
 	}
 

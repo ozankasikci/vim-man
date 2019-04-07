@@ -86,20 +86,20 @@ func (e *Entity) GetCells() []*TermBoxCell {
 func (e *Entity) Update(s *Stage, event termbox.Event, time time.Duration) {
 }
 
-func (e *Entity) setPosition(x, y int) {
-	e.setPositionX(x)
-	e.setPositionY(y)
+func (e *Entity) SetPosition(x, y int) {
+	e.SetPositionX(x)
+	e.SetPositionY(y)
 }
 
-func (e *Entity) setPositionX(x int) {
+func (e *Entity) SetPositionX(x int) {
 	e.Position.x = x
 }
 
-func (e *Entity) setPositionY(y int) {
+func (e *Entity) SetPositionY(y int) {
 	e.Position.y = y
 }
 
-func (e *Entity) checkCollision(x, y int) {
+func (e *Entity) CheckCollision(x, y int) {
 	e.Position.y = y
 }
 

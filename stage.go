@@ -89,12 +89,6 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	}
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
 
 func (s *Stage) Init() {
 	s.SetLevel(NewLevel2(s.Game))
@@ -105,7 +99,7 @@ func (s *Stage) SetLevel(levelInstance *Level) {
 	s.LevelInstance = levelInstance
 	s.LevelInstance.Init()
 	s.LevelInstance.LoadTileMap()
-	s.resize(s.LevelInstance.GetTileMapDimensions())
+	s.Resize(s.LevelInstance.GetTileMapDimensions())
 
 	for _, e := range s.LevelInstance.Entities {
 		s.AddCanvasEntity(e)
@@ -117,7 +111,7 @@ func (s *Stage) Reset() {
 	s.Canvas = NewCanvas(10, 10)
 }
 
-func (s *Stage) resize(w, h int) {
+func (s *Stage) Resize(w, h int) {
 	s.Width = w
 	s.Height = h
 
@@ -133,8 +127,8 @@ func (s *Stage) resize(w, h int) {
 	c := NewCanvas(s.Width, s.Height)
 
 	// Copy old data that fits
-	for i := 0; i < min(s.Height, len(s.Canvas)); i++ {
-		for j := 0; j < min(s.Width, len(s.Canvas)); j++ {
+	for i := 0; i < MinInt(s.Height, len(s.Canvas)); i++ {
+		for j := 0; j < MinInt(s.Width, len(s.Canvas)); j++ {
 			c[i][j] = s.Canvas[i][j]
 		}
 	}
@@ -228,7 +222,7 @@ func (s *Stage) TermboxSetCursorCell() {
 }
 
 func (s *Stage) CheckCollision(x, y int) bool {
-	return s.Canvas.checkCollision(x, y)
+	return s.Canvas.CheckCollision(x, y)
 }
 
 // clear Canvas cell and TileMap cell at the given positions

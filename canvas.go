@@ -14,11 +14,11 @@ func NewCanvas(width, height int) Canvas {
 	return canvas
 }
 
-func (c Canvas) getCellAt(x, y int) *TermBoxCell {
+func (c Canvas) GetCellAt(x, y int) *TermBoxCell {
 	return c[y][x]
 }
 
-func (c Canvas) checkCollision(x, y int) bool {
+func (c Canvas) CheckCollision(x, y int) bool {
 	// check if out of boundaries
 	if x < 0 || y < 0 || y >= len(c) || x >= len(c[0]) {
 		return true
