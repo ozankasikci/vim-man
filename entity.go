@@ -50,14 +50,6 @@ func (e *Entity) GetStage() *Stage {
 	return e.Stage
 }
 
-func (e *Entity) OverWriteCanvasCell(x, y int, termboxCell *TermBoxCell) {
-	stage := e.GetStage()
-	if x >= 0 && x < len(stage.Canvas[0]) && y >= 0 && y < len(stage.Canvas) {
-		// intentionally use x,y in reverse order
-		stage.Canvas[y][x] = termboxCell
-	}
-}
-
 func (e *Entity) SetCells(s *Stage) {
 	newPositionY := e.Position.y
 
@@ -77,11 +69,11 @@ func (e *Entity) SetCells(s *Stage) {
 
 				tileMapCell := e.Cells[index]
 				if len(e.Cells) > index {
-					e.OverWriteCanvasCell(newPositionX, newPositionY, tileMapCell)
+					s.Canvas.OverWriteCanvasCell(newPositionX, newPositionY, tileMapCell)
 				}
 			} else {
 				tileMapCell := e.Cell
-				e.OverWriteCanvasCell(newPositionX, newPositionY, tileMapCell)
+				s.Canvas.OverWriteCanvasCell(newPositionX, newPositionY, tileMapCell)
 			}
 		}
 	}

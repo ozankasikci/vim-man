@@ -36,3 +36,11 @@ func (c Canvas) checkCollision(x, y int) bool {
 
 	return c[y][x].collidesPhysically
 }
+
+func (c *Canvas) OverWriteCanvasCell(x, y int, termboxCell *TermBoxCell) {
+	if x >= 0 && x < len((*c)[0]) && y >= 0 && y < len((*c)) {
+		// intentionally use x,y in reverse order
+		(*c)[y][x] = termboxCell
+	}
+}
+
