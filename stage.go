@@ -56,6 +56,7 @@ func (s *Stage) AddTypedEntity(e ...Renderer) {
 func (s *Stage) ClearCanvasEntities() {
 	s.CanvasEntities = nil
 	s.ScreenEntities = nil
+	s.TypedEntities = nil
 }
 
 func (s *Stage) SetGame(game *Game) {

@@ -49,7 +49,7 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 			u.SetPositionX(nextX)
 		}
 	case 'i':
-		if s.LevelInstance.VimMode != insertMode {
+		if s.LevelInstance.VimMode != insertMode && !s.LevelInstance.InputBlocked {
 			s.LevelInstance.VimMode = insertMode
 		}
 	}
@@ -67,7 +67,8 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.LevelInstance.VimMode = normalMode
 		return
 	case termbox.KeyBackspace, termbox.KeyBackspace2:
-		if s.LevelInstance.BackspaceBlocked {
+		if ContainsTermboxKey(s.LevelInstance.BlockedKeys, termbox.KeyBackspace) ||
+			ContainsTermboxKey(s.LevelInstance.BlockedKeys, termbox.KeyBackspace2) {
 			return
 		}
 
@@ -80,6 +81,8 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.AddTypedEntity(character)
 		u.SetPositionX(u.GetPositionX() - 1)
 	default:
+
+		// check if rune input is allowed
 		if len(s.LevelInstance.InputRunes) > 0 {
 			if !ContainsRune(s.LevelInstance.InputRunes, event.Ch) {
 				return

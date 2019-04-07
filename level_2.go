@@ -84,7 +84,7 @@ func NewLevel2(g *Game) *Level {
 		TileMapString: level2TileMapString,
 		TileData:      tileData,
 		InputRunes: []rune{'b'},
-		BackspaceBlocked: true,
+		BlockedKeys: []termbox.Key{termbox.KeyBackspace},
 		Init: func() {
 			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
