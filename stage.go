@@ -91,7 +91,7 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevel2(s.Game))
+	s.SetLevel(NewLevel1(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
