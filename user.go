@@ -68,7 +68,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		return
 	case termbox.KeyBackspace, termbox.KeyBackspace2:
 		characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg}
-		character := NewWord(s, u.GetPositionX() - 1, u.GetPositionY(), string(" "), characterOptions)
+		character := NewEmptyCharacter(s, u.GetPositionX() - 1, u.GetPositionY(), characterOptions)
 		if !character.IsInsideOfCanvasBoundaries() {
 			return
 		}

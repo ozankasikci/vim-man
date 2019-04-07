@@ -1,22 +1,26 @@
 package fantasia
 
-import "github.com/nsf/termbox-go"
+import (
+	"github.com/nsf/termbox-go"
+	"time"
+)
 
 const level2TileMapString = `
 ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅
-█                   █
+█      ☵☲     ☵☲    █
+█☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█   ☲☵☲☵            █
+█ ◼◼☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
+█    ☲☵             █
 █ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█                   █
+█☲☵      ☲☵         █
 █ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█                   █
-█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█                   █
-█ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
-█                   █
+█              exit ↓
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `
 
 func NewLevel2(g *Game) *Level {
+
 	// create user
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
@@ -32,6 +36,25 @@ func NewLevel2(g *Game) *Level {
 				bombOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: true}
 				bomb := NewWord(g.Stage, selfEntity.GetPositionX(), selfEntity.GetPositionY(), string('💣'), bombOptions)
                 g.Stage.AddTypedEntity(bomb)
+
+				go func() {
+					<-time.After(1 * time.Second)
+					GetLogger().LogValue(selfEntity.Position)
+					characterOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false}
+					emptyChar1 := NewEmptyCharacter(g.Stage, selfEntity.Position.x, selfEntity.Position.y, characterOptions)
+					emptyChar2 := NewEmptyCharacter(g.Stage, selfEntity.Position.x + 1, selfEntity.Position.y, characterOptions)
+					g.Stage.AddTypedEntity(emptyChar1, emptyChar2, )
+				}()
+			},
+		},
+		'↓': TileMapCellData{
+			ch:                 '↓',
+			fgColor:            termbox.ColorGreen,
+			bgColor:            termbox.ColorBlack,
+			collidesPhysically: false,
+			collisionCallback: func() {
+				levelInstance := NewLevel2(g)
+				g.Stage.SetLevel(levelInstance)
 			},
 		},
 	}

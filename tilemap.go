@@ -103,6 +103,20 @@ var CommonTileMapCellData = TileMapCellDataMap{
 		collidesPhysically: true,
 		collisionCallback:  func() {},
 	},
+	'☵': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '☵',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
+	'☲': {
+		bgColor:            termbox.ColorBlack,
+		fgColor:            termbox.ColorWhite,
+		ch:                 '☲',
+		collidesPhysically: true,
+		collisionCallback:  func() {},
+	},
 	' ': {
 		bgColor:            termbox.ColorBlack,
 		fgColor:            termbox.ColorWhite,
