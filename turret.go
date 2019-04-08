@@ -18,6 +18,10 @@ type TurretBall struct {
 	TimeSinceLastUpdate float64
 }
 
+func (t *TurretBall) ShouldCenterHorizontally() bool {
+    return false
+}
+
 func NewTurret(s *Stage, x, y int, direction Direction, turretBallSpeed float64) *Turret {
 	entityOptions := EntityOptions{1000, nil, nil}
 	e := NewEntity(s, x, y, 1, 1, 'O', termbox.ColorMagenta, termbox.ColorBlack, nil, true, entityOptions)

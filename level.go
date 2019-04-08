@@ -13,6 +13,10 @@ const (
 	insertMode
 )
 
+func (m VimMode) String() string {
+	return [...]string{"NORMAL", "INSERT"}[m]
+}
+
 const (
 	levelTitleCoordX       int               = 0
 	levelTitleCoordY       int               = 1
@@ -101,8 +105,8 @@ func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TermBoxCell {
 			}
 
 			cell := &TermBoxCell{
-				&termbox.Cell{data.ch, data.fgColor, data.bgColor},
-				data.collidesPhysically,
+				&termbox.Cell{data.Ch, data.FgColor, data.BgColor},
+				data.CollidesPhysically,
 				data,
 			}
 			rowCells[j] = cell

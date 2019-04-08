@@ -7,9 +7,16 @@ import (
 
 type Word struct {
 	*Entity
-	Content   string
-	Speed     float64
-	Direction Direction
+	Content            string
+	Speed              float64
+	Direction          Direction
+	CenterHorizontally bool
+	Fg                 termbox.Attribute
+	Bg                 termbox.Attribute
+}
+
+func (w *Word) ShouldCenterHorizontally() bool {
+   return w.CenterHorizontally
 }
 
 type WordOptions struct {
@@ -17,6 +24,8 @@ type WordOptions struct {
 	Fg                 termbox.Attribute
 	Bg                 termbox.Attribute
 	CollidesPhysically bool
+	CenterHorizontally bool
+	Tags               []Tag
 }
 
 func ConvertStringToCells(s string, fg termbox.Attribute, bg termbox.Attribute) []*TermBoxCell {
@@ -39,24 +48,23 @@ func ConvertStringToCells(s string, fg termbox.Attribute, bg termbox.Attribute) 
 }
 
 func NewWord(s *Stage, x, y int, content string, options WordOptions) *Word {
-	fg, bg, collidesPhysically := options.Fg, options.Bg, options.CollidesPhysically
-
-	if !collidesPhysically {
-		collidesPhysically = false
-	}
+	fg, bg, collidesPhysically, centerHorizontally := options.Fg, options.Bg, options.CollidesPhysically, options.CenterHorizontally
 
 	cells := ConvertStringToCells(content, fg, bg)
-	entityOptions := EntityOptions{2000, nil, nil}
+	entityOptions := EntityOptions{2000, options.Tags, nil}
 	e := NewEntity(s, x, y, len(content), 1, ' ', fg, bg, cells, collidesPhysically, entityOptions)
 	return &Word{
-		Entity:    e,
-		Content:   content,
-		Direction: horizontal,
+		Entity:             e,
+		Content:            content,
+		Direction:          horizontal,
+		CenterHorizontally: centerHorizontally,
+		Fg:                 fg,
+		Bg:                 bg,
 	}
 }
 
 func DefaultWordOptions() WordOptions {
-	return WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false}
+	return WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: false, CenterHorizontally: true}
 }
 
 func NewEmptyCharacter(s *Stage, x, y int, options WordOptions) *Word {

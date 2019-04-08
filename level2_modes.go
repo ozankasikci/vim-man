@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const level2TileMapString = `
+const levelModesTileMapString = `
 ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅
 █      ☵☲     ☵☲    █
 █☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
@@ -19,19 +19,19 @@ const level2TileMapString = `
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `
 
-func NewLevel2(g *Game) *Level {
+func NewLevelModes(g *Game) *Level {
 
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
 	entities = append(entities, user)
 	tileData := TileMapCellDataMap{
 		'b': TileMapCellData{
-			ch:                 '💣',
-			fgColor:            termbox.ColorGreen,
-			bgColor:            termbox.ColorBlack,
-			collidesPhysically: true,
-			collisionCallback:  nil,
-			initCallback: func(selfEntity *Entity) {
+			Ch:                 '💣',
+			FgColor:            termbox.ColorGreen,
+			BgColor:            termbox.ColorBlack,
+			CollidesPhysically: true,
+			CollisionCallback:  nil,
+			InitCallback: func(selfEntity *Entity) {
 				bombOptions := WordOptions{InitCallback: nil, Fg: typedCharacterFg, Bg: typedCharacterBg, CollidesPhysically: true}
 				bomb := NewWord(g.Stage, selfEntity.GetPositionX(), selfEntity.GetPositionY(), string('💣'), bombOptions)
 				g.Stage.AddTypedEntity(bomb)
@@ -67,12 +67,12 @@ func NewLevel2(g *Game) *Level {
 			},
 		},
 		'↓': TileMapCellData{
-			ch:                 '↓',
-			fgColor:            termbox.ColorGreen,
-			bgColor:            termbox.ColorBlack,
-			collidesPhysically: false,
-			collisionCallback: func() {
-				levelInstance := NewLevel3(g)
+			Ch:                 '↓',
+			FgColor:            termbox.ColorGreen,
+			BgColor:            termbox.ColorBlack,
+			CollidesPhysically: false,
+			CollisionCallback: func() {
+				levelInstance := NewLevelExitingVim(g)
 				g.Stage.SetLevel(levelInstance)
 			},
 		},
@@ -81,19 +81,20 @@ func NewLevel2(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: level2TileMapString,
+		TileMapString: levelModesTileMapString,
 		TileData:      tileData,
 		InputRunes:    []rune{'b'},
 		BlockedKeys:   []termbox.Key{termbox.KeyBackspace},
+		VimMode:       normalMode,
 		Init: func() {
 			// load info
-			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Bomberman - Vim Modes", titleOptions)
 
-			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, esc: Back to Normal Mode", explanationOptions)
 
-			hintOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg}
+			hintOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			hint := NewWord(g.Stage, levelHintCoordX, levelHintCoordY, "Type b in Insert Mode to drop a bomb!", hintOptions)
 
 			g.Stage.AddScreenEntity(title, explanation, hint)

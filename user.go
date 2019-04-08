@@ -12,6 +12,10 @@ type User struct {
 	*Entity
 }
 
+func (u *User) ShouldCenterHorizontally() bool {
+    return false
+}
+
 func NewUser(s *Stage, x, y int) (u *User) {
 	cells := []*TermBoxCell{
 		{&termbox.Cell{'▒', termbox.ColorGreen, bgColor}, false, TileMapCellData{}},
@@ -103,8 +107,8 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 			character.InitCallback()
 		}
 
-		if s.LevelInstance.TileData[event.Ch].initCallback != nil {
-			s.LevelInstance.TileData[event.Ch].initCallback(character.Entity)
+		if s.LevelInstance.TileData[event.Ch].InitCallback != nil {
+			s.LevelInstance.TileData[event.Ch].InitCallback(character.Entity)
 		}
 	}
 }

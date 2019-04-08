@@ -48,6 +48,7 @@ type Renderer interface {
 	GetScreenOffset() (int, int)
 	GetDrawPriority() int
 	GetTags() []Tag
+	ShouldCenterHorizontally() bool
 }
 
 // main game loop

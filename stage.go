@@ -1,6 +1,7 @@
 package fantasia
 
 import (
+	"fmt"
 	"github.com/nsf/termbox-go"
 	"time"
 )
@@ -21,6 +22,7 @@ type Stage struct {
 	pixelMode      bool
 	offsetx        int
 	offsety        int
+	ModeLabel      *Word
 }
 
 func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
@@ -88,10 +90,13 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	for _, e := range s.CanvasEntities {
 		e.Update(s, ev, delta)
 	}
+
+	s.ModeLabel.Content = fmt.Sprintf("-- %s MODE --", s.LevelInstance.VimMode)
+	s.ModeLabel.Entity.Cells = ConvertStringToCells(s.ModeLabel.Content, s.ModeLabel.Fg, s.ModeLabel.Bg)
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevel1(s.Game))
+	s.SetLevel(NewLevelBasicMovement(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
@@ -104,6 +109,11 @@ func (s *Stage) SetLevel(levelInstance *Level) {
 	for _, e := range s.LevelInstance.Entities {
 		s.AddCanvasEntity(e)
 	}
+
+	modeLabelOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: false, Tags: []Tag{{"ModeLabel"}}}
+	s.ModeLabel = NewWord(s, 0, s.Game.getScreenSizeY() - 2, fmt.Sprintf("-- %s MODE --", levelInstance.VimMode), modeLabelOptions)
+
+	s.AddScreenEntity(s.ModeLabel)
 }
 
 func (s *Stage) Reset() {
@@ -139,7 +149,7 @@ func (s *Stage) GetDefaultBgCell() *TermBoxCell {
 	return &TermBoxCell{s.BgCell, false, TileMapCellData{}}
 }
 
-func (s *Stage) GetCanvasEntityByTag(wantedTag Tag) Renderer {
+func (s *Stage) GetRendererEntityByTag(wantedTag Tag) Renderer {
 	for _, ce := range s.CanvasEntities {
 		for _, tag := range ce.GetTags() {
 			if tag.Name == wantedTag.Name {
@@ -197,8 +207,14 @@ func (s *Stage) TermboxSetScreenCells() {
 	for _, e := range s.ScreenEntities {
 		for j, _ := range e.GetCells() {
 			cell := e.GetCells()[j]
-			offsetX, _ := e.GetScreenOffset()
-			x := e.GetPositionX() + j + offsetX
+			x := e.GetPositionX()
+			offsetX := 0
+
+			if e.ShouldCenterHorizontally() {
+				offsetX, _ = e.GetScreenOffset()
+			}
+
+			x = x + j + offsetX
 			s.TermboxSetCell(x, e.GetPositionY(), cell, false)
 		}
 	}
@@ -214,7 +230,7 @@ func (s *Stage) TermboxSetTypedCells() {
 }
 
 func (s *Stage) TermboxSetCursorCell() {
-	cursorEntity := s.GetCanvasEntityByTag(Tag{"Cursor"})
+	cursorEntity := s.GetRendererEntityByTag(Tag{"Cursor"})
 	for j, _ := range cursorEntity.GetCells() {
 		cell := cursorEntity.GetCells()[j]
 		s.TermboxSetCell(cursorEntity.GetPositionX(), cursorEntity.GetPositionY(), cell, true)

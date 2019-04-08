@@ -4,7 +4,7 @@ import "github.com/nsf/termbox-go"
 
 //import "github.com/nsf/termbox-go"
 
-const level3TileMapString = `
+const levelExitingVimTileMapString = `
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 Level 2                 |        |        |     |     |     |
 +  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
@@ -28,7 +28,7 @@ Level 2                 |        |        |     |     |     |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 `
 
-func NewLevel3(g *Game) *Level {
+func NewLevelExitingVim(g *Game) *Level {
 	// create user
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
@@ -44,11 +44,11 @@ func NewLevel3(g *Game) *Level {
 
 	tileData := TileMapCellDataMap{
 		'↓': TileMapCellData{
-			ch:                 '↓',
-			fgColor:            termbox.ColorGreen,
-			bgColor:            termbox.ColorBlack,
-			collidesPhysically: false,
-			collisionCallback: func() {
+			Ch:                 '↓',
+			FgColor:            termbox.ColorGreen,
+			BgColor:            termbox.ColorBlack,
+			CollidesPhysically: false,
+			CollisionCallback: func() {
 
 			},
 		},
@@ -57,7 +57,8 @@ func NewLevel3(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: level3TileMapString,
+		TileMapString: levelExitingVimTileMapString,
 		TileData:      tileData,
+		VimMode:       normalMode,
 	}
 }
