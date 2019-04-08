@@ -91,6 +91,10 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 		e.Update(s, ev, delta)
 	}
 
+	s.updateModeLabel()
+}
+
+func (s *Stage) updateModeLabel()  {
 	s.ModeLabel.Content = fmt.Sprintf("-- %s MODE --", s.LevelInstance.VimMode)
 	s.ModeLabel.Entity.Cells = ConvertStringToCells(s.ModeLabel.Content, s.ModeLabel.Fg, s.ModeLabel.Bg)
 }
