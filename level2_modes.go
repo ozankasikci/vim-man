@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const levelModesTileMapString = `
+const LevelModesTileMapString = `
 ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅
 █      ☵☲     ☵☲    █
 █☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
@@ -81,15 +81,14 @@ func NewLevelModes(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: levelModesTileMapString,
+		TileMapString: LevelModesTileMapString,
 		TileData:      tileData,
 		InputRunes:    []rune{'b'},
 		BlockedKeys:   []termbox.Key{termbox.KeyBackspace},
 		VimMode:       normalMode,
 		Init: func() {
-			// load info
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - Bomberman - Vim Modes", titleOptions)
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - VIM MODES - BOMBERMAN", titleOptions)
 
 			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, esc: Back to Normal Mode", explanationOptions)

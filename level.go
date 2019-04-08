@@ -11,10 +11,11 @@ type VimMode int
 const (
 	normalMode VimMode = iota
 	insertMode
+	colonMode
 )
 
 func (m VimMode) String() string {
-	return [...]string{"NORMAL", "INSERT"}[m]
+	return [...]string{"NORMAL", "INSERT", "NORMAL"}[m]
 }
 
 const (

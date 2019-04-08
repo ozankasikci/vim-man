@@ -56,6 +56,10 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 		if s.LevelInstance.VimMode != insertMode && !s.LevelInstance.InputBlocked {
 			s.LevelInstance.VimMode = insertMode
 		}
+	case ':':
+		if s.LevelInstance.VimMode == normalMode {
+			s.LevelInstance.VimMode = colonMode
+		}
 	}
 }
 

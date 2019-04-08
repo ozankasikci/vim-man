@@ -2,9 +2,7 @@ package fantasia
 
 import "github.com/nsf/termbox-go"
 
-//import "github.com/nsf/termbox-go"
-
-const levelBasicMovementTileMapString = `
+const LevelBasicMovementTileMapString = `
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
   Try to find the exit  |        |        |     |     |     |
 +  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
@@ -50,7 +48,7 @@ func NewLevelBasicMovement(g *Game) *Level {
 	return &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: levelBasicMovementTileMapString,
+		TileMapString: LevelBasicMovementTileMapString,
 		TileData:      tileData,
 		InputBlocked:  true,
 		VimMode:       normalMode,
