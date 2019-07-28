@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const LevelModesTileMapString = `
+const LevelBombermanTileMapString = `
 ▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅▅
 █      ☵☲     ☵☲    █
 █☲◼◼ ◼◼ ◼◼ ◼◼ ◼◼ ◼◼ █
@@ -19,7 +19,7 @@ const LevelModesTileMapString = `
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 `
 
-func NewLevelModes(g *Game) *Level {
+func NewLevelBomberman(g *Game) *Level {
 
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
@@ -78,17 +78,17 @@ func NewLevelModes(g *Game) *Level {
 		},
 	}
 
-	return &Level{
+	level := &Level{
 		Game:          g,
 		Entities:      entities,
-		TileMapString: LevelModesTileMapString,
+		TileMapString: LevelBombermanTileMapString,
 		TileData:      tileData,
 		InputRunes:    []rune{'b'},
-		BlockedKeys:   []termbox.Key{termbox.KeyBackspace},
+		BlockedKeys:   []termbox.Key{termbox.KeyBackspace, termbox.KeyDelete},
 		VimMode:       normalMode,
 		Init: func() {
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
-			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 2 - VIM MODES - BOMBERMAN", titleOptions)
+			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 4 - VIMBERMAN", titleOptions)
 
 			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			explanation := NewWord(g.Stage, levelExplanationCoordX, levelExplanationCoordY, "i: Insert Mode, esc: Back to Normal Mode", explanationOptions)
@@ -99,4 +99,7 @@ func NewLevelModes(g *Game) *Level {
 			g.Stage.AddScreenEntity(title, explanation, hint)
 		},
 	}
+
+	level.InitDefaults()
+	return level
 }

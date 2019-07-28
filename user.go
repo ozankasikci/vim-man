@@ -56,9 +56,29 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 		if s.LevelInstance.VimMode != insertMode && !s.LevelInstance.InputBlocked {
 			s.LevelInstance.VimMode = insertMode
 		}
+
+	case 'x':
+		if ContainsTermboxKey(s.LevelInstance.BlockedKeys, termbox.KeyDelete) {
+			return
+		}
+
+		if s.LevelInstance.InputBlocked {
+			return
+		}
+
+		x := u.GetPositionX()
+		y := u.GetPositionY()
+
+		// keep the last element in place, insert an empty cell before the last character in the line
+		tileMap := s.LevelInstance.TileMap
+		lastElement := s.LevelInstance.TileMap[y][len(s.LevelInstance.TileMap[y]) - 1]
+		tileMap[y] = append( tileMap[y][:x], tileMap[y][x+1:len(tileMap[y]) - 1]...)
+		tileMap[y] = append(tileMap[y], EmptyTileMapCell(), lastElement)
+
 	case ':':
 		if s.LevelInstance.VimMode == normalMode {
 			s.LevelInstance.VimMode = colonMode
+			s.ColonLine.Content = ":"
 		}
 	}
 }
@@ -103,6 +123,13 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 			return
 		}
 
+		x := u.GetPositionX()
+		y := u.GetPositionY()
+		tileMap := s.LevelInstance.TileMap[y]
+		lastElement := tileMap[len(tileMap) - 1]
+		tileMap = append(tileMap[:x], append([]*TermBoxCell{ character.Cell }, tileMap[x:len(tileMap) - 2]...)...)
+		tileMap = append(tileMap, lastElement)
+
 		// type a character and add as typed entity
 		s.AddTypedEntity(character)
 		u.SetPositionX(u.GetPositionX() + 1)
@@ -117,10 +144,29 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 	}
 }
 
+func (u *User) handleColonModeEvents(s *Stage, event termbox.Event)  {
+	if event.Key == termbox.KeyEnter {
+		s.LevelInstance.VimMode = normalMode
+
+		if len(s.LevelInstance.ColonLineCallbacks) > 0 {
+			if fn, ok := s.LevelInstance.ColonLineCallbacks[s.ColonLine.Content[1:]]; ok {
+				fn(s.Game)
+			}
+		}
+	}
+
+	if event.Ch != 0 {
+		s.ColonLine.Content = s.ColonLine.Content + string(event.Ch)
+	}
+}
+
 func (u *User) Update(s *Stage, event termbox.Event, delta time.Duration) {
-	if s.LevelInstance.VimMode == normalMode {
+	switch s.LevelInstance.VimMode {
+	case colonMode:
+		u.handleColonModeEvents(s, event)
+	case normalMode:
 		u.handleNormalModeEvents(s, event)
-	} else if s.LevelInstance.VimMode == insertMode {
+	case insertMode:
 		u.handleInsertModeEvents(s, event)
 	}
 }

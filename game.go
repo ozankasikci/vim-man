@@ -21,17 +21,23 @@ type Game struct {
 	Stage       *Stage
 	screenSizeX int
 	screenSizeY int
+	FantasiaEvents chan FantasiaEvent
 }
 
 type GameOptions struct {
 	fps          float64
 	initialLevel int
 	bgCell       *termbox.Cell
+	FantasiaEvents chan FantasiaEvent
+}
+
+type FantasiaEvent struct {
+	Content string
 }
 
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
-	game := &Game{nil, 0, 0}
+	game := &Game{nil, 0, 0, opts.FantasiaEvents}
 	stage := NewStage(game, opts.initialLevel, opts.fps, bgCell)
 	game.Stage = stage
 	return game
@@ -45,6 +51,7 @@ type Renderer interface {
 	GetPosition() (int, int)
 	GetPositionX() int
 	GetPositionY() int
+	SetPositionX(int)
 	GetScreenOffset() (int, int)
 	GetDrawPriority() int
 	GetTags() []Tag
@@ -53,7 +60,7 @@ type Renderer interface {
 
 // main game loop
 // handles events, updates and renders stage and entities
-func gameLoop(events chan termbox.Event, game *Game) {
+func gameLoop(termboxEvents chan termbox.Event, fantasiaEvents chan FantasiaEvent, game *Game) {
 	termbox.Clear(fgColor, bgColor)
 	game.setScreenSize(termbox.Size())
 	stage := game.Stage
@@ -66,7 +73,7 @@ func gameLoop(events chan termbox.Event, game *Game) {
 		update := time.Now()
 
 		select {
-		case event := <-events:
+		case event := <-termboxEvents:
 			switch {
 			case event.Key == termbox.KeyCtrlC:
 				// exit on ctrc + c
@@ -79,6 +86,18 @@ func gameLoop(events chan termbox.Event, game *Game) {
 		default:
 			stage.update(termbox.Event{}, update.Sub(lastUpdateTime))
 		}
+
+		// handle fantasia events here
+		select {
+		case event := <-fantasiaEvents:
+			switch  {
+			case event.Content == "exit":
+				return
+			}
+		default:
+
+		}
+
 		lastUpdateTime = time.Now()
 
 		stage.Render()
@@ -86,7 +105,7 @@ func gameLoop(events chan termbox.Event, game *Game) {
 	}
 }
 
-func eventLoop(e chan termbox.Event) {
+func termboxEventLoop(e chan termbox.Event) {
 	for {
 		e <- termbox.PollEvent()
 	}
@@ -105,16 +124,19 @@ func Init() {
 	termbox.SetOutputMode(termbox.Output256)
 	termbox.Clear(termbox.ColorDefault, bgColor)
 
-	events := make(chan termbox.Event)
-	go eventLoop(events)
+	termboxEvents := make(chan termbox.Event)
+	go termboxEventLoop(termboxEvents)
+
+	fantasiaEvents := make(chan FantasiaEvent)
 
 	game := NewGame(GameOptions{
 		fps:          50,
 		initialLevel: 1,
+		FantasiaEvents: fantasiaEvents,
 	})
 
 	// main game loop, this is blocking
-	gameLoop(events, game)
+	gameLoop(termboxEvents, fantasiaEvents, game)
 
 	// dump logs after the gameLoop stops
 	if len(lg.logs) > 0 {
@@ -122,7 +144,7 @@ func Init() {
 		time.Sleep(2 * time.Second)
 	}
 
-	exit(events)
+	exit(termboxEvents)
 }
 
 func (g *Game) setScreenSize(x, y int) {

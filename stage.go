@@ -23,6 +23,7 @@ type Stage struct {
 	offsetx        int
 	offsety        int
 	ModeLabel      *Word
+	ColonLine      *Word
 }
 
 func NewStage(g *Game, level int, fps float64, bgCell *termbox.Cell) *Stage {
@@ -92,6 +93,7 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	}
 
 	s.updateModeLabel()
+	s.updateColonLine()
 }
 
 func (s *Stage) updateModeLabel()  {
@@ -99,8 +101,12 @@ func (s *Stage) updateModeLabel()  {
 	s.ModeLabel.Entity.Cells = ConvertStringToCells(s.ModeLabel.Content, s.ModeLabel.Fg, s.ModeLabel.Bg)
 }
 
+func (s *Stage) updateColonLine()  {
+	s.ColonLine.Entity.Cells = ConvertStringToCells(s.ColonLine.Content, s.ColonLine.Fg, s.ColonLine.Bg)
+}
+
 func (s *Stage) Init() {
-	s.SetLevel(NewLevelBasicMovement(s.Game))
+	s.SetLevel(NewLevelTextEditing(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
@@ -117,7 +123,10 @@ func (s *Stage) SetLevel(levelInstance *Level) {
 	modeLabelOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: false, Tags: []Tag{{"ModeLabel"}}}
 	s.ModeLabel = NewWord(s, 0, s.Game.getScreenSizeY() - 2, fmt.Sprintf("-- %s MODE --", levelInstance.VimMode), modeLabelOptions)
 
-	s.AddScreenEntity(s.ModeLabel)
+	colonLineOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: false, Tags: []Tag{{"ColonLine"}}}
+	s.ColonLine = NewWord(s, 0, s.Game.getScreenSizeY() - 1, "", colonLineOptions)
+
+	s.AddScreenEntity(s.ModeLabel, s.ColonLine)
 }
 
 func (s *Stage) Reset() {

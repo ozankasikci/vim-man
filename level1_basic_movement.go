@@ -39,13 +39,13 @@ func NewLevelBasicMovement(g *Game) *Level {
 			BgColor:            termbox.ColorBlack,
 			CollidesPhysically: false,
 			CollisionCallback: func() {
-				levelInstance := NewLevelModes(g)
+				levelInstance := NewLevelExitingVim(g)
 				g.Stage.SetLevel(levelInstance)
 			},
 		},
 	}
 
-	return &Level{
+	level := &Level{
 		Game:          g,
 		Entities:      entities,
 		TileMapString: LevelBasicMovementTileMapString,
@@ -54,7 +54,8 @@ func NewLevelBasicMovement(g *Game) *Level {
 		VimMode:       normalMode,
 		Init: func() {
 			// load info
-			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
+			titleOptions := WordOptions{
+				InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 1 - MOVING THE CURSOR", titleOptions)
 
 			explanationOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
@@ -63,4 +64,7 @@ func NewLevelBasicMovement(g *Game) *Level {
 			g.Stage.AddScreenEntity(title, explanation)
 		},
 	}
+
+	level.InitDefaults()
+	return level
 }

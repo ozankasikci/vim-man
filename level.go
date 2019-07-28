@@ -45,6 +45,7 @@ type Level struct {
 	Width         int
 	Height        int
 	Init          func()
+	ColonLineCallbacks map[string]func(game *Game)
 }
 
 func (l *Level) Update(s *Stage, t time.Duration) {
@@ -86,16 +87,17 @@ func (l *Level) GetScreenOffset() (int, int) {
 func (l *Level) LoadTileMapCells(parsedRunes [][]rune) [][]*TermBoxCell {
 	var cells [][]*TermBoxCell
 
-	for _, line := range parsedRunes {
+	for i, line := range parsedRunes {
 		rowCells := make([]*TermBoxCell, len(line))
 		var data TileMapCellData
 
 		for j, char := range line {
 			if _, ok := l.TileData[char]; !ok {
 				if _, ok := CommonTileMapCellData[char]; !ok {
-					data = NewTileMapCell(char, func() {})
+					data = NewTileMapCell(char, func() {}, i)
 				} else {
 					data = CommonTileMapCellData[char]
+					data.LineNumber = i
 				}
 			} else {
 				data = l.TileData[char]
@@ -131,4 +133,24 @@ func (l *Level) GetTileMapDimensions() (int, int) {
 	rowLength := len(parsed[0])
 	columnLength := len(parsed)
 	return rowLength, columnLength
+}
+
+func (l *Level) InitDefaults() {
+	// set default quit functions
+	exitTerms := []string{ "q", "quit", "exit" }
+
+	if l.ColonLineCallbacks == nil {
+		l.ColonLineCallbacks = make(map[string]func(*Game))
+	}
+
+	for _, term := range exitTerms {
+
+		if _, ok := l.ColonLineCallbacks[term]; !ok {
+			l.ColonLineCallbacks[term] = func(g *Game) {
+				go func() {
+					g.FantasiaEvents <- FantasiaEvent{Content: "exit"}
+				}()
+			}
+		}
+	}
 }

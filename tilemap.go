@@ -5,13 +5,14 @@ import (
 	"strings"
 )
 
-func NewTileMapCell(ch rune, fn func()) TileMapCellData {
+func NewTileMapCell(ch rune, fn func(), lineNumber int) TileMapCellData {
 	return TileMapCellData{
 		BgColor:            termbox.ColorBlack,
 		FgColor:            termbox.ColorWhite,
 		Ch:                 ch,
 		CollidesPhysically: false,
 		CollisionCallback:  fn,
+		LineNumber: lineNumber,
 	}
 }
 
@@ -22,6 +23,7 @@ type TileMapCellData struct {
 	CollidesPhysically bool
 	CollisionCallback  func()
 	InitCallback       func(*Entity)
+	LineNumber         int
 }
 
 type TileMapCellDataMap map[rune]TileMapCellData

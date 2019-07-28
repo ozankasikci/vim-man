@@ -28,7 +28,9 @@ func (c Canvas) CheckCollision(x, y int) bool {
 		return true
 	}
 
-	c[y][x].cellData.CollisionCallback()
+	if c[y][x].cellData.CollisionCallback != nil {
+		c[y][x].cellData.CollisionCallback()
+	}
 
 	if os.Getenv("DEBUG") == "1" {
 		return false
