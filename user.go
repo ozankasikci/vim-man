@@ -123,12 +123,14 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 			return
 		}
 
-		x := u.GetPositionX()
-		y := u.GetPositionY()
-		tileMap := s.LevelInstance.TileMap[y]
-		lastElement := tileMap[len(tileMap) - 1]
-		tileMap = append(tileMap[:x], append([]*TermBoxCell{ character.Cell }, tileMap[x:len(tileMap) - 2]...)...)
-		tileMap = append(tileMap, lastElement)
+		if !s.LevelInstance.TextShiftingDisabled {
+			x := u.GetPositionX()
+			y := u.GetPositionY()
+			tileMap := s.LevelInstance.TileMap[y]
+			lastElement := tileMap[len(tileMap) - 1]
+			tileMap = append(tileMap[:x], append([]*TermBoxCell{ character.Cell }, tileMap[x:len(tileMap) - 2]...)...)
+			tileMap = append(tileMap, lastElement)
+		}
 
 		// type a character and add as typed entity
 		s.AddTypedEntity(character)

@@ -86,6 +86,7 @@ func NewLevelBomberman(g *Game) *Level {
 		InputRunes:    []rune{'b'},
 		BlockedKeys:   []termbox.Key{termbox.KeyBackspace, termbox.KeyDelete},
 		VimMode:       normalMode,
+		TextShiftingDisabled: true,
 		Init: func() {
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}
 			title := NewWord(g.Stage, levelTitleCoordX, levelTitleCoordY, "Level 4 - VIMBERMAN", titleOptions)

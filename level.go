@@ -41,6 +41,7 @@ type Level struct {
 	InputRunes    []rune
 	BlockedKeys   []termbox.Key
 	InputBlocked  bool
+	TextShiftingDisabled bool
 	BgCell        *termbox.Cell
 	Width         int
 	Height        int

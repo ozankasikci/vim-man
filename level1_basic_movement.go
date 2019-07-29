@@ -4,7 +4,7 @@ import "github.com/nsf/termbox-go"
 
 const LevelBasicMovementTileMapString = `
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-  Try to find the exit  |        |        |     |     |     |
+  Try and find the exit |        |        |     |     |     |
 +  +--+--+--+--+--+  +--+  +--+  +  +  +  +  +  +  +  +--+  +
 |           |     |     |     |  |  |  |     |  |  |  |     |
 +--+--+  +--+  +  +--+  +--+  +  +--+  +  +--+  +  +  +  +  +

@@ -106,7 +106,7 @@ func (s *Stage) updateColonLine()  {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevelTextEditing(s.Game))
+	s.SetLevel(NewLevelBasicMovement(s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
