@@ -12,7 +12,7 @@ func NewTileMapCell(ch rune, fn func(), lineNumber int) TileMapCellData {
 		Ch:                 ch,
 		CollidesPhysically: false,
 		CollisionCallback:  fn,
-		LineNumber: lineNumber,
+		LineNumber:         lineNumber,
 	}
 }
 

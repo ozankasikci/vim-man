@@ -18,16 +18,16 @@ type Point struct {
 }
 
 type Game struct {
-	Stage       *Stage
-	screenSizeX int
-	screenSizeY int
+	Stage          *Stage
+	screenSizeX    int
+	screenSizeY    int
 	FantasiaEvents chan FantasiaEvent
 }
 
 type GameOptions struct {
-	fps          float64
-	initialLevel int
-	bgCell       *termbox.Cell
+	fps            float64
+	initialLevel   int
+	bgCell         *termbox.Cell
 	FantasiaEvents chan FantasiaEvent
 }
 
@@ -90,7 +90,7 @@ func gameLoop(termboxEvents chan termbox.Event, fantasiaEvents chan FantasiaEven
 		// handle fantasia events here
 		select {
 		case event := <-fantasiaEvents:
-			switch  {
+			switch {
 			case event.Content == "exit":
 				return
 			}
@@ -130,8 +130,8 @@ func Init() {
 	fantasiaEvents := make(chan FantasiaEvent)
 
 	game := NewGame(GameOptions{
-		fps:          50,
-		initialLevel: 1,
+		fps:            50,
+		initialLevel:   1,
 		FantasiaEvents: fantasiaEvents,
 	})
 

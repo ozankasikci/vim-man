@@ -13,7 +13,7 @@ type User struct {
 }
 
 func (u *User) ShouldCenterHorizontally() bool {
-    return false
+	return false
 }
 
 func NewUser(s *Stage, x, y int) (u *User) {
@@ -71,8 +71,8 @@ func (u *User) handleNormalModeEvents(s *Stage, event termbox.Event) {
 
 		// keep the last element in place, insert an empty cell before the last character in the line
 		tileMap := s.LevelInstance.TileMap
-		lastElement := s.LevelInstance.TileMap[y][len(s.LevelInstance.TileMap[y]) - 1]
-		tileMap[y] = append( tileMap[y][:x], tileMap[y][x+1:len(tileMap[y]) - 1]...)
+		lastElement := s.LevelInstance.TileMap[y][len(s.LevelInstance.TileMap[y])-1]
+		tileMap[y] = append(tileMap[y][:x], tileMap[y][x+1:len(tileMap[y])-1]...)
 		tileMap[y] = append(tileMap[y], EmptyTileMapCell(), lastElement)
 
 	case ':':
@@ -127,8 +127,8 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 			x := u.GetPositionX()
 			y := u.GetPositionY()
 			tileMap := s.LevelInstance.TileMap[y]
-			lastElement := tileMap[len(tileMap) - 1]
-			tileMap = append(tileMap[:x], append([]*TermBoxCell{ character.Cell }, tileMap[x:len(tileMap) - 2]...)...)
+			lastElement := tileMap[len(tileMap)-1]
+			tileMap = append(tileMap[:x], append([]*TermBoxCell{character.Cell}, tileMap[x:len(tileMap)-2]...)...)
 			tileMap = append(tileMap, lastElement)
 		}
 
@@ -146,7 +146,7 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 	}
 }
 
-func (u *User) handleColonModeEvents(s *Stage, event termbox.Event)  {
+func (u *User) handleColonModeEvents(s *Stage, event termbox.Event) {
 	if event.Key == termbox.KeyEnter {
 		s.LevelInstance.VimMode = normalMode
 

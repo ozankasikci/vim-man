@@ -79,13 +79,13 @@ func NewLevelBomberman(g *Game) *Level {
 	}
 
 	level := &Level{
-		Game:          g,
-		Entities:      entities,
-		TileMapString: LevelBombermanTileMapString,
-		TileData:      tileData,
-		InputRunes:    []rune{'b'},
-		BlockedKeys:   []termbox.Key{termbox.KeyBackspace, termbox.KeyDelete},
-		VimMode:       normalMode,
+		Game:                 g,
+		Entities:             entities,
+		TileMapString:        LevelBombermanTileMapString,
+		TileData:             tileData,
+		InputRunes:           []rune{'b'},
+		BlockedKeys:          []termbox.Key{termbox.KeyBackspace, termbox.KeyDelete},
+		VimMode:              normalMode,
 		TextShiftingDisabled: true,
 		Init: func() {
 			titleOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: true}

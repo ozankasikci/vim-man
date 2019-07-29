@@ -39,10 +39,9 @@ func NewLevelExitingVim(g *Game) *Level {
 			FgColor:            termbox.ColorGreen,
 			BgColor:            termbox.ColorBlack,
 			CollidesPhysically: false,
-			CollisionCallback: func() {},
+			CollisionCallback:  func() {},
 		},
 	}
-
 
 	level := &Level{
 		Game:          g,
@@ -66,7 +65,7 @@ func NewLevelExitingVim(g *Game) *Level {
 		ColonLineCallbacks: make(map[string]func(*Game)),
 	}
 
-	exitTerms := []string{ "q", "quit", "exit" }
+	exitTerms := []string{"q", "quit", "exit"}
 	for _, term := range exitTerms {
 		if _, ok := level.ColonLineCallbacks[term]; !ok {
 			level.ColonLineCallbacks[term] = func(g *Game) {

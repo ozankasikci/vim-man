@@ -16,7 +16,7 @@ type Word struct {
 }
 
 func (w *Word) ShouldCenterHorizontally() bool {
-   return w.CenterHorizontally
+	return w.CenterHorizontally
 }
 
 type WordOptions struct {

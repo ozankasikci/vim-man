@@ -96,12 +96,12 @@ func (s *Stage) update(ev termbox.Event, delta time.Duration) {
 	s.updateColonLine()
 }
 
-func (s *Stage) updateModeLabel()  {
+func (s *Stage) updateModeLabel() {
 	s.ModeLabel.Content = fmt.Sprintf("-- %s MODE --", s.LevelInstance.VimMode)
 	s.ModeLabel.Entity.Cells = ConvertStringToCells(s.ModeLabel.Content, s.ModeLabel.Fg, s.ModeLabel.Bg)
 }
 
-func (s *Stage) updateColonLine()  {
+func (s *Stage) updateColonLine() {
 	s.ColonLine.Entity.Cells = ConvertStringToCells(s.ColonLine.Content, s.ColonLine.Fg, s.ColonLine.Bg)
 }
 
@@ -121,10 +121,10 @@ func (s *Stage) SetLevel(levelInstance *Level) {
 	}
 
 	modeLabelOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: false, Tags: []Tag{{"ModeLabel"}}}
-	s.ModeLabel = NewWord(s, 0, s.Game.getScreenSizeY() - 2, fmt.Sprintf("-- %s MODE --", levelInstance.VimMode), modeLabelOptions)
+	s.ModeLabel = NewWord(s, 0, s.Game.getScreenSizeY()-2, fmt.Sprintf("-- %s MODE --", levelInstance.VimMode), modeLabelOptions)
 
 	colonLineOptions := WordOptions{InitCallback: nil, Fg: levelTitleFg, Bg: levelTitleBg, CenterHorizontally: false, Tags: []Tag{{"ColonLine"}}}
-	s.ColonLine = NewWord(s, 0, s.Game.getScreenSizeY() - 1, "", colonLineOptions)
+	s.ColonLine = NewWord(s, 0, s.Game.getScreenSizeY()-1, "", colonLineOptions)
 
 	s.AddScreenEntity(s.ModeLabel, s.ColonLine)
 }

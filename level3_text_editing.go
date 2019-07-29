@@ -39,7 +39,7 @@ func NewLevelTextEditing(g *Game) *Level {
 			FgColor:            termbox.ColorGreen,
 			BgColor:            termbox.ColorBlack,
 			CollidesPhysically: false,
-			CollisionCallback: func() {},
+			CollisionCallback:  func() {},
 		},
 	}
 

@@ -32,21 +32,21 @@ const (
 )
 
 type Level struct {
-	Game          *Game
-	VimMode       VimMode
-	TileMapString string
-	TileMap       [][]*TermBoxCell
-	TileData      TileMapCellDataMap
-	Entities      []Renderer
-	InputRunes    []rune
-	BlockedKeys   []termbox.Key
-	InputBlocked  bool
+	Game                 *Game
+	VimMode              VimMode
+	TileMapString        string
+	TileMap              [][]*TermBoxCell
+	TileData             TileMapCellDataMap
+	Entities             []Renderer
+	InputRunes           []rune
+	BlockedKeys          []termbox.Key
+	InputBlocked         bool
 	TextShiftingDisabled bool
-	BgCell        *termbox.Cell
-	Width         int
-	Height        int
-	Init          func()
-	ColonLineCallbacks map[string]func(game *Game)
+	BgCell               *termbox.Cell
+	Width                int
+	Height               int
+	Init                 func()
+	ColonLineCallbacks   map[string]func(game *Game)
 }
 
 func (l *Level) Update(s *Stage, t time.Duration) {
@@ -138,7 +138,7 @@ func (l *Level) GetTileMapDimensions() (int, int) {
 
 func (l *Level) InitDefaults() {
 	// set default quit functions
-	exitTerms := []string{ "q", "quit", "exit" }
+	exitTerms := []string{"q", "quit", "exit"}
 
 	if l.ColonLineCallbacks == nil {
 		l.ColonLineCallbacks = make(map[string]func(*Game))
