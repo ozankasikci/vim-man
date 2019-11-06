@@ -24,6 +24,7 @@ Fantasia is terminal program that's a semi editor and a semi game. The purpose o
 
 ## TODO
 * Add missing levels
+  - [ ] File save
   - [ ] Deletion commands level (`dw`, `d$` vs)
   - [ ] Operators and motions
   - [ ] Using count
