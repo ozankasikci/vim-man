@@ -1,9 +1,9 @@
-# Fantasia
+# VimMan
 
 Learn how to use Vim in its natural environment, the Terminal!
 ## About
 
-Fantasia is terminal program that's a semi editor and a semi game. The purpose of Fantasia is to teach people how to use vim and have fun at the same time! 
+VimMan is terminal program that's a semi editor and a semi game. The purpose of VimMan is to teach people how to use vim and have fun at the same time! 
 
 ## Demo
 ### Level - 1 - Basic movement in Normal Mode
