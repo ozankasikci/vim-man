@@ -1,4 +1,4 @@
-package fantasia
+package vimman
 
 import (
 	"time"
