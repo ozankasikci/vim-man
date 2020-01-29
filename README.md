@@ -5,6 +5,12 @@ Learn how to use Vim in its natural environment, the Terminal!
 
 VimMan is terminal program that's a semi editor and a semi game. The purpose of VimMan is to teach people how to use vim and have fun at the same time! 
 
+## Installation
+
+`git clone https://github.com/ozankasikci/vim-man && cd vim-man`
+
+`go run cmd/console/vimman.go`
+
 ## Demo
 ### Level - 1 - Basic movement in Normal Mode
 
