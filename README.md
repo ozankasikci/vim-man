@@ -38,4 +38,6 @@ VimMan is terminal program that's a semi editor and a semi game. The purpose of 
   - [ ] Undo & redo
   - [ ] Put, replace, change operators
   - [ ] Search & substitute
+  - [ ] Accessing Shell 
 * Handle edge cases in some levels
+  - [ ] level 3 
