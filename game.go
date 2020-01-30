@@ -18,16 +18,16 @@ type Point struct {
 }
 
 type Game struct {
-	Stage          *Stage
-	screenSizeX    int
-	screenSizeY    int
+	Stage        *Stage
+	screenSizeX  int
+	screenSizeY  int
 	VimManEvents chan VimManEvent
 }
 
 type GameOptions struct {
-	fps            float64
-	initialLevel   int
-	bgCell         *termbox.Cell
+	fps          float64
+	initialLevel int
+	bgCell       *termbox.Cell
 	VimManEvents chan VimManEvent
 }
 
@@ -130,8 +130,8 @@ func Init() {
 	vimManEvents := make(chan VimManEvent)
 
 	game := NewGame(GameOptions{
-		fps:            50,
-		initialLevel:   1,
+		fps:          50,
+		initialLevel: 1,
 		VimManEvents: vimManEvents,
 	})
 
