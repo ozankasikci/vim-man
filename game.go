@@ -21,23 +21,23 @@ type Game struct {
 	Stage          *Stage
 	screenSizeX    int
 	screenSizeY    int
-	FantasiaEvents chan FantasiaEvent
+	VimManEvents chan VimManEvent
 }
 
 type GameOptions struct {
 	fps            float64
 	initialLevel   int
 	bgCell         *termbox.Cell
-	FantasiaEvents chan FantasiaEvent
+	VimManEvents chan VimManEvent
 }
 
-type FantasiaEvent struct {
+type VimManEvent struct {
 	Content string
 }
 
 func NewGame(opts GameOptions) *Game {
 	bgCell := &termbox.Cell{'░', fgColor, bgColor}
-	game := &Game{nil, 0, 0, opts.FantasiaEvents}
+	game := &Game{nil, 0, 0, opts.VimManEvents}
 	stage := NewStage(game, opts.initialLevel, opts.fps, bgCell)
 	game.Stage = stage
 	return game
@@ -60,7 +60,7 @@ type Renderer interface {
 
 // main game loop
 // handles events, updates and renders stage and entities
-func gameLoop(termboxEvents chan termbox.Event, fantasiaEvents chan FantasiaEvent, game *Game) {
+func gameLoop(termboxEvents chan termbox.Event, vimManEvents chan VimManEvent, game *Game) {
 	termbox.Clear(fgColor, bgColor)
 	game.setScreenSize(termbox.Size())
 	stage := game.Stage
@@ -87,9 +87,9 @@ func gameLoop(termboxEvents chan termbox.Event, fantasiaEvents chan FantasiaEven
 			stage.update(termbox.Event{}, update.Sub(lastUpdateTime))
 		}
 
-		// handle fantasia events here
+		// handle vim-man events here
 		select {
-		case event := <-fantasiaEvents:
+		case event := <-vimManEvents:
 			switch {
 			case event.Content == "exit":
 				return
@@ -127,16 +127,16 @@ func Init() {
 	termboxEvents := make(chan termbox.Event)
 	go termboxEventLoop(termboxEvents)
 
-	fantasiaEvents := make(chan FantasiaEvent)
+	vimManEvents := make(chan VimManEvent)
 
 	game := NewGame(GameOptions{
 		fps:            50,
 		initialLevel:   1,
-		FantasiaEvents: fantasiaEvents,
+		VimManEvents: vimManEvents,
 	})
 
 	// main game loop, this is blocking
-	gameLoop(termboxEvents, fantasiaEvents, game)
+	gameLoop(termboxEvents, vimManEvents, game)
 
 	// dump logs after the gameLoop stops
 	if len(lg.logs) > 0 {

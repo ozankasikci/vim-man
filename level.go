@@ -149,7 +149,7 @@ func (l *Level) InitDefaults() {
 		if _, ok := l.ColonLineCallbacks[term]; !ok {
 			l.ColonLineCallbacks[term] = func(g *Game) {
 				go func() {
-					g.FantasiaEvents <- FantasiaEvent{Content: "exit"}
+					g.VimManEvents <- VimManEvent{Content: "exit"}
 				}()
 			}
 		}
