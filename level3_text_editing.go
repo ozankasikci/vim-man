@@ -18,7 +18,7 @@ const LevelTextEditingTileMapString = `
 |~                   Yu shll nt pss                         |
 |~                                                          |
 |~  3) APPENDING - Move the curser before the character     |
-|~  where the text should be appended, press i and type     |
+|~  where the text should be appended, press a and type     |
 |~                                                          |
 |~                    Yo shal no pas                        |
 |~                                                          |
