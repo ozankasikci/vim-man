@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+var levelConstructors = []func(*Game) *Level {
+	NewLevelBasicMovement,
+	NewLevelExitingVim,
+	NewLevelTextEditing,
+	NewLevelBomberman,
+}
+
 // holds the current level meta data, canvas and entities
 type Stage struct {
 	Game           *Game
@@ -106,7 +113,7 @@ func (s *Stage) updateColonLine() {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(NewLevelBasicMovement(s.Game))
+	s.SetLevel(levelConstructors[s.Level](s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {

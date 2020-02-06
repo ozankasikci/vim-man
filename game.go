@@ -116,9 +116,13 @@ func exit(events chan termbox.Event) {
 	termbox.Close()
 }
 
-func Init() {
+func Init(level int) {
 	if err := termbox.Init(); err != nil {
 		panic(errors.Wrap(err, "failed to init termbox"))
+	}
+
+	if level == 0 {
+		level = 1
 	}
 
 	termbox.SetOutputMode(termbox.Output256)
@@ -131,7 +135,7 @@ func Init() {
 
 	game := NewGame(GameOptions{
 		fps:          50,
-		initialLevel: 1,
+		initialLevel: level,
 		VimManEvents: vimManEvents,
 	})
 
