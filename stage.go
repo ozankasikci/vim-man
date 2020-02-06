@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var levelConstructors = []func(*Game) *Level {
+var levelConstructors = []func(*Game) *Level{
 	NewLevelBasicMovement,
 	NewLevelExitingVim,
 	NewLevelTextEditing,

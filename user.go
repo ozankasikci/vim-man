@@ -109,6 +109,10 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		s.AddTypedEntity(character)
 		u.SetPositionX(u.GetPositionX() - 1)
 	default:
+		// don't allow non-character events
+		if event.Ch == 0 {
+			return
+		}
 
 		// check if rune input is allowed
 		if len(s.LevelInstance.InputRunes) > 0 {
@@ -135,6 +139,11 @@ func (u *User) handleInsertModeEvents(s *Stage, event termbox.Event) {
 		// type a character and add as typed entity
 		s.AddTypedEntity(character)
 		u.SetPositionX(u.GetPositionX() + 1)
+
+		// at the end of the current line, move the cursor next line
+		if s.Canvas.IsInLastColumn(u.GetPositionX()) {
+			u.SetPosition(1, u.GetPositionY()+1)
+		}
 
 		if character.InitCallback != nil {
 			character.InitCallback()

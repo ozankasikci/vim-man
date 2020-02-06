@@ -51,5 +51,9 @@ func (c *Canvas) SetCellAt(row, column int, cell *TermBoxCell) {
 }
 
 func (c *Canvas) IsInsideOfBoundaries(x, y int) bool {
-	return x >= 0 && x < len((*c)[0]) && y >= 0 && y < len(*c)
+	return x >= 0 && x < len((*c)[0])-1 && y >= 0 && y < len(*c)-1
+}
+
+func (c *Canvas) IsInLastColumn(x int) bool {
+	return len((*c)[0])-1 == x
 }
