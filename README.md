@@ -11,6 +11,10 @@ VimMan is terminal program that's a semi editor and a semi game. The purpose of 
 
 `go run cmd/console/vimman.go`
 
+to start from a specific level;
+
+`LEVEL=2 go run cmd/console/vimman.go`
+
 ## Demo
 ### Level - 1 - Basic movement in Normal Mode
 
