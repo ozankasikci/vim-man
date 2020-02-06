@@ -113,7 +113,12 @@ func (s *Stage) updateColonLine() {
 }
 
 func (s *Stage) Init() {
-	s.SetLevel(levelConstructors[s.Level](s.Game))
+	level := s.Level - 1
+	if level < 0 || level > len(levelConstructors) {
+		level = 0
+	}
+
+	s.SetLevel(levelConstructors[level](s.Game))
 }
 
 func (s *Stage) SetLevel(levelInstance *Level) {
