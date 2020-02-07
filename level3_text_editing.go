@@ -61,12 +61,6 @@ func NewLevelTextEditing(g *Game) *Level {
 
 			g.Stage.AddScreenEntity(title, explanation, hint)
 		},
-		//ColonLineCallbacks: map[string]func(*Game) {
-		//	"q": func(g *Game) {
-		//		levelInstance := NewLevelBomberman(g)
-		//		g.Stage.SetLevel(levelInstance)
-		//	},
-		//},
 	}
 
 	level.InitDefaults()
