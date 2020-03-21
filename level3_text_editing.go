@@ -7,17 +7,17 @@ const LevelTextEditingTileMapString = `
 |~                                                          |
 |~                                                          |
 |~                                                          |
-|~  1) DELETION - Press "x" to delete the character under   |
+|~  1- DELETION - Press "x" to delete the character under   |
 |~              the cursor  in normal mode.                 |
 |~                                                          |
 |~               Yyou shalll noot paass                     |
 |~                                                          |
-|~  2) INSERTION - Move the cursor after the character      |
+|~  2- INSERTION - Move the cursor after the character      |
 |~  where the text should be inserted, press i and type     |
 |~                                                          |
 |~                   Yu shll nt pss                         |
 |~                                                          |
-|~  3) APPENDING - Move the curser before the character     |
+|~  3- APPENDING - Move the curser before the character     |
 |~  where the text should be appended, press a and type     |
 |~                                                          |
 |~                    Yo shal no pas                        |
