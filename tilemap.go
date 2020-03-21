@@ -29,13 +29,6 @@ type TileMapCellData struct {
 type TileMapCellDataMap map[rune]TileMapCellData
 
 var CommonTileMapCellData = TileMapCellDataMap{
-	'1': {
-		BgColor:            termbox.ColorWhite,
-		FgColor:            termbox.ColorWhite,
-		Ch:                 ' ',
-		CollidesPhysically: true,
-		CollisionCallback:  func() {},
-	},
 	'0': {
 		BgColor:            termbox.ColorBlack,
 		FgColor:            termbox.ColorWhite,
