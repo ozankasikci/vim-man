@@ -28,7 +28,6 @@ const LevelTextEditingTileMapString = `
 `
 
 func NewLevelTextEditing(g *Game) *Level {
-	// create user
 	user := NewUser(g.Stage, 1, 1)
 	var entities []Renderer
 	entities = append(entities, user)
