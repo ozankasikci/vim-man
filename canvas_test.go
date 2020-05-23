@@ -9,8 +9,8 @@ import (
 func TestCanvasCheckCollision(t *testing.T) {
 	x, y := 10, 10
 	c := NewCanvas(x, y)
-	c[1][1] = &TermBoxCell{&termbox.Cell{}, false}
-	c[0][0] = &TermBoxCell{&termbox.Cell{}, true}
+	c[1][1] = &TermBoxCell{&termbox.Cell{}, false, nil}
+	c[0][0] = &TermBoxCell{&termbox.Cell{}, true, nil}
 
 	tt := []struct {
 		x      int
