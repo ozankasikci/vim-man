@@ -99,10 +99,6 @@ func (e *Entity) SetPositionY(y int) {
 	e.Position.y = y
 }
 
-func (e *Entity) CheckCollision(x, y int) {
-	e.Position.y = y
-}
-
 func (e *Entity) GetPositionX() int {
 	return e.Position.x
 }
