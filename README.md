@@ -43,6 +43,5 @@ to start from a specific level;
   - [ ] Put, replace, change operators
   - [ ] Search & substitute
   - [ ] Accessing Shell
-  - [ ] Tabs 
 * Handle edge cases in some levels
   - [ ] level 3 
